@@ -1,0 +1,89 @@
+:root {
+  /* Brand Palette - Deep Navy Trust & Cooperative Accents */
+  --primary: #1E3A8A;           /* Sahyog Deep Trust Blue */
+  --primary-hover: #172554;
+  --primary-light: #EFF6FF;
+  --primary-border: #BFDBFE;
+  --primary-focus: rgba(30, 58, 138, 0.15);
+
+  --secondary: #0D9488;         /* Cooperative Teal */
+  --secondary-hover: #0F766E;
+  --secondary-light: #F0FDFA;
+  --secondary-border: #99F6E4;
+
+  --accent-warm: #D97706;       /* Warm Gold / Super Coins */
+  --accent-warm-light: #FEF3C7;
+  --accent-warm-border: #FDE68A;
+  --accent-warm-dark: #92400E;
+
+  /* Status Colors */
+  --success: #10B981;
+  --success-light: #ECFDF5;
+  --success-border: #A7F3D0;
+  --success-dark: #065F46;
+
+  --warning: #F59E0B;
+  --warning-light: #FFFBEB;
+  --warning-border: #FDE68A;
+  --warning-dark: #92400E;
+
+  --danger: #DC2626;            /* Emergency Alert Red */
+  --danger-hover: #B91C1C;
+  --danger-light: #FEF2F2;
+  --danger-border: #FECACA;
+  --danger-dark: #991B1B;
+
+  /* Neutral Surfaces & Crisp Text Palette */
+  --bg-app: #F8FAFC;            /* Clean light slate */
+  --bg-surface: #FFFFFF;        /* Pure crisp white card/section */
+  --bg-surface-elevated: #FFFFFF;
+  --bg-muted: #F1F5F9;          /* Subtle neutral container fill */
+  --bg-subtle: #E2E8F0;
+
+  --text-primary: #0F172A;      /* Deep high-contrast Slate 900 */
+  --text-secondary: #334155;    /* Slate 700 */
+  --text-muted: #64748B;        /* Slate 500 */
+  --text-inverse: #FFFFFF;
+
+  --border-subtle: #F1F5F9;
+  --border-default: #E2E8F0;    /* Standard crisp slate border */
+  --border-strong: #CBD5E1;
+  --border-focus: #1E3A8A;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Realistic Radii (Restrained, Professional) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Restrained Micro-Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-sheet: 0 -4px 16px rgba(0, 0, 0, 0.06);
+
+  /* Typography */
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  /* Transitions */
+  --transition-fast: 120ms ease-in-out;
+  --transition-normal: 200ms ease-in-out;
+
+  /* Layout Widths */
+  --mobile-max-width: 440px;
+  --container-max-width: 1200px;
+}
