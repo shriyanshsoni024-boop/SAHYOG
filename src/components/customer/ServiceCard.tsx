@@ -36,7 +36,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
         textAlign: 'center',
         cursor: 'pointer',
         position: 'relative',
-        padding: '6px 4px',
+        padding: '4px 2px',
         borderRadius: 'var(--radius-sm)',
         transition: 'all var(--transition-fast)',
         userSelect: 'none',
@@ -46,17 +46,17 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
       {/* Category Visual Tile */}
       <div
         style={{
-          width: '64px',
-          height: '64px',
+          width: '56px',
+          height: '56px',
           borderRadius: 'var(--radius-md)',
-          backgroundColor: '#F1F5F9',
-          border: `1.5px solid ${selected ? 'var(--primary)' : 'var(--border-default)'}`,
+          backgroundColor: '#FFFFFF',
+          border: `1.5px solid ${selected ? 'var(--primary-hover)' : 'var(--border-default)'}`,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '6px',
-          boxShadow: selected ? '0 0 0 2px var(--primary-border)' : 'var(--shadow-xs)',
+          marginBottom: '5px',
+          boxShadow: selected ? '0 0 0 2px var(--primary-light)' : 'var(--shadow-xs)',
           position: 'relative',
         }}
       >
@@ -74,8 +74,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
             loading="lazy"
           />
         ) : (
-          <div style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <IconComponent size={26} strokeWidth={2} />
+          <div style={{ color: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <IconComponent size={22} strokeWidth={2} />
           </div>
         )}
       </div>
@@ -83,16 +83,16 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
       {/* Label */}
       <span
         style={{
-          fontSize: '0.75rem',
-          fontWeight: 700,
-          color: selected ? 'var(--primary)' : 'var(--text-primary)',
-          lineHeight: 1.25,
-          minHeight: '26px',
+          fontSize: '0.6875rem',
+          fontWeight: selected ? 700 : 600,
+          color: selected ? 'var(--primary-dark)' : 'var(--text-primary)',
+          lineHeight: 1.2,
+          minHeight: '22px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           textAlign: 'center',
-          maxWidth: '90px',
+          maxWidth: '85px',
         }}
       >
         {displayName}
@@ -102,9 +102,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
       <span
         style={{
           fontSize: '0.625rem',
-          color: 'var(--text-muted)',
+          color: 'var(--secondary)',
           marginTop: '1px',
-          fontWeight: 600,
+          fontWeight: 700,
         }}
       >
         ₹{category.basePrice}+

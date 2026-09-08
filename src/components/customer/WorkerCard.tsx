@@ -38,13 +38,13 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({ worker, onSelect, onView
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '8px 12px',
-          backgroundColor: '#F8FAFC',
+          backgroundColor: 'var(--bg-muted)',
           borderBottom: '1px solid var(--border-default)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <Sparkles size={13} color="var(--primary)" />
-          <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--primary)' }}>
+          <Sparkles size={13} color="var(--secondary)" />
+          <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--secondary)' }}>
             {t('match_score')}: {worker.matchScore || 92}%
           </span>
         </div>
@@ -96,7 +96,7 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({ worker, onSelect, onView
               <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {workerName}
               </h3>
-              <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: 'var(--primary-light)', padding: '2px 6px', borderRadius: 'var(--radius-xs)' }}>
+              <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--secondary)', display: 'flex', alignItems: 'center', gap: '2px', backgroundColor: 'var(--secondary-light)', padding: '2px 6px', borderRadius: 'var(--radius-xs)' }}>
                 <MapPin size={11} />
                 {worker.distanceKm} km away
               </span>
@@ -119,7 +119,7 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({ worker, onSelect, onView
 
         {/* Cooperative Union Endorsement Tag */}
         <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-subtle)', paddingTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <Award size={13} color="var(--primary)" />
+          <Award size={13} color="var(--secondary)" />
           <span>Cooperative: <strong style={{ color: 'var(--text-primary)' }}>{worker.cooperativeName}</strong></span>
         </div>
 

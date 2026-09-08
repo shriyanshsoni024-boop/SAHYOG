@@ -38,7 +38,7 @@
 .text-muted { color: var(--text-muted); }
 .text-secondary { color: var(--text-secondary); }
 .text-primary { color: var(--text-primary); }
-.text-brand { color: var(--primary); }
+.text-brand { color: var(--secondary); }
 .text-danger { color: var(--danger); }
 .text-success { color: var(--success-dark); }
 .text-warm { color: var(--accent-warm-dark); }
@@ -127,15 +127,17 @@
   transition: all var(--transition-fast);
 }
 .chip:hover {
-  border-color: var(--primary-border);
-  color: var(--primary);
-  background-color: var(--primary-light);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  background-color: var(--bg-muted);
 }
 .chip.active {
   background-color: var(--primary);
-  color: #ffffff;
-  border-color: var(--primary);
+  color: var(--text-primary);
+  border-color: var(--primary-hover);
+  font-weight: 700;
 }
+
 
 /* Trust Pill */
 .trust-pill {

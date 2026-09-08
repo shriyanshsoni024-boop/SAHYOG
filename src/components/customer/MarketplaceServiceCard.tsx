@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MarketplaceService } from '../../data/marketplaceData';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { Star, ShieldCheck, Clock, Wrench } from 'lucide-react';
+import { Star, Clock, Wrench } from 'lucide-react';
 
 export interface MarketplaceServiceCardProps {
   service: MarketplaceService;
@@ -20,10 +20,6 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
   const title = language === 'hi' ? service.titleHi : service.title;
   const badge = language === 'hi' ? (service.badgeHi || service.badge) : service.badge;
   const duration = language === 'hi' ? service.durationHi : service.duration;
-  const savings = service.originalPrice - service.price;
-  const discountPercent = service.originalPrice > service.price
-    ? Math.round(((service.originalPrice - service.price) / service.originalPrice) * 100)
-    : 0;
 
   const formatReviewCount = (num: number) => {
     if (num >= 1000) return `${(num / 1000).toFixed(1)}k`;
@@ -34,8 +30,8 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
     <div
       onClick={() => onSelect(service)}
       style={{
-        width: layout === 'horizontal' ? '230px' : '100%',
-        minWidth: layout === 'horizontal' ? '230px' : 'auto',
+        width: layout === 'horizontal' ? '210px' : '100%',
+        minWidth: layout === 'horizontal' ? '210px' : 'auto',
         backgroundColor: '#FFFFFF',
         border: '1px solid var(--border-default)',
         borderRadius: 'var(--radius-md)',
@@ -53,10 +49,10 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
       className="hover-card"
     >
       <div>
-        {/* Real Photographic Thumbnail */}
+        {/* 1. Image (Visually dominant, sharp) */}
         <div
           style={{
-            height: '124px',
+            height: '128px',
             width: '100%',
             backgroundColor: '#F1F5F9',
             position: 'relative',
@@ -73,7 +69,7 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
                 height: '100%',
                 objectFit: 'cover',
                 display: 'block',
-                transition: 'transform 0.25s ease',
+                transition: 'transform 0.2s ease',
               }}
               loading="lazy"
             />
@@ -89,22 +85,22 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
                 color: 'var(--text-muted)',
               }}
             >
-              <Wrench size={28} strokeWidth={1.5} />
+              <Wrench size={24} strokeWidth={1.5} />
             </div>
           )}
 
-          {/* Badge Overlay */}
+          {/* Clean Subtle Top-Left Badge (if any) */}
           {badge && (
             <span
               style={{
                 position: 'absolute',
-                top: '8px',
-                left: '8px',
-                backgroundColor: 'rgba(15, 23, 42, 0.85)',
+                top: '6px',
+                left: '6px',
+                backgroundColor: 'rgba(15, 23, 42, 0.82)',
                 color: '#FFFFFF',
-                fontSize: '0.625rem',
+                fontSize: '0.5625rem',
                 fontWeight: 700,
-                padding: '2px 7px',
+                padding: '2px 6px',
                 borderRadius: 'var(--radius-xs)',
                 letterSpacing: '0.02em',
                 textTransform: 'uppercase',
@@ -113,52 +109,19 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
               {badge}
             </span>
           )}
-
-          {/* Discount Tag on Image */}
-          {discountPercent > 0 && (
-            <span
-              style={{
-                position: 'absolute',
-                bottom: '8px',
-                right: '8px',
-                backgroundColor: '#047857',
-                color: '#FFFFFF',
-                fontSize: '0.625rem',
-                fontWeight: 800,
-                padding: '2px 6px',
-                borderRadius: 'var(--radius-xs)',
-              }}
-            >
-              {discountPercent}% OFF
-            </span>
-          )}
         </div>
 
-        {/* Card Body */}
-        <div style={{ padding: '10px 12px 6px' }}>
-          {/* Category Tag */}
-          <div
-            style={{
-              fontSize: '0.625rem',
-              fontWeight: 700,
-              color: 'var(--text-muted)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              marginBottom: '3px',
-            }}
-          >
-            {service.categoryName}
-          </div>
-
-          {/* Title */}
+        {/* 2. Service Details Body */}
+        <div style={{ padding: '8px 10px 4px' }}>
+          {/* Service Name */}
           <h3
             style={{
-              fontSize: '0.875rem',
+              fontSize: '0.8125rem',
               fontWeight: 700,
               color: 'var(--text-primary)',
               lineHeight: 1.3,
-              margin: '0 0 6px',
-              minHeight: '36px',
+              margin: '0 0 4px',
+              minHeight: '32px',
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
@@ -168,22 +131,10 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
             {title}
           </h3>
 
-          {/* Rating & Reviews */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '2px',
-                backgroundColor: '#FEF3C7',
-                color: '#92400E',
-                fontSize: '0.6875rem',
-                fontWeight: 800,
-                padding: '1px 4px',
-                borderRadius: 'var(--radius-xs)',
-              }}
-            >
-              <Star size={10} fill="#D97706" color="#D97706" />
+          {/* 3. Rating & Reviews */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              <Star size={11} fill="#F59E0B" color="#F59E0B" />
               {service.rating}
             </span>
             <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
@@ -191,42 +142,28 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
             </span>
           </div>
 
-          {/* Duration & 30d Cover */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              marginTop: '6px',
-              fontSize: '0.6875rem',
-              color: 'var(--text-muted)',
-            }}
-          >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <Clock size={11} /> {duration}
-            </span>
-            <span>•</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--success-dark)' }}>
-              <ShieldCheck size={11} /> 30d cover
-            </span>
+          {/* 4. Duration */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '3px', fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
+            <Clock size={11} />
+            <span>{duration}</span>
           </div>
         </div>
       </div>
 
-      {/* Pricing & Add/Book CTA Row */}
+      {/* 5. Price & Simple CTA Row */}
       <div
         style={{
-          padding: '8px 12px 10px',
+          padding: '6px 10px 8px',
           borderTop: '1px solid var(--border-subtle)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginTop: '4px',
+          marginTop: '2px',
         }}
       >
         <div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-            <span style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+            <span style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--text-primary)' }}>
               ₹{service.price}
             </span>
             {service.originalPrice > service.price && (
@@ -235,11 +172,6 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
               </span>
             )}
           </div>
-          {savings > 0 && (
-            <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: 'var(--success-dark)' }}>
-              Save ₹{savings}
-            </div>
-          )}
         </div>
 
         <button
@@ -249,13 +181,13 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
             onSelect(service);
           }}
           style={{
-            padding: '5px 12px',
-            backgroundColor: '#FFFFFF',
-            color: 'var(--primary)',
-            border: '1.5px solid var(--primary)',
+            padding: '4px 12px',
+            backgroundColor: 'var(--secondary-light)',
+            color: 'var(--secondary)',
+            border: '1.5px solid var(--secondary)',
             borderRadius: 'var(--radius-xs)',
             fontWeight: 800,
-            fontSize: '0.75rem',
+            fontSize: '0.6875rem',
             cursor: 'pointer',
             transition: 'all var(--transition-fast)',
             display: 'inline-flex',

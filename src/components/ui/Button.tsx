@@ -58,8 +58,9 @@ export const Button: React.FC<ButtonProps> = ({
       default:
         return {
           backgroundColor: 'var(--primary)',
-          color: '#ffffff',
-          border: '1px solid transparent',
+          color: 'var(--primary-text)',
+          border: '1px solid var(--primary-hover)',
+          fontWeight: 700,
         };
     }
   };

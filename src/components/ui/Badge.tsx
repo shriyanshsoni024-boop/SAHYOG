@@ -33,7 +33,7 @@ export const Badge: React.FC<BadgeProps> = ({
       case 'match':
         return {
           backgroundColor: 'var(--primary-light)',
-          color: 'var(--primary)',
+          color: 'var(--primary-dark)',
           border: '1px solid var(--primary-border)',
           fontWeight: 700,
         };

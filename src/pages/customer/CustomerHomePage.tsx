@@ -71,18 +71,18 @@ export const CustomerHomePage: React.FC = () => {
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', maxWidth: '1200px', margin: '0 auto', padding: '14px 16px 36px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '26px', maxWidth: '1200px', margin: '0 auto', padding: '16px 16px 40px' }}>
       {/* 1. Hero & Service Discovery Proposition */}
       <section
         style={{
           backgroundColor: '#FFFFFF',
           border: '1px solid var(--border-default)',
           borderRadius: 'var(--radius-md)',
-          padding: '20px 18px',
+          padding: '22px 20px',
           boxShadow: 'var(--shadow-xs)',
           display: 'flex',
           flexDirection: 'column',
-          gap: '14px',
+          gap: '16px',
         }}
       >
         <div>
@@ -91,10 +91,11 @@ export const CustomerHomePage: React.FC = () => {
               style={{
                 fontSize: '0.625rem',
                 fontWeight: 800,
-                color: 'var(--primary)',
+                color: 'var(--primary-dark)',
                 backgroundColor: 'var(--primary-light)',
                 padding: '2px 6px',
                 borderRadius: 'var(--radius-xs)',
+                border: '1px solid var(--primary-border)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
               }}
@@ -109,16 +110,16 @@ export const CustomerHomePage: React.FC = () => {
           <h1
             style={{
               fontSize: '1.375rem',
-              fontWeight: 900,
+              fontWeight: 800,
               color: 'var(--text-primary)',
               letterSpacing: '-0.02em',
               lineHeight: 1.25,
-              margin: '0 0 3px',
+              margin: '0 0 4px',
             }}
           >
             {language === 'hi' ? 'विश्वसनीय घरेलू सेवाएं आपके द्वार पर' : 'Home services at your doorstep'}
           </h1>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 }}>
             {language === 'hi'
               ? 'प्रमाणित इलेक्ट्रीशियन, प्लंबर, कारपेंटर और एसी तकनीशियन — निश्चित मानक दरों पर।'
               : 'Certified technicians and skilled trade artisans backed by India’s Worker Cooperative Federation.'}
@@ -126,23 +127,23 @@ export const CustomerHomePage: React.FC = () => {
         </div>
 
         {/* Search Bar Input with Clear Action */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: '#F8FAFC',
-              borderRadius: 'var(--radius-xs)',
+              backgroundColor: '#FFFFFF',
+              borderRadius: 'var(--radius-sm)',
               padding: '10px 14px',
               border: '1.5px solid var(--border-default)',
               gap: '10px',
               transition: 'border-color var(--transition-fast)',
             }}
           >
-            <Search size={18} color="var(--primary)" />
+            <Search size={18} color="var(--secondary)" />
             <input
               type="text"
-              placeholder={language === 'hi' ? 'इलेक्ट्रीशियन, एसी सर्विस, प्लंबर, कारपेंटर खोजें...' : 'Search for Electrician, AC repair, Plumber, Carpenter...'}
+              placeholder={language === 'hi' ? 'इलेक्ट्रीशियन, एसी सर्विस, प्लंबर, कारपेंटर खोजें...' : 'What service do you need today?'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -218,11 +219,11 @@ export const CustomerHomePage: React.FC = () => {
                 width: '10px',
                 height: '10px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--primary)',
+                backgroundColor: 'var(--secondary)',
               }}
             />
             <div>
-              <div style={{ fontSize: '0.625rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <div style={{ fontSize: '0.625rem', fontWeight: 800, color: 'var(--primary-dark)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 Active Service • {activeBooking.token}
               </div>
               <div style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '1px' }}>
@@ -235,7 +236,7 @@ export const CustomerHomePage: React.FC = () => {
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.75rem', fontWeight: 800, color: 'var(--secondary)' }}>
             <span>Track Live</span>
             <ChevronRight size={16} />
           </div>
@@ -244,7 +245,7 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 2. Main Service Categories Grid */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? 'सेवा श्रेणियां' : 'All Home Services'}
@@ -261,12 +262,12 @@ export const CustomerHomePage: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(115px, 1fr))',
             gap: '10px',
             backgroundColor: '#FFFFFF',
             border: '1px solid var(--border-default)',
             borderRadius: 'var(--radius-md)',
-            padding: '14px 10px',
+            padding: '14px 12px',
             boxShadow: 'var(--shadow-xs)',
           }}
         >
@@ -287,7 +288,7 @@ export const CustomerHomePage: React.FC = () => {
       <section
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: '8px',
         }}
       >
@@ -299,7 +300,7 @@ export const CustomerHomePage: React.FC = () => {
             padding: '10px 12px',
             backgroundColor: '#FFFFFF',
             border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-xs)',
+            borderRadius: 'var(--radius-sm)',
           }}
         >
           <div style={{ color: 'var(--success-dark)', backgroundColor: 'var(--success-light)', padding: '5px', borderRadius: 'var(--radius-xs)' }}>
@@ -323,10 +324,10 @@ export const CustomerHomePage: React.FC = () => {
             padding: '10px 12px',
             backgroundColor: '#FFFFFF',
             border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-xs)',
+            borderRadius: 'var(--radius-sm)',
           }}
         >
-          <div style={{ color: 'var(--primary)', backgroundColor: 'var(--primary-light)', padding: '5px', borderRadius: 'var(--radius-xs)' }}>
+          <div style={{ color: 'var(--primary-dark)', backgroundColor: 'var(--primary-light)', padding: '5px', borderRadius: 'var(--radius-xs)' }}>
             <Award size={16} />
           </div>
           <div>
@@ -347,7 +348,7 @@ export const CustomerHomePage: React.FC = () => {
             padding: '10px 12px',
             backgroundColor: '#FFFFFF',
             border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-xs)',
+            borderRadius: 'var(--radius-sm)',
           }}
         >
           <div style={{ color: 'var(--accent-warm-dark)', backgroundColor: 'var(--accent-warm-light)', padding: '5px', borderRadius: 'var(--radius-xs)' }}>
@@ -371,10 +372,10 @@ export const CustomerHomePage: React.FC = () => {
             padding: '10px 12px',
             backgroundColor: '#FFFFFF',
             border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-xs)',
+            borderRadius: 'var(--radius-sm)',
           }}
         >
-          <div style={{ color: '#059669', backgroundColor: '#ECFDF5', padding: '5px', borderRadius: 'var(--radius-xs)' }}>
+          <div style={{ color: 'var(--secondary)', backgroundColor: 'var(--secondary-light)', padding: '5px', borderRadius: 'var(--radius-xs)' }}>
             <Clock size={16} />
           </div>
           <div>
@@ -391,15 +392,15 @@ export const CustomerHomePage: React.FC = () => {
       {/* 5. In the Spotlight Promotional Section */}
       <SpotlightBanner onSelectPromotion={handleSpotlightSelect} />
 
-      {/* 6. Most Booked Services (Horizontal Carousel) */}
+      {/* 6. Most Booked Services (Horizontal Scrolling Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
                 {language === 'hi' ? 'सर्वाधिक बुक की गई सेवाएं' : 'Most Booked Services'}
               </h2>
-              <span style={{ fontSize: '0.5625rem', fontWeight: 800, backgroundColor: '#FEF3C7', color: '#92400E', padding: '1px 5px', borderRadius: 'var(--radius-xs)', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.5625rem', fontWeight: 800, backgroundColor: 'var(--primary-light)', color: 'var(--primary-dark)', padding: '1px 5px', borderRadius: 'var(--radius-xs)', textTransform: 'uppercase' }}>
                 Top Rated
               </span>
             </div>
@@ -416,7 +417,7 @@ export const CustomerHomePage: React.FC = () => {
               border: 'none',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: 'var(--primary)',
+              color: 'var(--secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -449,9 +450,9 @@ export const CustomerHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 7. Profession Specific Section: AC & Appliance Repair */}
+      {/* 7. Profession Specific Section: AC & Appliance Repair (Responsive Grid on Desktop) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.ac_appliance.titleHi : CATEGORY_SECTIONS.ac_appliance.title}
@@ -472,7 +473,7 @@ export const CustomerHomePage: React.FC = () => {
               border: 'none',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: 'var(--primary)',
+              color: 'var(--secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -486,11 +487,9 @@ export const CustomerHomePage: React.FC = () => {
 
         <div
           style={{
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
           }}
         >
           {CATEGORY_SECTIONS.ac_appliance.services.map((item) => (
@@ -498,15 +497,15 @@ export const CustomerHomePage: React.FC = () => {
               key={item.id}
               service={item}
               onSelect={handleServiceSelect}
-              layout="horizontal"
+              layout="grid"
             />
           ))}
         </div>
       </section>
 
-      {/* 8. Profession Specific Section: Electrical Services */}
+      {/* 8. Profession Specific Section: Electrical Services (Horizontal Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.electrical.titleHi : CATEGORY_SECTIONS.electrical.title}
@@ -527,7 +526,7 @@ export const CustomerHomePage: React.FC = () => {
               border: 'none',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: 'var(--primary)',
+              color: 'var(--secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -559,9 +558,9 @@ export const CustomerHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 9. Profession Specific Section: Plumbing Services */}
+      {/* 9. Profession Specific Section: Plumbing Services (Responsive Grid on Desktop) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.plumbing.titleHi : CATEGORY_SECTIONS.plumbing.title}
@@ -582,7 +581,7 @@ export const CustomerHomePage: React.FC = () => {
               border: 'none',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: 'var(--primary)',
+              color: 'var(--secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -596,11 +595,9 @@ export const CustomerHomePage: React.FC = () => {
 
         <div
           style={{
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
           }}
         >
           {CATEGORY_SECTIONS.plumbing.services.map((item) => (
@@ -608,15 +605,15 @@ export const CustomerHomePage: React.FC = () => {
               key={item.id}
               service={item}
               onSelect={handleServiceSelect}
-              layout="horizontal"
+              layout="grid"
             />
           ))}
         </div>
       </section>
 
-      {/* 10. Profession Specific Section: Home Repair & Carpentry */}
+      {/* 10. Profession Specific Section: Home Repair & Carpentry (Horizontal Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.carpentry.titleHi : CATEGORY_SECTIONS.carpentry.title}
@@ -637,7 +634,7 @@ export const CustomerHomePage: React.FC = () => {
               border: 'none',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: 'var(--primary)',
+              color: 'var(--secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -669,9 +666,9 @@ export const CustomerHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 11. Profession Specific Section: Deep Cleaning & Sanitization */}
+      {/* 11. Profession Specific Section: Deep Cleaning & Sanitization (Horizontal Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.cleaning.titleHi : CATEGORY_SECTIONS.cleaning.title}
@@ -692,7 +689,7 @@ export const CustomerHomePage: React.FC = () => {
               border: 'none',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: 'var(--primary)',
+              color: 'var(--secondary)',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -726,13 +723,13 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 12. New & Noteworthy Section */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
                 {language === 'hi' ? 'नई एवं आधुनिक सेवाएं' : 'New & Noteworthy'}
               </h2>
-              <span style={{ fontSize: '0.5625rem', fontWeight: 800, backgroundColor: '#E0F2FE', color: '#0284C7', padding: '1px 5px', borderRadius: 'var(--radius-xs)', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.5625rem', fontWeight: 800, backgroundColor: 'var(--primary-light)', color: 'var(--primary-dark)', padding: '1px 5px', borderRadius: 'var(--radius-xs)', textTransform: 'uppercase' }}>
                 Smart Tech
               </span>
             </div>
@@ -767,3 +764,4 @@ export const CustomerHomePage: React.FC = () => {
     </div>
   );
 };
+

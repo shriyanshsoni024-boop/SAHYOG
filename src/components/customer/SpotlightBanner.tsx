@@ -25,7 +25,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
               fontSize: '0.625rem',
               fontWeight: 700,
               backgroundColor: 'var(--primary-light)',
-              color: 'var(--primary)',
+              color: 'var(--primary-dark)',
               padding: '1px 6px',
               borderRadius: 'var(--radius-xs)',
               border: '1px solid var(--primary-border)',
@@ -47,7 +47,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
                 width: i === activeIdx ? '18px' : '6px',
                 height: '5px',
                 borderRadius: 'var(--radius-full)',
-                backgroundColor: i === activeIdx ? 'var(--primary)' : 'var(--border-strong)',
+                backgroundColor: i === activeIdx ? 'var(--secondary)' : 'var(--border-strong)',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all var(--transition-fast)',
@@ -97,7 +97,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.75) 55%, rgba(15, 23, 42, 0.4) 100%)',
+            background: 'linear-gradient(90deg, rgba(17, 24, 39, 0.92) 0%, rgba(17, 24, 39, 0.75) 55%, rgba(17, 24, 39, 0.4) 100%)',
             zIndex: 1,
           }}
         />
@@ -109,11 +109,11 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
               fontSize: '0.625rem',
               fontWeight: 800,
               letterSpacing: '0.04em',
-              backgroundColor: 'rgba(255, 255, 255, 0.18)',
-              color: '#FFFFFF',
+              backgroundColor: 'var(--primary)',
+              color: 'var(--primary-text)',
               padding: '2px 8px',
               borderRadius: 'var(--radius-xs)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
+              border: '1px solid var(--primary-hover)',
               textTransform: 'uppercase',
             }}
           >
@@ -140,15 +140,15 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
           <h3 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.25, margin: '0 0 3px' }}>
             {language === 'hi' ? current.titleHi : current.title}
           </h3>
-          <p style={{ fontSize: '0.75rem', color: '#E2E8F0', margin: 0, lineHeight: 1.35, maxWidth: '85%' }}>
+          <p style={{ fontSize: '0.75rem', color: '#E5E7EB', margin: 0, lineHeight: 1.35, maxWidth: '85%' }}>
             {language === 'hi' ? current.subtitleHi : current.subtitle}
           </p>
         </div>
 
         {/* Bottom CTA Row */}
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.6875rem', color: '#CBD5E1' }}>
-            <ShieldCheck size={13} color="#34D399" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.6875rem', color: '#D1D5DB' }}>
+            <ShieldCheck size={13} color="#10B981" />
             <span>{language === 'hi' ? '30-दिन नि:शुल्क वारंटी' : '30-Day SAHYOG Cover'}</span>
           </div>
 
@@ -157,8 +157,8 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              backgroundColor: '#FFFFFF',
-              color: '#0F172A',
+              backgroundColor: 'var(--primary)',
+              color: 'var(--primary-text)',
               fontSize: '0.75rem',
               fontWeight: 800,
               padding: '5px 12px',

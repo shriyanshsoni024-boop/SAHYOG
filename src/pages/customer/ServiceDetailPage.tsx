@@ -110,9 +110,9 @@ export const ServiceDetailPage: React.FC = () => {
               style={{
                 padding: '9px 12px',
                 borderRadius: 'var(--radius-md)',
-                border: `1.5px solid ${urgency === 'NORMAL' ? 'var(--primary)' : 'var(--border-default)'}`,
-                backgroundColor: urgency === 'NORMAL' ? 'var(--primary-light)' : 'var(--bg-surface)',
-                color: urgency === 'NORMAL' ? 'var(--primary)' : 'var(--text-primary)',
+                border: `1.5px solid ${urgency === 'NORMAL' ? 'var(--secondary)' : 'var(--border-default)'}`,
+                backgroundColor: urgency === 'NORMAL' ? 'var(--secondary-light)' : 'var(--bg-surface)',
+                color: urgency === 'NORMAL' ? 'var(--secondary)' : 'var(--text-primary)',
                 fontWeight: 700,
                 fontSize: '0.8125rem',
                 display: 'flex',
@@ -192,7 +192,7 @@ export const ServiceDetailPage: React.FC = () => {
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <Sparkles size={15} color="var(--primary)" />
+              <Sparkles size={15} color="var(--secondary)" />
               <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                 {t('upload_photo_label')}
               </span>
@@ -209,7 +209,7 @@ export const ServiceDetailPage: React.FC = () => {
             <div
               style={{
                 backgroundColor: 'var(--bg-surface)',
-                border: '1px solid var(--primary-border)',
+                border: '1px solid var(--secondary-border)',
                 borderRadius: 'var(--radius-sm)',
                 padding: '8px 10px',
                 display: 'flex',
@@ -218,7 +218,7 @@ export const ServiceDetailPage: React.FC = () => {
               }}
             >
               <div>
-                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--secondary)' }}>
                   Detected Tier: {photoEstimate.tier} ({photoEstimate.confidence}% Confidence)
                 </div>
                 <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)' }}>
@@ -253,7 +253,7 @@ export const ServiceDetailPage: React.FC = () => {
                 Fixed standardized labor rates • No hidden surge
               </div>
             </div>
-            <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--primary)' }}>
+            <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--secondary)' }}>
               100% Rate Transparency
             </span>
           </div>
@@ -279,8 +279,8 @@ export const ServiceDetailPage: React.FC = () => {
                   style={{
                     padding: '12px 14px',
                     borderRadius: 'var(--radius-lg)',
-                    border: `1.5px solid ${isSelected ? 'var(--primary)' : 'var(--border-default)'}`,
-                    backgroundColor: isSelected ? 'var(--primary-light)' : 'var(--bg-surface)',
+                    border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-default)'}`,
+                    backgroundColor: isSelected ? 'var(--secondary-light)' : 'var(--bg-surface)',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '8px',
@@ -298,11 +298,12 @@ export const ServiceDetailPage: React.FC = () => {
                         top: '-9px',
                         right: '14px',
                         backgroundColor: 'var(--primary)',
-                        color: '#ffffff',
+                        color: 'var(--primary-text)',
                         fontSize: '0.5625rem',
                         fontWeight: 800,
                         padding: '2px 8px',
                         borderRadius: 'var(--radius-full)',
+                        border: '1px solid var(--primary-hover)',
                         textTransform: 'uppercase',
                         letterSpacing: '0.04em',
                       }}
@@ -318,7 +319,7 @@ export const ServiceDetailPage: React.FC = () => {
                           width: '18px',
                           height: '18px',
                           borderRadius: '50%',
-                          border: `2px solid ${isSelected ? 'var(--primary)' : 'var(--border-strong)'}`,
+                          border: `2px solid ${isSelected ? 'var(--secondary)' : 'var(--border-strong)'}`,
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -327,10 +328,10 @@ export const ServiceDetailPage: React.FC = () => {
                           backgroundColor: '#ffffff',
                         }}
                       >
-                        {isSelected && <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)' }} />}
+                        {isSelected && <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--secondary)' }} />}
                       </div>
                       <div>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: isSelected ? 'var(--primary)' : 'var(--text-primary)' }}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: isSelected ? 'var(--secondary-dark)' : 'var(--text-primary)' }}>
                           {tierTitle}
                         </div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
@@ -376,9 +377,9 @@ export const ServiceDetailPage: React.FC = () => {
               style={{
                 padding: '9px 12px',
                 borderRadius: 'var(--radius-md)',
-                border: `1.5px solid ${selectedSlot === 'today' ? 'var(--primary)' : 'var(--border-default)'}`,
-                backgroundColor: selectedSlot === 'today' ? 'var(--primary-light)' : 'var(--bg-surface)',
-                color: selectedSlot === 'today' ? 'var(--primary)' : 'var(--text-primary)',
+                border: `1.5px solid ${selectedSlot === 'today' ? 'var(--secondary)' : 'var(--border-default)'}`,
+                backgroundColor: selectedSlot === 'today' ? 'var(--secondary-light)' : 'var(--bg-surface)',
+                color: selectedSlot === 'today' ? 'var(--secondary)' : 'var(--text-primary)',
                 fontSize: '0.8125rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -393,9 +394,9 @@ export const ServiceDetailPage: React.FC = () => {
               style={{
                 padding: '9px 12px',
                 borderRadius: 'var(--radius-md)',
-                border: `1.5px solid ${selectedSlot === 'tomorrow' ? 'var(--primary)' : 'var(--border-default)'}`,
-                backgroundColor: selectedSlot === 'tomorrow' ? 'var(--primary-light)' : 'var(--bg-surface)',
-                color: selectedSlot === 'tomorrow' ? 'var(--primary)' : 'var(--text-primary)',
+                border: `1.5px solid ${selectedSlot === 'tomorrow' ? 'var(--secondary)' : 'var(--border-default)'}`,
+                backgroundColor: selectedSlot === 'tomorrow' ? 'var(--secondary-light)' : 'var(--bg-surface)',
+                color: selectedSlot === 'tomorrow' ? 'var(--secondary)' : 'var(--text-primary)',
                 fontSize: '0.8125rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -421,9 +422,9 @@ export const ServiceDetailPage: React.FC = () => {
                   style={{
                     padding: '8px 4px',
                     borderRadius: 'var(--radius-md)',
-                    border: `1px solid ${isSelected ? 'var(--primary)' : 'var(--border-default)'}`,
-                    backgroundColor: isSelected ? 'var(--primary-light)' : 'var(--bg-surface)',
-                    color: isSelected ? 'var(--primary)' : 'var(--text-secondary)',
+                    border: `1px solid ${isSelected ? 'var(--secondary)' : 'var(--border-default)'}`,
+                    backgroundColor: isSelected ? 'var(--secondary-light)' : 'var(--bg-surface)',
+                    color: isSelected ? 'var(--secondary)' : 'var(--text-secondary)',
                     fontSize: '0.6875rem',
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -433,7 +434,7 @@ export const ServiceDetailPage: React.FC = () => {
                     gap: '2px',
                   }}
                 >
-                  <span style={{ color: isSelected ? 'var(--primary)' : 'var(--text-muted)', fontSize: '0.625rem' }}>{slot.slotName}</span>
+                  <span style={{ color: isSelected ? 'var(--secondary)' : 'var(--text-muted)', fontSize: '0.625rem' }}>{slot.slotName}</span>
                   <span>{slot.label}</span>
                 </button>
               );
@@ -456,13 +457,13 @@ export const ServiceDetailPage: React.FC = () => {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={16} color="var(--primary)" />
+            <MapPin size={16} color="var(--secondary)" />
             <div>
               <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{t('current_location')}</div>
               <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>Service will be rendered at this address</div>
             </div>
           </div>
-          <span style={{ color: 'var(--primary)', fontWeight: 800, fontSize: '0.75rem', cursor: 'pointer' }}>
+          <span style={{ color: 'var(--secondary)', fontWeight: 800, fontSize: '0.75rem', cursor: 'pointer' }}>
             {t('change_location')}
           </span>
         </div>

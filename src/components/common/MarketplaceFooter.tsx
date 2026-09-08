@@ -10,10 +10,10 @@ export const MarketplaceFooter: React.FC = () => {
   return (
     <footer
       style={{
-        backgroundColor: '#0F172A',
-        color: '#94A3B8',
+        backgroundColor: '#111827',
+        color: '#9CA3AF',
         padding: '32px 16px 24px',
-        borderTop: '1px solid #1E293B',
+        borderTop: '1px solid #1F2937',
         marginTop: '24px',
         fontSize: '0.75rem',
       }}
@@ -31,10 +31,10 @@ export const MarketplaceFooter: React.FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#FFFFFF',
+                color: 'var(--primary-text)',
               }}
             >
-              <ShieldCheck size={18} />
+              <ShieldCheck size={18} strokeWidth={2.5} />
             </div>
             <span style={{ fontSize: '1.125rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
               SAHYOG
@@ -42,31 +42,31 @@ export const MarketplaceFooter: React.FC = () => {
             <span
               style={{
                 fontSize: '0.625rem',
-                fontWeight: 700,
-                color: '#60A5FA',
-                backgroundColor: 'rgba(30, 58, 138, 0.4)',
+                fontWeight: 800,
+                color: 'var(--primary)',
+                backgroundColor: 'rgba(248, 203, 70, 0.15)',
                 padding: '2px 6px',
                 borderRadius: 'var(--radius-xs)',
-                border: '1px solid rgba(96, 165, 250, 0.3)',
+                border: '1px solid rgba(248, 203, 70, 0.3)',
               }}
             >
               COOPERATIVE FEDERATION
             </span>
           </div>
 
-          <p style={{ color: '#CBD5E1', fontSize: '0.75rem', lineHeight: 1.4, margin: 0, maxWidth: '600px' }}>
+          <p style={{ color: '#D1D5DB', fontSize: '0.75rem', lineHeight: 1.4, margin: 0, maxWidth: '600px' }}>
             {language === 'hi'
               ? 'सहयोग भारत का पहला राष्ट्रीय सहकारी कुशल कार्यबल मंच है, जो कारीगरों को सम्मानजनक आजीविका और ग्राहकों को पारदर्शी व प्रमाणित सेवाएं प्रदान करता है।'
               : 'SAHYOG is India’s first national worker cooperative platform connecting households with verified electricians, plumbers, carpenters, and appliance specialists under transparent, standard rate cards.'}
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F1F5F9' }}>
-              <Phone size={13} color="#38BDF8" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F9FAFB' }}>
+              <Phone size={13} color="#10B981" />
               <span>24x7 Helpline: <strong>1800-SAHYOG-CARE</strong></span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F1F5F9' }}>
-              <Mail size={13} color="#38BDF8" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F9FAFB' }}>
+              <Mail size={13} color="#10B981" />
               <span>help@sahyog-coop.org.in</span>
             </div>
           </div>

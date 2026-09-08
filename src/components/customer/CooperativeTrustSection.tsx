@@ -74,8 +74,8 @@ export const CooperativeTrustSection: React.FC = () => {
                 gap: '10px',
                 padding: '12px',
                 borderRadius: 'var(--radius-sm)',
-                border: '1px solid var(--border-subtle)',
-                backgroundColor: '#F8FAFC',
+                border: '1px solid var(--border-default)',
+                backgroundColor: 'var(--bg-muted)',
               }}
             >
               <div
@@ -83,9 +83,9 @@ export const CooperativeTrustSection: React.FC = () => {
                   width: '32px',
                   height: '32px',
                   borderRadius: 'var(--radius-sm)',
-                  backgroundColor: '#EFF6FF',
-                  border: '1px solid #BFDBFE',
-                  color: 'var(--primary)',
+                  backgroundColor: 'var(--secondary-light)',
+                  border: '1px solid var(--secondary-border)',
+                  color: 'var(--secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

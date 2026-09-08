@@ -49,7 +49,7 @@ export const BottomNav: React.FC = () => {
               gap: '3px',
               padding: '6px 12px',
               borderRadius: 'var(--radius-md)',
-              color: isActive ? 'var(--primary)' : 'var(--text-muted)',
+              color: isActive ? 'var(--secondary)' : 'var(--text-muted)',
               transition: 'all var(--transition-fast)',
               position: 'relative',
               background: 'none',
@@ -58,14 +58,14 @@ export const BottomNav: React.FC = () => {
             }}
           >
             <div style={{ position: 'relative' }}>
-              <Icon size={20} color={isActive ? 'var(--primary)' : 'var(--text-muted)'} />
+              <Icon size={20} color={isActive ? 'var(--secondary)' : 'var(--text-muted)'} />
               {item.view === 'history' && activeBookingsCount > 0 && (
                 <span
                   style={{
                     position: 'absolute',
                     top: '-4px',
                     right: '-8px',
-                    backgroundColor: 'var(--primary)',
+                    backgroundColor: 'var(--secondary)',
                     color: '#ffffff',
                     fontSize: '0.625rem',
                     fontWeight: 700,

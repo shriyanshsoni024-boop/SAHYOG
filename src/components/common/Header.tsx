@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#FFFFFF',
+                  color: 'var(--text-primary)',
                 }}
               >
                 <ShieldCheck size={18} strokeWidth={2.5} />
@@ -75,7 +75,7 @@ export const Header: React.FC = () => {
                   style={{
                     fontSize: '1.0625rem',
                     fontWeight: 900,
-                    color: 'var(--primary)',
+                    color: 'var(--text-primary)',
                     letterSpacing: '-0.03em',
                     lineHeight: 1,
                     display: 'block',
@@ -86,8 +86,8 @@ export const Header: React.FC = () => {
                 <span
                   style={{
                     fontSize: '0.5625rem',
-                    fontWeight: 700,
-                    color: 'var(--text-muted)',
+                    fontWeight: 800,
+                    color: 'var(--secondary)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.04em',
                   }}
@@ -105,7 +105,7 @@ export const Header: React.FC = () => {
                 alignItems: 'center',
                 gap: '5px',
                 padding: '5px 8px',
-                backgroundColor: '#F8FAFC',
+                backgroundColor: 'var(--bg-muted)',
                 border: '1px solid var(--border-default)',
                 borderRadius: 'var(--radius-xs)',
                 cursor: 'pointer',
@@ -113,7 +113,7 @@ export const Header: React.FC = () => {
               }}
               className="hover-card"
             >
-              <MapPin size={14} color="var(--primary)" />
+              <MapPin size={14} color="var(--secondary)" />
               <span
                 style={{
                   fontSize: '0.75rem',
@@ -186,7 +186,7 @@ export const Header: React.FC = () => {
                     width: '16px',
                     height: '16px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--primary)',
+                    backgroundColor: 'var(--secondary)',
                     color: '#FFFFFF',
                     fontSize: '0.625rem',
                     fontWeight: 800,
@@ -294,8 +294,8 @@ export const Header: React.FC = () => {
                     style={{
                       padding: '8px 10px',
                       borderRadius: 'var(--radius-xs)',
-                      border: `1.5px solid ${isSelected ? 'var(--primary)' : 'var(--border-default)'}`,
-                      backgroundColor: isSelected ? 'var(--primary-light)' : '#FFFFFF',
+                      border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-default)'}`,
+                      backgroundColor: isSelected ? 'var(--secondary-light)' : '#FFFFFF',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -306,11 +306,11 @@ export const Header: React.FC = () => {
                       <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                         {loc.area}, {loc.city}
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: isSelected ? 'var(--primary)' : 'var(--text-muted)' }}>
+                      <div style={{ fontSize: '0.6875rem', color: isSelected ? 'var(--secondary)' : 'var(--text-muted)' }}>
                         {loc.tag}
                       </div>
                     </div>
-                    {isSelected && <Check size={14} color="var(--primary)" />}
+                    {isSelected && <Check size={14} color="var(--secondary)" />}
                   </div>
                 );
               })}
