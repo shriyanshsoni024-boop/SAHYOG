@@ -27,12 +27,90 @@ export const isSupabaseConfigured = (): boolean => {
   );
 };
 
+export type AuthMode = 'SUPABASE_LIVE' | 'DEV_SANDBOX' | 'UNCONFIGURED_PROD';
+
+export interface AuthConfigStatus {
+  isConfigured: boolean;
+  isProduction: boolean;
+  mode: AuthMode;
+  providerDetails: string;
+}
+
+export const getAuthConfigStatus = (): AuthConfigStatus => {
+  const configured = isSupabaseConfigured();
+  const isProd = import.meta.env.PROD;
+
+  if (configured) {
+    return {
+      isConfigured: true,
+      isProduction: isProd,
+      mode: 'SUPABASE_LIVE',
+      providerDetails: 'Connected to Supabase Auth (Live SMS OTP & Cloud DB)',
+    };
+  }
+
+  if (isProd) {
+    return {
+      isConfigured: false,
+      isProduction: true,
+      mode: 'UNCONFIGURED_PROD',
+      providerDetails: 'Production Error: Supabase credentials not configured in environment.',
+    };
+  }
+
+  return {
+    isConfigured: false,
+    isProduction: false,
+    mode: 'DEV_SANDBOX',
+    providerDetails: 'Dev Sandbox Mode (Set VITE_SUPABASE_URL for real SMS OTP)',
+  };
+};
+
+/**
+ * Normalizes Indian mobile number to E.164 format (+91XXXXXXXXXX)
+ */
+export const formatIndianPhoneToE164 = (rawPhone: string): string => {
+  if (!rawPhone) return '';
+  let digits = rawPhone.replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('0')) {
+    digits = digits.slice(1);
+  }
+  if (digits.length === 10) {
+    return `+91${digits}`;
+  }
+  if (digits.length === 12 && digits.startsWith('91')) {
+    return `+${digits}`;
+  }
+  if (rawPhone.startsWith('+')) {
+    return rawPhone;
+  }
+  return `+${digits}`;
+};
+
+/**
+ * Validates if the phone number is a valid 10-digit Indian mobile number
+ */
+export const isValidIndianMobile = (phone: string): boolean => {
+  if (!phone) return false;
+  let digits = phone.replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('0')) {
+    digits = digits.slice(1);
+  }
+  if (digits.length === 10 && /^[6-9]\d{9}$/.test(digits)) {
+    return true;
+  }
+  if (digits.length === 12 && digits.startsWith('91') && /^91[6-9]\d{9}$/.test(digits)) {
+    return true;
+  }
+  return false;
+};
+
 // Fallback dummy client values for zero-config demo / development mode
 const effectiveUrl = isValidUrl(supabaseUrl) ? (supabaseUrl as string) : 'https://placeholder.supabase.co';
 const effectiveKey = supabaseAnonKey && supabaseAnonKey !== 'your-anon-key-here' ? supabaseAnonKey : 'placeholder-anon-key';
 
 /**
- * Typed Supabase Client instance
+ * Typed Supabase Client instance with session persistence
  */
 export const supabase: SupabaseClient<Database> = createClient<Database>(
   effectiveUrl,

@@ -33,7 +33,6 @@ export interface AuthSession {
 
 /**
  * Stored Secure User Record (Vault)
- * Note: Plaintext passwords are NEVER stored. Only cryptographic salt & hash.
  */
 export interface SecureUserRecord {
   id: string;
@@ -54,29 +53,44 @@ export interface SecureUserRecord {
 }
 
 // Request DTOs
+export interface PhoneOtpSendDto {
+  phone: string;
+}
+
+export interface PhoneOtpVerifyDto {
+  phone: string;
+  token: string;
+  role: Role;
+  name?: string;
+  profession?: string;
+  cooperativeBranch?: string;
+  experienceYears?: number;
+  locality?: string;
+}
+
 export interface CustomerLoginDto {
   identifier: string; // phone or email
-  password: string;
+  password?: string;
 }
 
 export interface CustomerRegisterDto {
   name: string;
   phone: string;
   email?: string;
-  password: string;
+  password?: string;
   locality?: string;
 }
 
 export interface WorkerLoginDto {
   identifier: string; // phone or artisan ID
-  password: string; // PIN or password
+  password?: string; // PIN or password
 }
 
 export interface WorkerRegisterDto {
   name: string;
   phone: string;
   email?: string;
-  password: string;
+  password?: string;
   profession: string;
   cooperativeBranch?: string;
   experienceYears?: number;

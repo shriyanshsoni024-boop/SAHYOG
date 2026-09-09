@@ -13,28 +13,42 @@ import { authApi } from './authApi';
 
 class AuthService {
   /**
-   * Customer Login
+   * Send Phone SMS OTP via Supabase Auth
+   */
+  public async sendPhoneOtp(dto: { phone: string }): Promise<{ success: boolean; message?: string; error?: string }> {
+    return authApi.sendPhoneOtp(dto);
+  }
+
+  /**
+   * Verify Phone SMS OTP via Supabase Auth
+   */
+  public async verifyPhoneOtp(dto: import('../../types/auth').PhoneOtpVerifyDto): Promise<AuthResponse> {
+    return authApi.verifyPhoneOtp(dto);
+  }
+
+  /**
+   * Customer Login (Legacy wrapper)
    */
   public async loginCustomer(dto: CustomerLoginDto): Promise<AuthResponse> {
     return authApi.loginCustomer(dto);
   }
 
   /**
-   * Customer Registration
+   * Customer Registration (Legacy wrapper)
    */
   public async registerCustomer(dto: CustomerRegisterDto): Promise<AuthResponse> {
     return authApi.registerCustomer(dto);
   }
 
   /**
-   * Worker / Artisan Login
+   * Worker / Artisan Login (Legacy wrapper)
    */
   public async loginWorker(dto: WorkerLoginDto): Promise<AuthResponse> {
     return authApi.loginWorker(dto);
   }
 
   /**
-   * Worker / Artisan Registration
+   * Worker / Artisan Registration (Legacy wrapper)
    */
   public async registerWorker(dto: WorkerRegisterDto): Promise<AuthResponse> {
     return authApi.registerWorker(dto);

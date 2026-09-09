@@ -3,6 +3,8 @@ import {
   AuthResponse,
   AuthSession,
   AuthUser,
+  PhoneOtpSendDto,
+  PhoneOtpVerifyDto,
   CustomerLoginDto,
   CustomerRegisterDto,
   WorkerLoginDto,
@@ -11,13 +13,19 @@ import {
 } from '../types/auth';
 import { Role } from '../types';
 import { authService } from '../services/auth/authService';
+import { supabase, isSupabaseConfigured, getAuthConfigStatus, AuthConfigStatus, AuthMode } from '../lib/supabase';
 
 export interface AuthContextType {
   session: AuthSession;
   currentRole: Role;
   currentPath: string;
   isLoading: boolean;
+  authMode: AuthMode;
+  authConfig: AuthConfigStatus;
   navigate: (path: string) => void;
+  // Supabase Phone OTP Authentication
+  sendPhoneOtp: (dto: PhoneOtpSendDto) => Promise<{ success: boolean; message?: string; error?: string }>;
+  verifyPhoneOtp: (dto: PhoneOtpVerifyDto) => Promise<AuthResponse>;
   // Role-Specific Real Auth API Methods
   loginCustomer: (dto: CustomerLoginDto) => Promise<AuthResponse>;
   registerCustomer: (dto: CustomerRegisterDto) => Promise<AuthResponse>;
@@ -65,7 +73,7 @@ const getInitialPath = (): string => {
 const DEFAULT_FALLBACK_USER: AuthUser = {
   id: 'cust-demo-1',
   name: 'Ananya Deshmukh',
-  phone: '+91 99801 22334',
+  phone: '+919980122334',
   email: 'ananya.deshmukh@example.com',
   role: 'customer',
   verificationStatus: 'VERIFIED',
@@ -115,22 +123,130 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  // Validate session expiration on initial mount and route changes
+  const authConfig = getAuthConfigStatus();
+  const authMode = authConfig.mode;
+
+  // Hydrate Supabase session on mount if configured
   useEffect(() => {
-    const active = authService.getCurrentSession();
-    if (session.isAuthenticated && !active) {
-      // Session expired or invalidated
-      setSession({
-        isAuthenticated: false,
-        role: session.role,
-        user: null,
-      });
-    }
-  }, [currentPath]);
+    if (!isSupabaseConfigured()) return;
+
+    supabase.auth.getSession().then(async ({ data: { session: sbSession } }) => {
+      if (sbSession?.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', sbSession.user.id)
+          .maybeSingle();
+
+        if (profile) {
+          const userRole: Role = (profile.role === 'cooperative' ? 'admin' : profile.role) as Role;
+          const authUser: AuthUser = {
+            id: profile.id,
+            name: profile.name,
+            phone: profile.phone,
+            email: profile.email || undefined,
+            role: userRole,
+            verificationStatus: 'VERIFIED',
+            createdAt: profile.created_at,
+            zone: profile.city,
+          };
+          setSession({
+            isAuthenticated: true,
+            role: userRole,
+            user: authUser,
+            token: sbSession.access_token,
+            refreshToken: sbSession.refresh_token,
+            expiresAt: sbSession.expires_at ? sbSession.expires_at * 1000 : Date.now() + 7 * 24 * 60 * 60 * 1000,
+          });
+        }
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, sbSession) => {
+      if (event === 'SIGNED_OUT' || !sbSession) {
+        const currentStored = authService.getCurrentSession();
+        if (currentStored?.token && !currentStored.token.startsWith('sahyog_demo')) {
+          setSession({
+            isAuthenticated: false,
+            role: currentStored.role,
+            user: null,
+          });
+        }
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        if (sbSession.user) {
+          // Fetch updated profile
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', sbSession.user.id)
+            .maybeSingle();
+
+          if (profile) {
+            const userRole: Role = (profile.role === 'cooperative' ? 'admin' : profile.role) as Role;
+
+            const authUser: AuthUser = {
+              id: profile.id,
+              name: profile.name,
+              phone: profile.phone,
+              email: profile.email || undefined,
+              role: userRole,
+              verificationStatus: 'VERIFIED',
+              createdAt: profile.created_at,
+              zone: profile.city,
+            };
+
+            const updatedSession: AuthSession = {
+              isAuthenticated: true,
+              role: userRole,
+              user: authUser,
+              token: sbSession.access_token,
+              refreshToken: sbSession.refresh_token,
+              expiresAt: sbSession.expires_at ? sbSession.expires_at * 1000 : Date.now() + 7 * 24 * 60 * 60 * 1000,
+            };
+
+            setSession(updatedSession);
+          }
+        }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   // =========================================================================
-  // AUTH SERVICE WRAPPERS
+  // SUPABASE PHONE OTP & AUTH WRAPPERS
   // =========================================================================
+
+  const sendPhoneOtp = async (dto: PhoneOtpSendDto): Promise<{ success: boolean; message?: string; error?: string }> => {
+    setIsLoading(true);
+    try {
+      return await authService.sendPhoneOtp(dto);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyPhoneOtp = async (dto: PhoneOtpVerifyDto): Promise<AuthResponse> => {
+    setIsLoading(true);
+    try {
+      const res = await authService.verifyPhoneOtp(dto);
+      if (res.success && res.session) {
+        setSession(res.session);
+        if (dto.role === 'worker') {
+          navigate('/worker/home');
+        } else if (dto.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/customer/home');
+        }
+      }
+      return res;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const loginCustomer = async (dto: CustomerLoginDto): Promise<AuthResponse> => {
     setIsLoading(true);
@@ -363,7 +479,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentRole: session.role,
         currentPath,
         isLoading,
+        authMode,
+        authConfig,
         navigate,
+        sendPhoneOtp,
+        verifyPhoneOtp,
         loginCustomer,
         registerCustomer,
         loginWorker,

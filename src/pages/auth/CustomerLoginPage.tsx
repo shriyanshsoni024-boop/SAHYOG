@@ -1,64 +1,119 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { ShieldCheck, Lock, Phone, User, Eye, EyeOff, ArrowRight, Sparkles, MapPin } from 'lucide-react';
+import { ShieldCheck, Phone, ArrowRight, Sparkles, MapPin, KeyRound, RefreshCw, Edit3 } from 'lucide-react';
 import { DEFAULT_LOCATION } from '../../data/locations';
+import { isValidIndianMobile } from '../../lib/supabase';
 
 export const CustomerLoginPage: React.FC = () => {
-  const { login, signup, navigate } = useAuth();
+  const { sendPhoneOtp, verifyPhoneOtp, authMode, navigate } = useAuth();
 
-  const [isSignup, setIsSignup] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [identifier, setIdentifier] = useState('9980122334');
-  const [password, setPassword] = useState('sahyog@2026');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  // Auth Steps: 'PHONE' | 'OTP'
+  const [step, setStep] = useState<'PHONE' | 'OTP'>('PHONE');
+  const [phone, setPhone] = useState('9980122334');
+  const [otpCode, setOtpCode] = useState('');
+  const [name, setName] = useState('Ananya Deshmukh');
   const [locality, setLocality] = useState(DEFAULT_LOCATION);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showForgotNotice, setShowForgotNotice] = useState(false);
+  const [countdown, setCountdown] = useState(45);
+  const [canResend, setCanResend] = useState(false);
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    let timer: any;
+    if (step === 'OTP' && countdown > 0) {
+      timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
+    } else if (countdown === 0) {
+      setCanResend(true);
+    }
+    return () => clearTimeout(timer);
+  }, [step, countdown]);
+
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
-    setIsSubmitting(true);
+    setSuccessMsg(null);
 
+    const cleanPhone = phone.trim().replace(/\D/g, '');
+    if (!isValidIndianMobile(cleanPhone)) {
+      setErrorMsg('Please enter a valid 10-digit Indian mobile number.');
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      const res = await login('customer', { identifier, password });
-      if (!res.success) {
-        setErrorMsg(res.error || 'Login failed. Please check your credentials.');
+      const res = await sendPhoneOtp({ phone: cleanPhone });
+      if (res.success) {
+        setSuccessMsg(res.message || `OTP sent to +91 ${cleanPhone}`);
+        setStep('OTP');
+        setCountdown(45);
+        setCanResend(false);
+      } else {
+        setErrorMsg(res.error || 'Failed to send OTP. Please try again.');
       }
     } catch {
-      setErrorMsg('An unexpected error occurred. Please try again.');
+      setErrorMsg('An unexpected network error occurred.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleSignupSubmit = async (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
-    setIsSubmitting(true);
 
+    const token = otpCode.trim();
+    if (!token || token.length < 4) {
+      setErrorMsg('Please enter a valid OTP code.');
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      const res = await signup('customer', {
-        name,
-        phone,
-        password,
+      const res = await verifyPhoneOtp({
+        phone: phone.trim().replace(/\D/g, ''),
+        token,
+        role: 'customer',
+        name: name.trim() || 'SAHYOG Customer',
         locality,
       });
+
       if (!res.success) {
-        setErrorMsg(res.error || 'Registration failed.');
+        setErrorMsg(res.error || 'Invalid OTP code. Please verify and retry.');
       }
     } catch {
-      setErrorMsg('An unexpected error occurred. Please try again.');
+      setErrorMsg('Verification failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (!canResend) return;
+    setErrorMsg(null);
+    setIsSubmitting(true);
+    try {
+      const cleanPhone = phone.trim().replace(/\D/g, '');
+      const res = await sendPhoneOtp({ phone: cleanPhone });
+      if (res.success) {
+        setSuccessMsg(`New OTP sent to +91 ${cleanPhone}`);
+        setCountdown(45);
+        setCanResend(false);
+      } else {
+        setErrorMsg(res.error || 'Failed to resend OTP.');
+      }
+    } catch {
+      setErrorMsg('Network error. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleQuickDemoFill = () => {
-    setIdentifier('9980122334');
-    setPassword('sahyog@2026');
+    setPhone('9980122334');
+    setName('Ananya Deshmukh');
+    setOtpCode('123456');
     setErrorMsg(null);
   };
 
@@ -80,9 +135,9 @@ export const CustomerLoginPage: React.FC = () => {
           width: '100%',
           maxWidth: '420px',
           backgroundColor: '#FFFFFF',
-          borderRadius: '12px',
+          borderRadius: '16px',
           border: '1px solid #E2E8F0',
-          boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
+          boxShadow: '0 4px 24px -2px rgba(0, 0, 0, 0.06)',
           padding: '28px 24px',
           display: 'flex',
           flexDirection: 'column',
@@ -93,19 +148,19 @@ export const CustomerLoginPage: React.FC = () => {
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div
             style={{
-              width: '46px',
-              height: '46px',
-              borderRadius: '10px',
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
               backgroundColor: '#0C831F',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 4px 12px rgba(12, 131, 31, 0.25)',
+              boxShadow: '0 4px 14px rgba(12, 131, 31, 0.25)',
               marginBottom: '12px',
             }}
           >
-            <ShieldCheck size={26} strokeWidth={2.5} />
+            <ShieldCheck size={28} strokeWidth={2.3} />
           </div>
 
           <h1
@@ -122,83 +177,53 @@ export const CustomerLoginPage: React.FC = () => {
 
           <div
             style={{
-              fontSize: '0.625rem',
-              fontWeight: 800,
-              color: '#0C831F',
-              backgroundColor: '#F0FDF4',
-              border: '1px solid #BBF7D0',
-              padding: '2px 8px',
-              borderRadius: '9999px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              display: 'inline-block',
-              marginBottom: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              marginBottom: '6px',
+              flexWrap: 'wrap',
             }}
           >
-            CUSTOMER MARKETPLACE
+            <div
+              style={{
+                fontSize: '0.625rem',
+                fontWeight: 800,
+                color: '#0C831F',
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
+              CUSTOMER MARKETPLACE
+            </div>
+
+            {/* Live Environment Status Badge */}
+            <div
+              style={{
+                fontSize: '0.5625rem',
+                fontWeight: 800,
+                color: authMode === 'SUPABASE_LIVE' ? '#047857' : authMode === 'UNCONFIGURED_PROD' ? '#B91C1C' : '#B45309',
+                backgroundColor: authMode === 'SUPABASE_LIVE' ? '#ECFDF5' : authMode === 'UNCONFIGURED_PROD' ? '#FEF2F2' : '#FFFBEB',
+                border: `1px solid ${authMode === 'SUPABASE_LIVE' ? '#A7F3D0' : authMode === 'UNCONFIGURED_PROD' ? '#FECACA' : '#FDE68A'}`,
+                padding: '2px 7px',
+                borderRadius: '9999px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
+              {authMode === 'SUPABASE_LIVE' ? '🟢 Live SMS OTP' : authMode === 'UNCONFIGURED_PROD' ? '🔴 Unconfigured' : '🟡 Dev Sandbox'}
+            </div>
           </div>
 
-          <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
-            {isSignup
-              ? 'Create an account for verified home repairs & fixed rates'
-              : 'Sign in to book certified artisans with 30-day warranty'}
+          <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
+            {step === 'PHONE'
+              ? 'Enter your mobile number to sign in or create a customer account'
+              : `Enter the 6-digit verification code sent to +91 ${phone}`}
           </p>
-        </div>
-
-        {/* Tab Toggle (Sign In vs Sign Up) */}
-        <div
-          style={{
-            display: 'flex',
-            backgroundColor: '#F1F5F9',
-            padding: '3px',
-            borderRadius: '8px',
-            gap: '2px',
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => {
-              setIsSignup(false);
-              setErrorMsg(null);
-            }}
-            style={{
-              flex: 1,
-              padding: '8px',
-              fontSize: '0.8125rem',
-              fontWeight: !isSignup ? 700 : 500,
-              backgroundColor: !isSignup ? '#FFFFFF' : 'transparent',
-              color: !isSignup ? '#0F172A' : '#64748B',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              boxShadow: !isSignup ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-              transition: 'all 120ms ease',
-            }}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setIsSignup(true);
-              setErrorMsg(null);
-            }}
-            style={{
-              flex: 1,
-              padding: '8px',
-              fontSize: '0.8125rem',
-              fontWeight: isSignup ? 700 : 500,
-              backgroundColor: isSignup ? '#FFFFFF' : 'transparent',
-              color: isSignup ? '#0F172A' : '#64748B',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              boxShadow: isSignup ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
-              transition: 'all 120ms ease',
-            }}
-          >
-            Create Account
-          </button>
         </div>
 
         {/* Error Alert */}
@@ -208,7 +233,7 @@ export const CustomerLoginPage: React.FC = () => {
               padding: '10px 12px',
               backgroundColor: '#FEF2F2',
               border: '1px solid #FECACA',
-              borderRadius: '6px',
+              borderRadius: '8px',
               fontSize: '0.75rem',
               color: '#DC2626',
               lineHeight: 1.4,
@@ -218,28 +243,28 @@ export const CustomerLoginPage: React.FC = () => {
           </div>
         )}
 
-        {/* Forgot Password Notice */}
-        {showForgotNotice && (
+        {/* Success Alert */}
+        {successMsg && !errorMsg && (
           <div
             style={{
               padding: '10px 12px',
-              backgroundColor: '#EFF6FF',
-              border: '1px solid #BFDBFE',
-              borderRadius: '6px',
+              backgroundColor: '#F0FDF4',
+              border: '1px solid #BBF7D0',
+              borderRadius: '8px',
               fontSize: '0.75rem',
-              color: '#1D4ED8',
+              color: '#166534',
               lineHeight: 1.4,
             }}
           >
-            <strong>Password Reset:</strong> In this demo release, use the demo credentials below or contact your local cooperative helpline for instant PIN recovery.
+            {successMsg}
           </div>
         )}
 
-        {!isSignup ? (
+        {step === 'PHONE' ? (
           /* ========================================================= */
-          /* SIGN IN FORM                                              */
+          /* STEP 1: MOBILE NUMBER ENTRY                              */
           /* ========================================================= */
-          <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div>
               <label
                 style={{
@@ -250,196 +275,119 @@ export const CustomerLoginPage: React.FC = () => {
                   marginBottom: '5px',
                 }}
               >
-                Mobile Number or Email
-              </label>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1px solid #CBD5E1',
-                  borderRadius: '6px',
-                  padding: '9px 12px',
-                  backgroundColor: '#FFFFFF',
-                  gap: '8px',
-                }}
-              >
-                <Phone size={16} color="#64748B" />
-                <input
-                  type="text"
-                  placeholder="e.g. 9980122334 or user@mail.com"
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    width: '100%',
-                    fontSize: '0.875rem',
-                    color: '#0F172A',
-                  }}
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-                <label
-                  style={{
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    color: '#334155',
-                  }}
-                >
-                  Password / PIN
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setShowForgotNotice(!showForgotNotice)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '0.6875rem',
-                    fontWeight: 600,
-                    color: '#0C831F',
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  Forgot password?
-                </button>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1px solid #CBD5E1',
-                  borderRadius: '6px',
-                  padding: '9px 12px',
-                  backgroundColor: '#FFFFFF',
-                  gap: '8px',
-                }}
-              >
-                <Lock size={16} color="#64748B" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    width: '100%',
-                    fontSize: '0.875rem',
-                    color: '#0F172A',
-                  }}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748B', display: 'flex' }}
-                  aria-label="Toggle password visibility"
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              style={{
-                marginTop: '6px',
-                padding: '11px',
-                backgroundColor: '#0C831F',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                boxShadow: '0 2px 6px rgba(12, 131, 31, 0.25)',
-              }}
-              className="sahyog-btn"
-            >
-              <span>{isSubmitting ? 'Signing in...' : 'Sign In as Customer'}</span>
-              <ArrowRight size={16} />
-            </button>
-          </form>
-        ) : (
-          /* ========================================================= */
-          /* SIGN UP FORM                                              */
-          /* ========================================================= */
-          <form onSubmit={handleSignupSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
-                Full Name
-              </label>
-              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #CBD5E1', borderRadius: '6px', padding: '8px 12px', gap: '8px' }}>
-                <User size={16} color="#64748B" />
-                <input
-                  type="text"
-                  placeholder="e.g. Ananya Deshmukh"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem' }}
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
                 Mobile Number
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #CBD5E1', borderRadius: '6px', padding: '8px 12px', gap: '8px' }}>
-                <Phone size={16} color="#64748B" />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1.5px solid #CBD5E1',
+                  borderRadius: '8px',
+                  backgroundColor: '#FFFFFF',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    padding: '10px 12px',
+                    backgroundColor: '#F8FAFC',
+                    borderRight: '1px solid #E2E8F0',
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    color: '#334155',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <span>🇮🇳</span>
+                  <span>+91</span>
+                </div>
                 <input
                   type="tel"
-                  placeholder="10-digit mobile number"
+                  maxLength={10}
+                  placeholder="98765 43210"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem' }}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    width: '100%',
+                    padding: '10px 12px',
+                    fontSize: '0.9375rem',
+                    fontWeight: 600,
+                    color: '#0F172A',
+                    letterSpacing: '0.04em',
+                  }}
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
-                Locality / Area
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#334155',
+                  marginBottom: '5px',
+                }}
+              >
+                Your Name (Optional for first-time login)
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #CBD5E1', borderRadius: '6px', padding: '8px 12px', gap: '8px' }}>
+              <input
+                type="text"
+                placeholder="e.g. Ananya Deshmukh"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{
+                  width: '100%',
+                  border: '1px solid #CBD5E1',
+                  borderRadius: '8px',
+                  padding: '9px 12px',
+                  fontSize: '0.875rem',
+                  color: '#0F172A',
+                }}
+              />
+            </div>
+
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#334155',
+                  marginBottom: '5px',
+                }}
+              >
+                Preferred Service Locality
+              </label>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  border: '1px solid #CBD5E1',
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  backgroundColor: '#FFFFFF',
+                  gap: '8px',
+                }}
+              >
                 <MapPin size={16} color="#64748B" />
                 <input
                   type="text"
                   placeholder="e.g. Sector 62, Noida"
                   value={locality}
                   onChange={(e) => setLocality(e.target.value)}
-                  style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem' }}
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>
-                Create Password
-              </label>
-              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #CBD5E1', borderRadius: '6px', padding: '8px 12px', gap: '8px' }}>
-                <Lock size={16} color="#64748B" />
-                <input
-                  type="password"
-                  placeholder="At least 6 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem' }}
-                  required
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    width: '100%',
+                    fontSize: '0.875rem',
+                    color: '#0F172A',
+                  }}
                 />
               </div>
             </div>
@@ -448,8 +396,8 @@ export const CustomerLoginPage: React.FC = () => {
               type="submit"
               disabled={isSubmitting}
               style={{
-                marginTop: '6px',
-                padding: '11px',
+                marginTop: '4px',
+                padding: '12px',
                 backgroundColor: '#0C831F',
                 color: '#FFFFFF',
                 border: 'none',
@@ -461,56 +409,206 @@ export const CustomerLoginPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
+                boxShadow: '0 2px 8px rgba(12, 131, 31, 0.25)',
               }}
               className="sahyog-btn"
             >
-              <span>{isSubmitting ? 'Creating account...' : 'Create Customer Account'}</span>
+              <span>{isSubmitting ? 'Sending SMS OTP...' : 'Get OTP on Phone'}</span>
+              <ArrowRight size={16} />
+            </button>
+          </form>
+        ) : (
+          /* ========================================================= */
+          /* STEP 2: 6-DIGIT OTP VERIFICATION                         */
+          /* ========================================================= */
+          <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '8px 12px',
+                backgroundColor: '#F8FAFC',
+                borderRadius: '8px',
+                border: '1px solid #E2E8F0',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Phone size={14} color="#0C831F" />
+                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#1E293B' }}>
+                  +91 {phone}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setStep('PHONE');
+                  setErrorMsg(null);
+                  setSuccessMsg(null);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#0C831F',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <Edit3 size={13} />
+                <span>Change</span>
+              </button>
+            </div>
+
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#334155',
+                  marginBottom: '6px',
+                  textAlign: 'center',
+                }}
+              >
+                Enter 6-Digit OTP Code
+              </label>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1.5px solid #CBD5E1',
+                  borderRadius: '8px',
+                  padding: '10px 14px',
+                  backgroundColor: '#FFFFFF',
+                  gap: '8px',
+                }}
+              >
+                <KeyRound size={18} color="#0C831F" />
+                <input
+                  type="text"
+                  maxLength={6}
+                  autoFocus
+                  placeholder="• • • • • •"
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                  style={{
+                    border: 'none',
+                    outline: 'none',
+                    width: '140px',
+                    fontSize: '1.25rem',
+                    fontWeight: 800,
+                    letterSpacing: '0.3em',
+                    textAlign: 'center',
+                    color: '#0F172A',
+                  }}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Countdown & Resend */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+              {!canResend ? (
+                <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                  Resend OTP in <strong>{countdown}s</strong>
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={isSubmitting}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#0C831F',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <RefreshCw size={13} />
+                  <span>Resend OTP SMS</span>
+                </button>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              style={{
+                padding: '12px',
+                backgroundColor: '#0C831F',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '0.875rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 2px 8px rgba(12, 131, 31, 0.25)',
+              }}
+              className="sahyog-btn"
+            >
+              <span>{isSubmitting ? 'Verifying OTP...' : 'Verify OTP & Proceed'}</span>
               <ArrowRight size={16} />
             </button>
           </form>
         )}
 
-        {/* Quick 1-Click Demo Evaluation Shortcut */}
-        <div
-          style={{
-            padding: '10px 12px',
-            backgroundColor: '#F8FAFC',
-            border: '1px dashed #CBD5E1',
-            borderRadius: '8px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>
-              SIH Demo Evaluation Quick Fill
-            </span>
-            <span style={{ fontSize: '0.625rem', color: '#0C831F', fontWeight: 700 }}>Verified Customer</span>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleQuickDemoFill}
+        {/* Quick 1-Click Demo Evaluation Shortcut (Only available in Dev Sandbox Mode) */}
+        {authMode === 'DEV_SANDBOX' && (
+          <div
             style={{
-              padding: '6px 10px',
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #E2E8F0',
-              borderRadius: '6px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#0F172A',
-              cursor: 'pointer',
+              padding: '10px 12px',
+              backgroundColor: '#F8FAFC',
+              border: '1px dashed #CBD5E1',
+              borderRadius: '8px',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              flexDirection: 'column',
               gap: '6px',
             }}
           >
-            <Sparkles size={14} color="#F59E0B" />
-            <span>Fill Demo Customer Credentials</span>
-          </button>
-        </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>
+                SIH Sandbox Test Credentials
+              </span>
+              <span style={{ fontSize: '0.625rem', color: '#0C831F', fontWeight: 700 }}>Dev Mode Only</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleQuickDemoFill}
+              style={{
+                padding: '6px 10px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #E2E8F0',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: '#0F172A',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              <Sparkles size={14} color="#F59E0B" />
+              <span>Pre-fill Demo Customer Number & OTP</span>
+            </button>
+          </div>
+        )}
 
         {/* Cross-Role Navigation Links */}
         <div
@@ -563,3 +661,4 @@ export const CustomerLoginPage: React.FC = () => {
     </div>
   );
 };
+

@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Building2, Lock, Mail, Eye, EyeOff, ArrowRight, Sparkles, KeyRound } from 'lucide-react';
 
 export const AdminLoginPage: React.FC = () => {
-  const { login, navigate } = useAuth();
+  const { login, authMode, navigate } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [identifier, setIdentifier] = useState('operations@sahyog.coop');
@@ -95,20 +95,46 @@ export const AdminLoginPage: React.FC = () => {
 
           <div
             style={{
-              fontSize: '0.625rem',
-              fontWeight: 800,
-              color: '#EA580C',
-              backgroundColor: '#FFF7ED',
-              border: '1px solid #FED7AA',
-              padding: '2px 8px',
-              borderRadius: '9999px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              display: 'inline-block',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
               marginBottom: '8px',
+              flexWrap: 'wrap',
             }}
           >
-            FEDERATION OPERATIONS COMMAND
+            <div
+              style={{
+                fontSize: '0.625rem',
+                fontWeight: 800,
+                color: '#EA580C',
+                backgroundColor: '#FFF7ED',
+                border: '1px solid #FED7AA',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.06em',
+              }}
+            >
+              FEDERATION OPERATIONS COMMAND
+            </div>
+
+            {/* Live Environment Status Badge */}
+            <div
+              style={{
+                fontSize: '0.5625rem',
+                fontWeight: 800,
+                color: authMode === 'SUPABASE_LIVE' ? '#047857' : authMode === 'UNCONFIGURED_PROD' ? '#B91C1C' : '#B45309',
+                backgroundColor: authMode === 'SUPABASE_LIVE' ? '#ECFDF5' : authMode === 'UNCONFIGURED_PROD' ? '#FEF2F2' : '#FFFBEB',
+                border: `1px solid ${authMode === 'SUPABASE_LIVE' ? '#A7F3D0' : authMode === 'UNCONFIGURED_PROD' ? '#FECACA' : '#FDE68A'}`,
+                padding: '2px 7px',
+                borderRadius: '9999px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
+              {authMode === 'SUPABASE_LIVE' ? '🟢 Live Auth' : authMode === 'UNCONFIGURED_PROD' ? '🔴 Unconfigured' : '🟡 Dev Sandbox'}
+            </div>
           </div>
 
           <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
@@ -292,47 +318,49 @@ export const AdminLoginPage: React.FC = () => {
           </button>
         </form>
 
-        {/* Quick Demo Pre-fill Shortcut */}
-        <div
-          style={{
-            padding: '10px 12px',
-            backgroundColor: '#FFF7ED',
-            border: '1px dashed #FED7AA',
-            borderRadius: '8px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '6px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#9A3412', textTransform: 'uppercase' }}>
-              SIH Demo Evaluation Quick Fill
-            </span>
-            <span style={{ fontSize: '0.625rem', color: '#EA580C', fontWeight: 700 }}>Central Coordinator</span>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleQuickDemoFill}
+        {/* Quick Demo Pre-fill Shortcut (Only shown in DEV_SANDBOX mode, hidden in Production) */}
+        {authMode === 'DEV_SANDBOX' && (
+          <div
             style={{
-              padding: '6px 10px',
-              backgroundColor: '#FFFFFF',
-              border: '1px solid #FFEDD5',
-              borderRadius: '6px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: '#0F172A',
-              cursor: 'pointer',
+              padding: '10px 12px',
+              backgroundColor: '#FFF7ED',
+              border: '1px dashed #FED7AA',
+              borderRadius: '8px',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              flexDirection: 'column',
               gap: '6px',
             }}
           >
-            <Sparkles size={14} color="#EA580C" />
-            <span>Fill Demo Officer: Vikramaditya Rao</span>
-          </button>
-        </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#9A3412', textTransform: 'uppercase' }}>
+                SIH Sandbox Test Credentials
+              </span>
+              <span style={{ fontSize: '0.625rem', color: '#EA580C', fontWeight: 700 }}>Dev Mode Only</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleQuickDemoFill}
+              style={{
+                padding: '6px 10px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #FFEDD5',
+                borderRadius: '6px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: '#0F172A',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              <Sparkles size={14} color="#EA580C" />
+              <span>Fill Demo Officer: Vikramaditya Rao</span>
+            </button>
+          </div>
+        )}
 
         {/* Cross-Role Navigation Links */}
         <div
