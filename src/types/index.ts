@@ -1,5 +1,10 @@
 export type Role = 'customer' | 'worker' | 'admin';
 
+export * from './auth';
+
+export type AdminTab = 'operations' | 'bookings' | 'workers' | 'finance' | 'reports';
+
+
 export type ServiceTier = 'SMALL' | 'MEDIUM' | 'LARGE';
 
 export type UrgencyLevel = 'NORMAL' | 'EMERGENCY';
@@ -181,3 +186,48 @@ export interface WorkerEarningsRecord {
   netPayout: number;
   status: 'PAID' | 'PENDING';
 }
+
+export interface User {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string;
+  role: Role;
+  address: string;
+  city: string;
+  profileImage?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface KycItem {
+  id: string;
+  name: string;
+  profession: string;
+  cooperative: string;
+  documents: string;
+  status: VerificationStatus;
+  submittedAt?: string;
+}
+
+export interface CreateBookingDto {
+  customerId?: string;
+  customerName?: string;
+  customerPhone?: string;
+  serviceCategory: ServiceCategory;
+  tier: ServiceTier;
+  urgency: UrgencyLevel;
+  problemDescription?: string;
+  imageUrl?: string;
+  address?: string;
+  city?: string;
+  worker: Worker;
+}
+
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  message?: string;
+  error?: string;
+}
+

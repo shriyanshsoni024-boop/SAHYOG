@@ -1,295 +1,511 @@
-import React, { useState } from 'react';
-import { Card } from '../../components/ui/Card';
+import React, { useState, useEffect } from 'react';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
-import { Building2, Users, ShieldCheck, Zap, Activity, TrendingUp, AlertTriangle, Check, X, Sparkles } from 'lucide-react';
+import { Building2, Users, ShieldCheck, Zap, Activity, AlertTriangle, Sparkles, CalendarCheck, IndianRupee, BarChart3, ChevronRight, CheckCircle2, MapPin } from 'lucide-react';
+import { adminService, FederationStats } from '../../services/adminService';
+import { bookingService } from '../../services/bookingService';
+import { storageService } from '../../services/storage/storageService';
+import { STORAGE_KEYS } from '../../services/storage/storageKeys';
+import { KycItem, Booking, AdminTab } from '../../types';
+import { DEFAULT_LOCATION } from '../../data/locations';
+import { AdminBookingsView } from '../../components/admin/AdminBookingsView';
+import { AdminWorkersView } from '../../components/admin/AdminWorkersView';
+import { AdminFinanceView } from '../../components/admin/AdminFinanceView';
+import { AdminReportsView } from '../../components/admin/AdminReportsView';
+import { BookingDetailModal } from '../../components/admin/BookingDetailModal';
+import { AdminNav } from '../../components/admin/AdminNav';
 
 export const AdminDashboardPage: React.FC = () => {
-  const [kycQueue, setKycQueue] = useState([
-    { id: 'v-1', name: 'Manish Verma', profession: 'Electrician', cooperative: 'East Zone Cooperative', documents: 'Aadhaar + ITI Diploma', status: 'PENDING' },
-    { id: 'v-2', name: 'Kavita Rao', profession: 'Appliance Repair', cooperative: 'City Women Artisan Union', documents: 'Aadhaar + NSDC Level 2', status: 'PENDING' },
-  ]);
+  const [activeTab, setActiveTab] = useState<AdminTab>('operations');
+  const [kycQueue, setKycQueue] = useState<KycItem[]>([]);
+  const [activeServices, setActiveServices] = useState<Booking[]>([]);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [reallocationApplied, setReallocationApplied] = useState<boolean>(false);
+  const [currentLocation, setCurrentLocation] = useState<string>(() => {
+    return storageService.getItem<string>(STORAGE_KEYS.SELECTED_LOCATION, DEFAULT_LOCATION);
+  });
+  const [stats, setStats] = useState<FederationStats>({
+    totalWorkers: 128,
+    kycVerified: 96,
+    availableNow: 41,
+    activeDispatches: 24,
+    cooperativeNodes: 6,
+    emergencyWorkersReady: 6,
+    todayRevenue: 1225,
+    totalBookingsToday: 54,
+  });
 
-  const [activeServices] = useState([
-    { token: 'SYH-48291', customer: 'Ananya Deshmukh', worker: 'Rahul Kumar', service: 'AC Repair', status: 'ACCEPTED', urgency: 'NORMAL', time: '10:18 AM' },
-    { token: 'SYH-77210', customer: 'Rohan Joshi', worker: 'Suresh Patil', service: 'Electrician', status: 'IN_PROGRESS', urgency: 'EMERGENCY', time: '10:05 AM' },
-    { token: 'SYH-31904', customer: 'Ananya Deshmukh', worker: 'Suresh Patil', service: 'Electrician', status: 'COMPLETED', urgency: 'EMERGENCY', time: '04:55 PM' },
-  ]);
+  const loadData = async () => {
+    const [kycRes, bookRes, statsRes] = await Promise.all([
+      adminService.getKycQueue(),
+      bookingService.getBookings(),
+      adminService.getFederationStats(),
+    ]);
 
-  const handleKycAction = (id: string, _action: 'APPROVED' | 'REJECTED') => {
-    setKycQueue(prev => prev.filter(k => k.id !== id));
+    if (kycRes.success && kycRes.data) {
+      setKycQueue(kycRes.data);
+    }
+    if (bookRes.success && bookRes.data) {
+      setActiveServices(bookRes.data);
+    }
+    if (statsRes.success && statsRes.data) {
+      setStats(statsRes.data);
+    }
+
+    const savedLoc = storageService.getItem<string>(STORAGE_KEYS.SELECTED_LOCATION, DEFAULT_LOCATION);
+    if (savedLoc) {
+      setCurrentLocation(savedLoc);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [activeTab]);
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'bookings':
+        return <AdminBookingsView />;
+      case 'workers':
+        return <AdminWorkersView />;
+      case 'finance':
+        return <AdminFinanceView />;
+      case 'reports':
+        return <AdminReportsView />;
+      case 'operations':
+      default:
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', padding: '14px 16px' }}>
+            {/* 1. Cooperative Federation Header Banner (Clean Light Surface) */}
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: 'var(--radius-md)',
+                padding: '16px',
+                border: '1px solid var(--border-default)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                boxShadow: 'var(--shadow-xs)',
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Building2 size={18} color="var(--theme-accent, #EA580C)" />
+                  <h1 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+                    Cooperative Federation Operations Hub
+                  </h1>
+                </div>
+                <p style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <MapPin size={11} color="var(--theme-accent, #EA580C)" />
+                  <strong>{currentLocation}</strong> • Node #KA-BLR-04 • {stats.totalWorkers} Artisans
+                </p>
+              </div>
+
+              <span
+                style={{
+                  fontSize: '0.625rem',
+                  fontWeight: 800,
+                  backgroundColor: 'var(--success-light)',
+                  color: 'var(--success-dark)',
+                  padding: '3px 8px',
+                  borderRadius: 'var(--radius-xs)',
+                  border: '1px solid var(--success-border)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
+              >
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--success)', display: 'inline-block' }} />
+                Live Node
+              </span>
+            </div>
+
+            {/* 2. KPI Stats Grid (4 Comprehensive Operational Cards) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+              {/* Total Artisans */}
+              <div
+                onClick={() => setActiveTab('workers')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  boxShadow: 'var(--shadow-xs)',
+                  cursor: 'pointer',
+                }}
+                className="hover-card"
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Total Artisans</span>
+                  <Users size={16} color="var(--primary-dark)" />
+                </div>
+                <div style={{ fontSize: '1.375rem', fontWeight: 900, color: 'var(--text-primary)', marginTop: '4px' }}>
+                  {stats.totalWorkers}
+                </div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--success-dark)', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <ShieldCheck size={11} /> {stats.kycVerified} KYC Verified
+                </div>
+              </div>
+
+              {/* Pending KYC Review */}
+              <div
+                onClick={() => setActiveTab('workers')}
+                style={{
+                  backgroundColor: kycQueue.length > 0 ? '#FFFBEB' : '#FFFFFF',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '12px',
+                  border: kycQueue.length > 0 ? '1px solid #FDE68A' : '1px solid var(--border-default)',
+                  boxShadow: 'var(--shadow-xs)',
+                  cursor: 'pointer',
+                }}
+                className="hover-card"
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: kycQueue.length > 0 ? '#92400E' : 'var(--text-secondary)' }}>
+                    Pending KYC
+                  </span>
+                  <ShieldCheck size={16} color={kycQueue.length > 0 ? '#D97706' : 'var(--text-muted)'} />
+                </div>
+                <div style={{ fontSize: '1.375rem', fontWeight: 900, color: kycQueue.length > 0 ? '#B45309' : 'var(--text-primary)', marginTop: '4px' }}>
+                  {kycQueue.length}
+                </div>
+                <div style={{ fontSize: '0.625rem', color: kycQueue.length > 0 ? '#92400E' : 'var(--success-dark)', fontWeight: 700, marginTop: '2px' }}>
+                  {kycQueue.length > 0 ? 'Action Required' : '✓ All Reviewed'}
+                </div>
+              </div>
+
+              {/* Active Dispatches */}
+              <div
+                onClick={() => setActiveTab('bookings')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  boxShadow: 'var(--shadow-xs)',
+                  cursor: 'pointer',
+                }}
+                className="hover-card"
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Active Dispatches</span>
+                  <Activity size={16} color="var(--primary-dark)" />
+                </div>
+                <div style={{ fontSize: '1.375rem', fontWeight: 900, color: 'var(--text-primary)', marginTop: '4px' }}>
+                  {stats.activeDispatches}
+                </div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--danger)', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <Zap size={11} /> {stats.emergencyWorkersReady} Emergency Squad
+                </div>
+              </div>
+
+              {/* Completed Today */}
+              <div
+                onClick={() => setActiveTab('finance')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  boxShadow: 'var(--shadow-xs)',
+                  cursor: 'pointer',
+                }}
+                className="hover-card"
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Completed Today</span>
+                  <CheckCircle2 size={16} color="var(--success)" />
+                </div>
+                <div style={{ fontSize: '1.375rem', fontWeight: 900, color: 'var(--success-dark)', marginTop: '4px' }}>
+                  {stats.totalBookingsToday}
+                </div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--text-secondary)', fontWeight: 700, marginTop: '2px' }}>
+                  ₹{stats.todayRevenue} Platform Fees
+                </div>
+              </div>
+            </div>
+
+            {/* 3. AI Demand Forecasting & Predictive Reallocation */}
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid var(--border-default)',
+                borderRadius: 'var(--radius-md)',
+                padding: '14px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                boxShadow: 'var(--shadow-xs)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={16} color="var(--theme-accent, #EA580C)" />
+                  <h3 style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+                    AI Demand Forecasting & Predictive Allocation
+                  </h3>
+                </div>
+                <Badge variant="match" size="sm">
+                  AI v1.0
+                </Badge>
+              </div>
+
+              <div
+                style={{
+                  backgroundColor: reallocationApplied ? 'var(--success-light)' : '#F8FAFC',
+                  border: reallocationApplied ? '1px solid var(--success-border)' : '1px solid var(--border-default)',
+                  borderRadius: 'var(--radius-xs)',
+                  padding: '10px 12px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  {reallocationApplied ? (
+                    <CheckCircle2 size={16} color="var(--success-dark)" style={{ flexShrink: 0, marginTop: '1px' }} />
+                  ) : (
+                    <AlertTriangle size={16} color="#D97706" style={{ flexShrink: 0, marginTop: '1px' }} />
+                  )}
+                  <div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 800, color: reallocationApplied ? 'var(--success-dark)' : 'var(--text-primary)' }}>
+                      {reallocationApplied
+                        ? `✓ Workload Balanced: 4 Artisans Dispatched to ${currentLocation.split(',')[0]}`
+                        : `Surge Alert: Electrical & AC Repair +42% in ${currentLocation.split(',')[0]} Zone`}
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', marginTop: '2px', lineHeight: 1.35 }}>
+                      {reallocationApplied
+                        ? 'Sub-15 min arrival SLA protected across all active emergency requests.'
+                        : `Recommendation: Reallocate 4 idle certified electricians to maintain sub-15 min arrival in ${currentLocation.split(',')[0]}.`}
+                    </div>
+                  </div>
+                </div>
+
+                {!reallocationApplied && (
+                  <Button
+                    size="sm"
+                    variant="primary"
+                    onClick={() => setReallocationApplied(true)}
+                  >
+                    Apply Reallocation (4 Workers)
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {/* 4. Quick Action Operational Hub */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <div
+                onClick={() => setActiveTab('bookings')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-xs)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+                className="hover-card"
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-xs)', backgroundColor: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
+                  <CalendarCheck size={16} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                    Dispatch Stream
+                  </div>
+                  <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)' }}>
+                    {activeServices.length} live bookings
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setActiveTab('workers')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-xs)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+                className="hover-card"
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-xs)', backgroundColor: 'var(--secondary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--secondary)' }}>
+                  <ShieldCheck size={16} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                    KYC Approvals
+                  </div>
+                  <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)' }}>
+                    {kycQueue.length} pending review
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setActiveTab('finance')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-xs)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+                className="hover-card"
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-xs)', backgroundColor: 'var(--success-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--success-dark)' }}>
+                  <IndianRupee size={16} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                    Finance Ledger
+                  </div>
+                  <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)' }}>
+                    0% comm disbursals
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => setActiveTab('reports')}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 'var(--radius-xs)',
+                  padding: '12px',
+                  border: '1px solid var(--border-default)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+                className="hover-card"
+              >
+                <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-xs)', backgroundColor: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#D97706' }}>
+                  <BarChart3 size={16} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                    Reports & Heatmap
+                  </div>
+                  <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)' }}>
+                    6 zone metrics
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Live Service Stream (Compact Operational Feed) */}
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: 'var(--radius-md)',
+                padding: '14px',
+                border: '1px solid var(--border-default)',
+                boxShadow: 'var(--shadow-xs)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Activity size={16} color="var(--primary)" />
+                  <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
+                    Live Service Monitor Stream ({activeServices.length})
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('bookings')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--primary)',
+                    fontSize: '0.6875rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '2px',
+                  }}
+                >
+                  <span>View All</span>
+                  <ChevronRight size={12} />
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {activeServices.slice(0, 3).map((svc) => (
+                  <div
+                    key={svc.token || svc.id}
+                    onClick={() => setSelectedBooking(svc)}
+                    style={{
+                      padding: '8px 10px',
+                      backgroundColor: 'var(--bg-app)',
+                      borderRadius: 'var(--radius-xs)',
+                      border: '1px solid var(--border-subtle)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      fontSize: '0.75rem',
+                      cursor: 'pointer',
+                    }}
+                    className="hover-card"
+                  >
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontWeight: 800, color: 'var(--primary)' }}>{svc.token}</span>
+                        <Badge variant={svc.urgency === 'EMERGENCY' ? 'emergency' : 'neutral'} size="sm">
+                          {svc.urgency}
+                        </Badge>
+                      </div>
+                      <div style={{ color: 'var(--text-primary)', marginTop: '2px', fontSize: '0.6875rem' }}>
+                        {svc.customerName} ↔ <strong>{svc.worker?.name || 'Assigned Worker'}</strong> ({svc.serviceName})
+                      </div>
+                    </div>
+
+                    <div style={{ textAlign: 'right' }}>
+                      <Badge variant={svc.status === 'COMPLETED' ? 'success' : svc.status === 'CANCELLED' ? 'emergency' : 'warning'} size="sm">
+                        {svc.status.replace(/_/g, ' ')}
+                      </Badge>
+                      <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+                        {svc.scheduledTime || 'Today'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+    }
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      {/* Cooperative Federation Header Banner */}
-      <div
-        style={{
-          backgroundColor: '#1E293B',
-          borderRadius: 'var(--radius-lg)',
-          padding: '20px 24px',
-          color: '#ffffff',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          boxShadow: 'var(--shadow-md)',
-        }}
-      >
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Building2 size={24} color="#60A5FA" />
-            <h1 style={{ fontSize: '1.25rem', fontWeight: 800 }}>
-              Bangalore District Cooperative Workforce Federation
-            </h1>
-          </div>
-          <p style={{ fontSize: '0.8125rem', color: '#94A3B8', marginTop: '4px' }}>
-            Cooperative Union Node #KA-BLR-04 • Monitoring 128 registered skilled artisans across 6 urban zones
-          </p>
-        </div>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', paddingBottom: '16px' }}>
+      {renderContent()}
 
-        <Badge variant="verified" size="md">
-          Federation Live
-        </Badge>
-      </div>
+      {/* Booking Detail Modal */}
+      <BookingDetailModal booking={selectedBooking} onClose={() => setSelectedBooking(null)} />
 
-      {/* KPI Stats Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
-        <Card padding="md">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Total Workers</span>
-            <Users size={18} color="var(--primary)" />
-          </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '6px' }}>128</div>
-          <div style={{ fontSize: '0.6875rem', color: 'var(--success-dark)', fontWeight: 600, marginTop: '2px' }}>
-            96 KYC Verified
-          </div>
-        </Card>
-
-        <Card padding="md">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Available Now</span>
-            <Activity size={18} color="var(--success)" />
-          </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--success)', marginTop: '6px' }}>41</div>
-          <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            32% Online Availability
-          </div>
-        </Card>
-
-        <Card padding="md">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Active Bookings</span>
-            <TrendingUp size={18} color="var(--primary)" />
-          </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--primary)', marginTop: '6px' }}>24</div>
-          <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-            91 Completed this week
-          </div>
-        </Card>
-
-        <Card padding="md" style={{ backgroundColor: '#FEF2F2', border: '1.5px solid #FCA5A5' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--danger)' }}>Emergency Dispatches</span>
-            <Zap size={18} color="var(--danger)" />
-          </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--danger)', marginTop: '6px' }}>6</div>
-          <div style={{ fontSize: '0.6875rem', color: 'var(--danger)', fontWeight: 600, marginTop: '2px' }}>
-            Average response: 14 min
-          </div>
-        </Card>
-      </div>
-
-      {/* AI Demand Forecasting & Workforce Allocation Recommendation (PRD Section 47 & 48) */}
-      <Card
-        variant="elevated"
-        style={{
-          backgroundColor: '#F8FAFC',
-          border: '1.5px solid #CBD5E1',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sparkles size={20} color="var(--primary)" />
-            <div>
-              <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                AI Demand Forecasting & Predictive Workforce Allocation
-              </h3>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                Analyzes 90-day booking spikes to turn predictions into direct operational recommendations for the cooperative.
-              </p>
-            </div>
-          </div>
-          <Badge variant="match" size="md">
-            AI Engine v1.0
-          </Badge>
-        </div>
-
-        <div
-          style={{
-            backgroundColor: '#EFF6FF',
-            border: '1px solid #BFDBFE',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '12px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-            <AlertTriangle size={20} color="var(--primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
-            <div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--primary)' }}>
-                Surge Alert: Electrical & AC Repair demand projected +42% in Indiranagar/Koramangala Zone
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                Only 6 electricians currently active in Zone 4. <strong>Recommendation:</strong> Reallocate 4 idle certified electricians from Central Zone to maintain sub-15 minute arrival SLAs.
-              </div>
-            </div>
-          </div>
-
-          <Button size="sm" variant="primary">
-            Apply Reallocation (4 Workers)
-          </Button>
-        </div>
-      </Card>
-
-      {/* Split View: KYC Verification Queue & Live Service Monitor */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-        {/* KYC Verification Queue */}
-        <Card>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ShieldCheck size={18} color="var(--success-dark)" />
-              <h3 style={{ fontSize: '0.875rem', fontWeight: 800 }}>
-                Pending Artisan KYC Verifications ({kycQueue.length})
-              </h3>
-            </div>
-          </div>
-
-          {kycQueue.length === 0 ? (
-            <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8125rem' }}>
-              All pending verification requests are cleared.
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {kycQueue.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    padding: '10px 12px',
-                    backgroundColor: 'var(--bg-muted)',
-                    borderRadius: 'var(--radius-md)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div>
-                    <div style={{ fontSize: '0.8125rem', fontWeight: 700 }}>{item.name}</div>
-                    <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)' }}>
-                      {item.profession} • {item.cooperative}
-                    </div>
-                    <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                      Docs: {item.documents}
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '4px' }}>
-                    <button
-                      type="button"
-                      onClick={() => handleKycAction(item.id, 'APPROVED')}
-                      style={{
-                        padding: '6px 10px',
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'var(--success)',
-                        color: '#ffffff',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '2px',
-                        fontSize: '0.6875rem',
-                        fontWeight: 700,
-                      }}
-                    >
-                      <Check size={14} />
-                      Approve
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleKycAction(item.id, 'REJECTED')}
-                      style={{
-                        padding: '6px 8px',
-                        borderRadius: 'var(--radius-sm)',
-                        backgroundColor: 'var(--bg-surface)',
-                        color: 'var(--danger)',
-                        border: '1px solid var(--border-default)',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <X size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </Card>
-
-        {/* Live Service Monitoring */}
-        <Card>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Activity size={18} color="var(--primary)" />
-              <h3 style={{ fontSize: '0.875rem', fontWeight: 800 }}>
-                Live Service Stream ({activeServices.length})
-              </h3>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {activeServices.map((svc) => (
-              <div
-                key={svc.token}
-                style={{
-                  padding: '8px 12px',
-                  border: '1px solid var(--border-default)',
-                  borderRadius: 'var(--radius-sm)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  fontSize: '0.75rem',
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontWeight: 800, color: 'var(--primary)' }}>{svc.token}</span>
-                    <Badge variant={svc.urgency === 'EMERGENCY' ? 'emergency' : 'neutral'} size="sm">
-                      {svc.urgency}
-                    </Badge>
-                  </div>
-                  <div style={{ color: 'var(--text-primary)', marginTop: '2px' }}>
-                    {svc.customer} ↔ <strong>{svc.worker}</strong> ({svc.service})
-                  </div>
-                </div>
-
-                <div style={{ textAlign: 'right' }}>
-                  <Badge variant={svc.status === 'COMPLETED' ? 'success' : 'warning'} size="sm">
-                    {svc.status}
-                  </Badge>
-                  <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                    {svc.time}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      </div>
+      {/* Cooperative Bottom Navigation */}
+      <AdminNav
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        pendingKycCount={kycQueue.length}
+        activeDispatchesCount={activeServices.filter((b) => ['REQUESTED', 'MATCHED', 'ACCEPTED', 'ON_THE_WAY', 'IN_PROGRESS'].includes(b.status)).length}
+      />
     </div>
   );
 };

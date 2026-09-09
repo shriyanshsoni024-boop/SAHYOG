@@ -1,184 +1,507 @@
-import React from 'react';
-import { useLanguage } from '../../i18n/LanguageContext';
-import { Card } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
+import React, { useState, useEffect } from 'react';
 import { LanguageToggle } from '../../components/common/LanguageToggle';
-import { User, Phone, MapPin, Coins, HeartHandshake, ShieldCheck, ChevronRight, Headphones, FileText } from 'lucide-react';
+import {
+  Phone,
+  MapPin,
+  Calendar,
+  Wallet,
+  Headphones,
+  ChevronRight,
+  ShieldCheck,
+  FileText,
+  Lock,
+  Trash2,
+  LogOut,
+  Edit3,
+  Award,
+} from 'lucide-react';
+import { userService } from '../../services/userService';
+import { User } from '../../types';
+import { useAuth } from '../../context/AuthContext';
+import { useBooking } from '../../context/BookingContext';
 
-export const CustomerProfilePage: React.FC = () => {
-  const { t } = useLanguage();
+interface CustomerProfilePageProps {
+  onOpenAddresses?: () => void;
+}
+
+export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpenAddresses }) => {
+  const { logout } = useAuth();
+  const { setActiveView } = useBooking();
+
+  const [profile, setProfile] = useState<User>({
+    id: 'cust-1',
+    name: 'Ananya Deshmukh',
+    phone: '+91 99801 22334',
+    email: 'ananya.deshmukh@example.com',
+    role: 'customer',
+    address: 'Flat 402, Green Vista Apartments, 12th Main Indiranagar, Bangalore',
+    city: 'Bangalore',
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(profile.name);
+
+  useEffect(() => {
+    userService.getCurrentUser().then((res) => {
+      if (res.success && res.data) {
+        setProfile(res.data);
+        setEditName(res.data.name);
+      }
+    });
+  }, []);
+
+  const handleSaveEdit = () => {
+    setProfile((prev) => ({ ...prev, name: editName }));
+    setIsEditing(false);
+  };
 
   return (
-    <div style={{ padding: '16px 16px 32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-          {t('nav_profile')}
-        </h1>
-        <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
-          Manage account, addresses, Super Coins & preferences
-        </span>
-      </div>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        backgroundColor: '#F8FAFC',
+        paddingBottom: '80px',
+      }}
+    >
+      {/* 1. TOP DARK GREEN PROFILE HEADER */}
+      <div
+        style={{
+          background: 'linear-gradient(150deg, #0C831F 0%, #064E11 100%)',
+          borderRadius: '0 0 28px 28px',
+          padding: '24px 20px 28px',
+          color: '#FFFFFF',
+          boxShadow: '0 6px 20px rgba(12, 131, 31, 0.25)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+          <button
+            type="button"
+            onClick={() => setActiveView('home')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#FFFFFF',
+              fontSize: '1.125rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              padding: 0,
+            }}
+          >
+            ← Profile
+          </button>
 
-      {/* Profile Header */}
-      <Card variant="elevated" padding="md">
+          <LanguageToggle />
+        </div>
+
+        {/* Profile Avatar & Info Card */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div
             style={{
-              width: '56px',
-              height: '56px',
+              width: '64px',
+              height: '64px',
               borderRadius: '50%',
-              backgroundColor: 'var(--primary-light)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--primary)',
-              border: '2px solid var(--primary-border)',
+              backgroundColor: '#FFFFFF',
+              padding: '3px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               flexShrink: 0,
             }}
           >
-            <User size={28} />
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+              alt={profile.name}
+              style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+            />
           </div>
+
           <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>Ananya Deshmukh</h3>
-              <Badge variant="verified" size="sm" icon={<ShieldCheck size={11} />}>Verified</Badge>
+            {isEditing ? (
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '4px' }}>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    fontSize: '0.9375rem',
+                    fontWeight: 700,
+                    color: '#0F172A',
+                  }}
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={handleSaveEdit}
+                  style={{
+                    padding: '4px 10px',
+                    backgroundColor: '#FFFFFF',
+                    color: '#0C831F',
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em' }}>
+                  {profile.name}
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(true)}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.2)',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '2px 6px',
+                    color: '#FFFFFF',
+                    fontSize: '0.6875rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  <Edit3 size={11} />
+                  <span>Edit</span>
+                </button>
+              </div>
+            )}
+
+            <div style={{ fontSize: '0.8125rem', color: 'rgba(255, 255, 255, 0.9)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Phone size={13} />
+              <span>{profile.phone}</span>
             </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-              <Phone size={12} />
-              <span>+91 99801 22334</span>
-            </div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-              <MapPin size={12} />
-              <span>Indiranagar, Bangalore</span>
+
+            <div style={{ fontSize: '0.6875rem', color: 'rgba(255, 255, 255, 0.75)', marginTop: '2px' }}>
+              Member since Jan 2026 • Verified Customer
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Super Coins Balance */}
+      {/* 2. PROMOTIONAL PASS CARD */}
+      <div style={{ padding: '0 16px', marginTop: '-12px' }}>
         <div
           style={{
-            marginTop: '14px',
-            backgroundColor: '#FEF3C7',
+            backgroundColor: '#FFFBEB',
+            borderRadius: '16px',
             border: '1px solid #FDE68A',
-            borderRadius: 'var(--radius-md)',
-            padding: '10px 14px',
+            padding: '14px 16px',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.06)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Coins size={22} color="#D97706" />
+            <div
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                backgroundColor: '#FEF3C7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#D97706',
+              }}
+            >
+              <Award size={20} />
+            </div>
             <div>
-              <div style={{ fontSize: '0.625rem', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                SAHYOG Super Coins
+              <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#92400E' }}>
+                SAHYOG Cooperative Pass
               </div>
-              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#78350F' }}>
-                375 Coins (₹375 value)
+              <div style={{ fontSize: '0.6875rem', color: '#B45309' }}>
+                ₹0 platform fee & 100% direct artisan compensation
               </div>
             </div>
           </div>
-          <Badge variant="tier" size="sm">
-            Gold Member
-          </Badge>
-        </div>
-      </Card>
 
-      {/* Saved Addresses */}
-      <Card padding="md">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <h4 style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            Saved Addresses
-          </h4>
-          <span style={{ fontSize: '0.6875rem', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer' }}>
-            + Add New
+          <span
+            style={{
+              fontSize: '0.6875rem',
+              fontWeight: 800,
+              backgroundColor: '#D97706',
+              color: '#FFFFFF',
+              padding: '4px 8px',
+              borderRadius: '6px',
+            }}
+          >
+            ACTIVE
           </span>
         </div>
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div style={{ padding: '8px 10px', backgroundColor: 'var(--bg-muted)', borderRadius: 'var(--radius-sm)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                Home (Default)
-              </div>
-              <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)' }}>
-                #412, 12th Main, Indiranagar 4th Block, Bangalore 560038
-              </div>
+      {/* 3. THREE LARGE ROUNDED ACTION CARDS */}
+      <div style={{ padding: '16px 16px 0', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+        {/* My Bookings */}
+        <button
+          type="button"
+          onClick={() => setActiveView('history')}
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px',
+            border: '1px solid #E2E8F0',
+            padding: '16px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+          }}
+          className="hover-card"
+        >
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              backgroundColor: '#F0FDF4',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#0C831F',
+            }}
+          >
+            <Calendar size={20} />
+          </div>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A' }}>
+            My bookings
+          </span>
+        </button>
+
+        {/* Money */}
+        <button
+          type="button"
+          onClick={() => setActiveView('history')}
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px',
+            border: '1px solid #E2E8F0',
+            padding: '16px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+          }}
+          className="hover-card"
+        >
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              backgroundColor: '#EFF6FF',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#2563EB',
+            }}
+          >
+            <Wallet size={20} />
+          </div>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A' }}>
+            Money (₹450)
+          </span>
+        </button>
+
+        {/* Help & Support */}
+        <button
+          type="button"
+          onClick={() => alert('Cooperative 24x7 Helpline: 1800-SAHYOG-COOP\nEmail: support@sahyog.coop')}
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px',
+            border: '1px solid #E2E8F0',
+            padding: '16px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            gap: '8px',
+            cursor: 'pointer',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+          }}
+          className="hover-card"
+        >
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              backgroundColor: '#FFF7ED',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#EA580C',
+            }}
+          >
+            <Headphones size={20} />
+          </div>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A' }}>
+            Help & Support
+          </span>
+        </button>
+      </div>
+
+      {/* 4. LIST MENU ITEMS */}
+      <div style={{ padding: '16px 16px 0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '18px',
+            border: '1px solid #E2E8F0',
+            padding: '6px 16px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+          }}
+        >
+          {/* Saved Addresses */}
+          <div
+            onClick={onOpenAddresses}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 0',
+              borderBottom: '1px solid #F1F5F9',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <MapPin size={18} color="#64748B" />
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+                Saved addresses
+              </span>
             </div>
-            <span style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--primary)', backgroundColor: 'var(--primary-light)', padding: '2px 6px', borderRadius: 'var(--radius-xs)' }}>
-              Selected
-            </span>
+            <ChevronRight size={16} color="#94A3B8" />
           </div>
 
-          <div style={{ padding: '8px 10px', backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-sm)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                Office
-              </div>
-              <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)' }}>
-                Prestige Meridian, MG Road, Bangalore 560001
-              </div>
+          {/* About SAHYOG */}
+          <div
+            onClick={() => alert('SAHYOG is India’s cooperative home services marketplace delivering verified artisan services with 0% corporate markup.')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 0',
+              borderBottom: '1px solid #F1F5F9',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <ShieldCheck size={18} color="#64748B" />
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+                About SAHYOG Cooperative
+              </span>
             </div>
+            <ChevronRight size={16} color="#94A3B8" />
+          </div>
+
+          {/* Terms of Services */}
+          <div
+            onClick={() => alert('SAHYOG Service Terms: 30-Day Work Warranty & 100% Direct Cooperative Compensation.')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 0',
+              borderBottom: '1px solid #F1F5F9',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <FileText size={18} color="#64748B" />
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+                Terms of services
+              </span>
+            </div>
+            <ChevronRight size={16} color="#94A3B8" />
+          </div>
+
+          {/* Privacy Policy */}
+          <div
+            onClick={() => alert('Privacy Policy: Customer data is end-to-end encrypted and never sold to 3rd-party ad trackers.')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 0',
+              borderBottom: '1px solid #F1F5F9',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Lock size={18} color="#64748B" />
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+                Privacy policy
+              </span>
+            </div>
+            <ChevronRight size={16} color="#94A3B8" />
+          </div>
+
+          {/* Request Account Deletion */}
+          <div
+            onClick={() => alert('Account deletion request submitted. An SMS confirmation will be sent to your registered number.')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 0',
+              cursor: 'pointer',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <Trash2 size={18} color="#DC2626" />
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#DC2626' }}>
+                Request account deletion
+              </span>
+            </div>
+            <ChevronRight size={16} color="#94A3B8" />
           </div>
         </div>
-      </Card>
 
-      {/* Settings & Preferences */}
-      <Card padding="md">
-        <h4 style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '12px' }}>
-          Preferences & Language
-        </h4>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', fontWeight: 600 }}>App Language (भाषा)</span>
-          <LanguageToggle />
-        </div>
-      </Card>
-
-      {/* Support & Dispute Assistance */}
-      <Card padding="md">
-        <h4 style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '10px' }}>
-          Help & Cooperative Support
-        </h4>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 600 }}>
-              <Headphones size={15} color="var(--primary)" />
-              <span>Cooperative Support Helpline (24x7)</span>
-            </div>
-            <ChevronRight size={14} color="var(--text-muted)" />
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', borderTop: '1px solid var(--border-default)', paddingTop: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 600 }}>
-              <FileText size={15} color="var(--primary)" />
-              <span>SAHYOG 30-Day Guarantee Policy</span>
-            </div>
-            <ChevronRight size={14} color="var(--text-muted)" />
-          </div>
-        </div>
-      </Card>
-
-      {/* Cooperative Federation Backing Manifesto */}
-      <Card
-        style={{
-          backgroundColor: '#F0FDFA',
-          border: '1px solid #99F6E4',
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '12px',
-        }}
-        padding="md"
-      >
-        <HeartHandshake size={24} color="var(--secondary)" style={{ flexShrink: 0, marginTop: '2px' }} />
-        <div>
-          <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            Cooperative Worker Ecosystem
-          </div>
-          <p style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', marginTop: '3px', lineHeight: 1.4 }}>
-            SAHYOG is backed by regional worker cooperatives, ensuring 100% fair artisan compensation, accident insurance, and verified skills without corporate middleman gouging.
-          </p>
-        </div>
-      </Card>
+        {/* 5. LOGOUT BUTTON */}
+        <button
+          type="button"
+          onClick={() => logout()}
+          style={{
+            width: '100%',
+            padding: '14px',
+            backgroundColor: '#FEF2F2',
+            color: '#DC2626',
+            border: '1px solid #FECACA',
+            borderRadius: '16px',
+            fontSize: '0.875rem',
+            fontWeight: 800,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            marginTop: '8px',
+          }}
+          className="sahyog-btn"
+        >
+          <LogOut size={16} />
+          <span>Log out</span>
+        </button>
+      </div>
     </div>
   );
 };

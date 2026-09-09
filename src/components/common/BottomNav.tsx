@@ -1,93 +1,121 @@
 import React from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useBooking, CustomerView } from '../../context/BookingContext';
-import { Home, Grid, CalendarCheck, User, LucideIcon } from 'lucide-react';
+import { Home, CalendarCheck, Wallet, LucideIcon } from 'lucide-react';
 
 export const BottomNav: React.FC = () => {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   const { activeView, setActiveView, bookings } = useBooking();
 
-  const navItems: { view: CustomerView; labelKey: 'nav_home' | 'nav_services' | 'nav_bookings' | 'nav_profile'; icon: LucideIcon }[] = [
-    { view: 'home', labelKey: 'nav_home', icon: Home },
-    { view: 'service-detail', labelKey: 'nav_services', icon: Grid },
-    { view: 'history', labelKey: 'nav_bookings', icon: CalendarCheck },
-    { view: 'profile', labelKey: 'nav_profile', icon: User },
+  const navItems: { view: CustomerView; label: string; labelHi: string; icon: LucideIcon }[] = [
+    { view: 'home', label: language === 'hi' ? 'होम' : 'Home', labelHi: 'होम', icon: Home },
+    { view: 'history', label: language === 'hi' ? 'बुकिंग्स' : 'Bookings', labelHi: 'बुकिंग्स', icon: CalendarCheck },
+    { view: 'money', label: language === 'hi' ? 'मनी' : 'Money', labelHi: 'मनी', icon: Wallet },
   ];
 
-  const activeBookingsCount = bookings.filter(b => b.status !== 'COMPLETED' && b.status !== 'CANCELLED').length;
+  const activeBookingsCount = bookings.filter(
+    (b) => b.status !== 'COMPLETED' && b.status !== 'CANCELLED'
+  ).length;
 
   return (
-    <nav
-      className="hide-desktop theme-transition"
+    <div
       style={{
-        position: 'sticky',
-        bottom: 0,
-        zIndex: 50,
-        backgroundColor: 'var(--theme-surface, #FFFFFF)',
-        borderTop: '1px solid var(--border-default)',
+        position: 'fixed',
+        bottom: '14px',
+        left: 0,
+        right: 0,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        padding: '5px 4px 6px',
-        boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.04)',
+        justifyContent: 'center',
+        zIndex: 100,
+        pointerEvents: 'none',
+        padding: '0 16px',
       }}
-      aria-label="Customer navigation"
     >
-      {navItems.map((item) => {
-        const isActive = activeView === item.view || (item.view === 'history' && activeView === 'tracking');
-        const Icon = item.icon;
+      <nav
+        style={{
+          pointerEvents: 'auto',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '9999px',
+          border: '1px solid rgba(226, 232, 240, 0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '6px 10px',
+          boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+          backdropFilter: 'blur(12px)',
+          maxWidth: '380px',
+          width: '100%',
+          justifyContent: 'space-around',
+        }}
+        aria-label="Customer navigation"
+      >
+        {navItems.map((item) => {
+          const isActive =
+            activeView === item.view ||
+            (item.view === 'history' && (activeView === 'tracking' || activeView === 'worker-matching')) ||
+            (item.view === 'home' && activeView === 'service-detail');
+          const Icon = item.icon;
 
-        return (
-          <button
-            key={item.view}
-            type="button"
-            onClick={() => setActiveView(item.view)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '2px',
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-xs)',
-              color: isActive ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-muted, #6B7280)',
-              transition: 'all var(--transition-fast)',
-              position: 'relative',
-              background: isActive ? 'var(--theme-accent-light, #F0FDF4)' : 'none',
-              border: 'none',
-              cursor: 'pointer',
-              minWidth: '58px',
-            }}
-          >
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon size={19} color={isActive ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-muted, #6B7280)'} strokeWidth={isActive ? 2.3 : 1.8} />
-              {item.view === 'history' && activeBookingsCount > 0 && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '-4px',
-                    right: '-8px',
-                    backgroundColor: 'var(--theme-accent, #0C831F)',
-                    color: '#ffffff',
-                    fontSize: '0.5625rem',
-                    fontWeight: 800,
-                    width: '15px',
-                    height: '15px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {activeBookingsCount}
-                </span>
-              )}
-            </div>
-            <span style={{ fontSize: '0.6875rem', fontWeight: isActive ? 800 : 500, letterSpacing: '-0.01em' }}>
-              {t(item.labelKey)}
-            </span>
-          </button>
-        );
-      })}
-    </nav>
+          return (
+            <button
+              key={item.view}
+              type="button"
+              onClick={() => setActiveView(item.view)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: isActive ? '8px 18px' : '8px 12px',
+                borderRadius: '9999px',
+                color: isActive ? 'var(--theme-accent, #0C831F)' : '#64748B',
+                transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+                position: 'relative',
+                background: isActive ? 'var(--theme-accent-light, #F0FDF4)' : 'transparent',
+                border: isActive ? '1px solid var(--theme-accent-border, #BBF7D0)' : '1px solid transparent',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Icon
+                  size={19}
+                  color={isActive ? 'var(--theme-accent, #0C831F)' : '#64748B'}
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+                {item.view === 'history' && activeBookingsCount > 0 && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '-4px',
+                      right: '-8px',
+                      backgroundColor: 'var(--theme-accent, #0C831F)',
+                      color: '#ffffff',
+                      fontSize: '0.5625rem',
+                      fontWeight: 800,
+                      width: '15px',
+                      height: '15px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {activeBookingsCount}
+                  </span>
+                )}
+              </div>
+              <span
+                style={{
+                  fontSize: '0.8125rem',
+                  fontWeight: isActive ? 800 : 600,
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                {item.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
+    </div>
   );
 };

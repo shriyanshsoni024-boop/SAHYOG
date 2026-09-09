@@ -17,6 +17,7 @@ export const WorkerMatchingPage: React.FC = () => {
     problemDescription,
     urgency,
     selectedTier,
+    selectedLocation,
     createBooking,
     setActiveView,
   } = useBooking();
@@ -225,7 +226,7 @@ export const WorkerMatchingPage: React.FC = () => {
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: 'var(--text-secondary)' }}>Address:</span>
-                <span style={{ textAlign: 'right', maxWidth: '200px' }}>Indiranagar 4th Block, Bangalore</span>
+                <span style={{ textAlign: 'right', maxWidth: '200px' }}>{selectedLocation || 'Indiranagar 4th Block, Bangalore'}</span>
               </div>
             </div>
 

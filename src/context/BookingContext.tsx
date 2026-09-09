@@ -1,7 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Booking, BookingStatus, ServiceCategory, ServiceTier, UrgencyLevel, Worker } from '../types';
 import { INITIAL_BOOKINGS } from '../data/mockData';
 import { SERVICE_CATEGORIES } from '../data/services';
+import { bookingService } from '../services/bookingService';
+import { storageService } from '../services/storage/storageService';
+import { STORAGE_KEYS } from '../services/storage/storageKeys';
+import { LOCATIONS, DEFAULT_LOCATION, ServiceLocation } from '../data/locations';
 
 export type CustomerView =
   | 'home'
@@ -9,7 +13,8 @@ export type CustomerView =
   | 'worker-matching'
   | 'tracking'
   | 'history'
-  | 'profile';
+  | 'profile'
+  | 'money';
 
 interface BookingContextType {
   activeView: CustomerView;
@@ -24,6 +29,11 @@ interface BookingContextType {
   setProblemDescription: (desc: string) => void;
   photoEstimate: { detected: boolean; tier: ServiceTier; confidence: number; label: string } | null;
   setPhotoEstimate: (est: { detected: boolean; tier: ServiceTier; confidence: number; label: string } | null) => void;
+  selectedLocation: string;
+  setSelectedLocation: (location: string) => void;
+  showLocationModal: boolean;
+  setShowLocationModal: (show: boolean) => void;
+  locations: ServiceLocation[];
   bookings: Booking[];
   currentBookingId: string | null;
   setCurrentBookingId: (id: string | null) => void;
@@ -33,6 +43,7 @@ interface BookingContextType {
   advanceBookingStatus: (bookingId: string) => void;
   submitCustomerReview: (bookingId: string, rating: number, review: string) => void;
   startServiceBooking: (category: ServiceCategory, isEmergency?: boolean) => void;
+  refreshBookings: () => Promise<void>;
 }
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
@@ -44,10 +55,41 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [urgency, setUrgency] = useState<UrgencyLevel>('NORMAL');
   const [problemDescription, setProblemDescription] = useState<string>('');
   const [photoEstimate, setPhotoEstimate] = useState<{ detected: boolean; tier: ServiceTier; confidence: number; label: string } | null>(null);
-  const [bookings, setBookings] = useState<Booking[]>(INITIAL_BOOKINGS);
-  const [currentBookingId, setCurrentBookingId] = useState<string | null>(INITIAL_BOOKINGS[0].id);
+
+  // Initialize selectedLocation synchronously from storageService for seamless persistence
+  const [selectedLocation, setSelectedLocationState] = useState<string>(() => {
+    return storageService.getItem<string>(STORAGE_KEYS.SELECTED_LOCATION, DEFAULT_LOCATION);
+  });
+  const [showLocationModal, setShowLocationModal] = useState<boolean>(false);
+
+  const setSelectedLocation = (location: string) => {
+    setSelectedLocationState(location);
+    storageService.setItem(STORAGE_KEYS.SELECTED_LOCATION, location);
+  };
+  
+  // Initialize state synchronously from storageService to eliminate layout shift/flicker
+  const [bookings, setBookings] = useState<Booking[]>(() => {
+    return storageService.getItem<Booking[]>(STORAGE_KEYS.BOOKINGS, INITIAL_BOOKINGS);
+  });
+  
+  const [currentBookingId, setCurrentBookingId] = useState<string | null>(() => {
+    const initial = storageService.getItem<Booking[]>(STORAGE_KEYS.BOOKINGS, INITIAL_BOOKINGS);
+    return initial.length > 0 ? initial[0].id : null;
+  });
 
   const currentBooking = bookings.find(b => b.id === currentBookingId) || bookings[0] || null;
+
+  // Hydrate from bookingService asynchronously
+  const refreshBookings = async () => {
+    const response = await bookingService.getBookings();
+    if (response.success && response.data) {
+      setBookings(response.data);
+    }
+  };
+
+  useEffect(() => {
+    refreshBookings();
+  }, []);
 
   const startServiceBooking = (category: ServiceCategory, isEmergency: boolean = false) => {
     setSelectedCategory(category);
@@ -59,12 +101,22 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const createBooking = (worker: Worker): Booking => {
-    const randomNum = Math.floor(10000 + Math.random() * 90000);
-    const token = `SYH-${randomNum}`;
-    const base = selectedCategory?.basePrice || 299;
+    const targetCategory = selectedCategory || SERVICE_CATEGORIES[0];
+    
+    // Call booking service
+    const tempRandom = Math.floor(10000 + Math.random() * 90000);
+    const token = `SYH-${tempRandom}`;
+    const base = targetCategory?.basePrice || 299;
     const tierMultiplier = selectedTier === 'SMALL' ? 1 : selectedTier === 'MEDIUM' ? 1.8 : 2.8;
     const estimatedPrice = Math.round(base * tierMultiplier);
     const connectionFee = 25;
+    const now = new Date();
+
+    const locObj = LOCATIONS.find(l => l.area === selectedLocation);
+    const bookingAddress = locObj 
+      ? `Flat 402, Green Vista, ${locObj.area}`
+      : `Flat 402, Green Vista, ${selectedLocation}`;
+    const bookingCity = locObj ? locObj.city : (selectedLocation.includes(',') ? selectedLocation.split(',').pop()?.trim() || 'Custom Area' : 'Custom Area');
 
     const newBooking: Booking = {
       id: `b-${Date.now()}`,
@@ -72,13 +124,13 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       customerId: 'cust-1',
       customerName: 'Ananya Deshmukh',
       customerPhone: '+91 99801 22334',
-      serviceId: selectedCategory?.id || 'electrician',
-      serviceName: selectedCategory?.name || 'Electrician',
-      serviceCategory: selectedCategory?.category || 'General',
-      description: problemDescription || `Requested ${selectedCategory?.name || 'Service'} (${selectedTier} Tier)`,
-      address: 'Flat 402, Green Vista Apartments, 12th Main Indiranagar, Bangalore',
-      city: 'Bangalore',
-      scheduledDate: new Date().toISOString().split('T')[0],
+      serviceId: targetCategory.id,
+      serviceName: targetCategory.name,
+      serviceCategory: targetCategory.category || 'General',
+      description: problemDescription || `Requested ${targetCategory.name} (${selectedTier} Tier)`,
+      address: bookingAddress,
+      city: bookingCity,
+      scheduledDate: now.toISOString().split('T')[0],
       scheduledTime: urgency === 'EMERGENCY' ? 'Immediate Priority (15-20 min)' : 'Today (Next Available)',
       urgency,
       tier: selectedTier,
@@ -91,14 +143,37 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       statusHistory: [
         {
           status: 'REQUESTED',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          note: `Booking request sent to ${worker.name}`
-        }
+          timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          note: `Booking request sent to ${worker.name}`,
+        },
       ],
       paymentStatus: 'PAID',
-      createdAt: new Date().toISOString(),
+      createdAt: now.toISOString(),
     };
 
+    // Synchronously persist via storage & async service execution
+    bookingService.createBooking({
+      customerId: newBooking.customerId,
+      customerName: newBooking.customerName,
+      customerPhone: newBooking.customerPhone,
+      serviceCategory: targetCategory,
+      tier: selectedTier,
+      urgency,
+      problemDescription: newBooking.description,
+      address: newBooking.address,
+      city: newBooking.city,
+      worker,
+    }).then(res => {
+      if (res.success && res.data) {
+        setBookings(prev => {
+          const filtered = prev.filter(b => b.id !== newBooking.id && b.id !== res.data!.id);
+          return [res.data!, ...filtered];
+        });
+        setCurrentBookingId(res.data.id);
+      }
+    });
+
+    // Update local state immediately for seamless responsive UI
     setBookings(prev => [newBooking, ...prev]);
     setCurrentBookingId(newBooking.id);
     setActiveView('tracking');
@@ -106,6 +181,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const updateBookingStatus = (bookingId: string, nextStatus: BookingStatus, note?: string) => {
+    // 1. Optimistic UI update
     setBookings(prev =>
       prev.map(b => {
         if (b.id !== bookingId) return b;
@@ -124,7 +200,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
             status: nextStatus,
             timestamp,
             note: note || defaultNote,
-          }
+          },
         ];
 
         return {
@@ -135,9 +211,23 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         };
       })
     );
+
+    // 2. Persist to Service Layer
+    bookingService.updateBookingStatus(bookingId, nextStatus, note).then(res => {
+      if (!res.success) {
+        console.warn(`Booking update warning: ${res.error}`);
+      }
+    });
   };
 
   const advanceBookingStatus = (bookingId: string) => {
+    bookingService.advanceBookingStatus(bookingId).then(res => {
+      if (res.success && res.data) {
+        setBookings(prev => prev.map(b => (b.id === bookingId ? res.data! : b)));
+      }
+    });
+
+    // Local optimistic update
     setBookings(prev => {
       const target = prev.find(b => b.id === bookingId);
       if (!target) return prev;
@@ -153,20 +243,30 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         {
           status: nextStatus,
           timestamp,
-          note: `Status advanced to ${nextStatus}`
-        }
+          note: `Status advanced to ${nextStatus}`,
+        },
       ];
 
-      return prev.map(b => (b.id === bookingId ? {
-        ...b,
-        status: nextStatus,
-        statusHistory: updatedHistory,
-        completedAt: nextStatus === 'COMPLETED' ? new Date().toISOString() : b.completedAt
-      } : b));
+      return prev.map(b =>
+        b.id === bookingId
+          ? {
+              ...b,
+              status: nextStatus,
+              statusHistory: updatedHistory,
+              completedAt: nextStatus === 'COMPLETED' ? new Date().toISOString() : b.completedAt,
+            }
+          : b
+      );
     });
   };
 
   const submitCustomerReview = (bookingId: string, rating: number, review: string) => {
+    bookingService.submitCustomerReview(bookingId, rating, review).then(res => {
+      if (res.success && res.data) {
+        setBookings(prev => prev.map(b => (b.id === bookingId ? res.data! : b)));
+      }
+    });
+
     setBookings(prev =>
       prev.map(b => {
         if (b.id !== bookingId) return b;
@@ -194,6 +294,11 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setProblemDescription,
         photoEstimate,
         setPhotoEstimate,
+        selectedLocation,
+        setSelectedLocation,
+        showLocationModal,
+        setShowLocationModal,
+        locations: LOCATIONS,
         bookings,
         currentBookingId,
         setCurrentBookingId,
@@ -203,6 +308,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
         advanceBookingStatus,
         submitCustomerReview,
         startServiceBooking,
+        refreshBookings,
       }}
     >
       {children}

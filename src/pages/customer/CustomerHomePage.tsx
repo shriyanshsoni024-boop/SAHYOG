@@ -1,648 +1,411 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../../i18n/LanguageContext';
 import { useBooking } from '../../context/BookingContext';
 import { SERVICE_CATEGORIES } from '../../data/services';
-import {
-  MOST_BOOKED_SERVICES,
-  NEW_NOTEWORTHY_SERVICES,
-  CATEGORY_SECTIONS,
-  MarketplaceService,
-  SpotlightItem
-} from '../../data/marketplaceData';
-import { ServiceCategory } from '../../types';
-import { ServiceCard } from '../../components/customer/ServiceCard';
-import { MarketplaceServiceCard } from '../../components/customer/MarketplaceServiceCard';
-import { SpotlightBanner } from '../../components/customer/SpotlightBanner';
-import { CooperativeTrustSection } from '../../components/customer/CooperativeTrustSection';
-import { EmergencyBanner } from '../../components/customer/EmergencyBanner';
-import { Search, X, ChevronRight } from 'lucide-react';
+import { PRONTO_SERVICES } from '../../data/prontoServicesData';
+import { ProntoHeroHeader } from '../../components/customer/ProntoHeroHeader';
+import { CategoryTabsBar } from '../../components/customer/CategoryTabsBar';
+import { ProntoServiceCard, ServiceItemData } from '../../components/customer/ProntoServiceCard';
+import { AddressSelectorModal } from '../../components/customer/AddressSelectorModal';
+import { getCategoryTheme, CategoryTheme } from '../../styles/categoryThemes';
+import { Search, X, Mic, ArrowRight, Zap } from 'lucide-react';
 
-export const CustomerHomePage: React.FC = () => {
-  const { language } = useLanguage();
-  const { startServiceBooking, setProblemDescription, bookings, setActiveView, setCurrentBookingId } = useBooking();
-  const [searchQuery, setSearchQuery] = useState('');
+interface CustomerHomePageProps {
+  onOpenOnboarding?: () => void;
+}
 
-  const activeBooking = bookings.find(b => b.status !== 'COMPLETED' && b.status !== 'CANCELLED');
+export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboarding }) => {
+  const {
+    startServiceBooking,
+    setProblemDescription,
+    bookings,
+    selectedLocation,
+    setSelectedLocation,
+    setActiveView,
+    setCurrentBookingId,
+  } = useBooking();
 
-  const QUICK_SEARCH_CHIPS = [
-    { label: language === 'hi' ? '15m आपातकाल' : '15m Emergency', query: 'emergency' },
-    { label: language === 'hi' ? 'एसी सर्विस' : 'AC Service', query: 'ac' },
-    { label: language === 'hi' ? 'स्विच रिपेयर' : 'Switchboard', query: 'electrician' },
-    { label: language === 'hi' ? 'नल लीकेज' : 'Tap Leak', query: 'plumber' },
-    { label: language === 'hi' ? 'डोर लॉक' : 'Door Lock', query: 'carpenter' },
-    { label: language === 'hi' ? 'डीप क्लीनिंग' : 'Deep Cleaning', query: 'cleaner' },
-  ];
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [showAddressModal, setShowAddressModal] = useState<boolean>(false);
 
-  const handleCategorySelect = (category: ServiceCategory) => {
-    startServiceBooking(category, false);
-  };
+  const activeTheme: CategoryTheme = getCategoryTheme(selectedCategoryId);
 
-  const handleServiceSelect = (service: MarketplaceService) => {
-    const matchedCategory = SERVICE_CATEGORIES.find(c => c.id === service.categoryId) || SERVICE_CATEGORIES[0];
-    startServiceBooking(matchedCategory, service.isEmergency || false);
-    setProblemDescription(language === 'hi' ? service.titleHi : service.title);
-  };
+  // Active ongoing booking check
+  const activeBooking = bookings.find(
+    (b) => b.status !== 'COMPLETED' && b.status !== 'CANCELLED'
+  );
 
-  const handleSpotlightSelect = (promo: SpotlightItem) => {
-    const matchedCategory = SERVICE_CATEGORIES.find(c => c.id === promo.categoryId) || SERVICE_CATEGORIES[0];
-    const isEmerg = promo.id === 'spotlight-emergency';
-    startServiceBooking(matchedCategory, isEmerg);
-    setProblemDescription(language === 'hi' ? promo.titleHi : promo.title);
-  };
+  // Filter services by Category and Search Query
+  const filteredServices = PRONTO_SERVICES.filter((service) => {
+    // 1. Category filter
+    const matchesCategory =
+      selectedCategoryId === 'all' || service.categoryId === selectedCategoryId;
 
-  const filteredCategories = SERVICE_CATEGORIES.filter(cat => {
+    // 2. Search query filter
     const q = searchQuery.toLowerCase().trim();
-    if (!q) return true;
-    if (q === 'emergency') return cat.id === 'electrician' || cat.id === 'plumber';
-    const name = language === 'hi' ? cat.nameHi : cat.name;
-    return (
-      name.toLowerCase().includes(q) ||
-      cat.category.toLowerCase().includes(q) ||
-      cat.skills.some(s => s.toLowerCase().includes(q))
-    );
+    if (!q) return matchesCategory;
+
+    const matchesSearch =
+      service.name.toLowerCase().includes(q) ||
+      service.description.toLowerCase().includes(q) ||
+      service.categoryId.toLowerCase().includes(q);
+
+    return matchesCategory && matchesSearch;
   });
+
+  const handleBookService = (service: ServiceItemData) => {
+    // Map service to existing booking flow category
+    let categoryKey = service.categoryId;
+    if (categoryKey === 'ac') categoryKey = 'ac_repair';
+    if (categoryKey === 'cleaning') categoryKey = 'cleaner';
+    if (categoryKey === 'plumbing') categoryKey = 'plumber';
+    if (categoryKey === 'painting') categoryKey = 'painter';
+
+    const matchedCategory =
+      SERVICE_CATEGORIES.find((c) => c.id === categoryKey) ||
+      SERVICE_CATEGORIES[0];
+
+    setProblemDescription(service.name);
+    startServiceBooking(matchedCategory, false);
+  };
+
+  const handleInstantService = () => {
+    const electricianCategory =
+      SERVICE_CATEGORIES.find((c) => c.id === 'electrician') ||
+      SERVICE_CATEGORIES[0];
+    setProblemDescription('15-Minute Emergency Rapid Dispatch');
+    startServiceBooking(electricianCategory, true);
+  };
+
+  const handleScheduleService = () => {
+    const defaultCat =
+      SERVICE_CATEGORIES.find((c) => c.id === 'cleaner') ||
+      SERVICE_CATEGORIES[0];
+    setProblemDescription('Scheduled Home Service Visit');
+    startServiceBooking(defaultCat, false);
+  };
 
   return (
     <div
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '24px',
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '16px 16px 40px',
-        width: '100%',
+        minHeight: '100vh',
+        backgroundColor: '#F8FAFC',
+        paddingBottom: '88px',
       }}
     >
-      {/* 1. Direct, Unboxed Search & Discovery Header */}
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <div>
-          <h1
-            style={{
-              fontSize: '1.3125rem',
-              fontWeight: 800,
-              color: '#111827',
-              letterSpacing: '-0.025em',
-              lineHeight: 1.25,
-              margin: '0 0 3px',
-            }}
-          >
-            {language === 'hi' ? 'घरेलू सेवाएं, उचित एवं मानक दरों पर' : 'Home services at standard cooperative rates'}
-          </h1>
-          <p style={{ fontSize: '0.78125rem', color: '#64748B', margin: 0 }}>
-            {language === 'hi'
-              ? 'प्रमाणित इलेक्ट्रीशियन, प्लंबर, कारपेंटर और एसी तकनीशियन • 0% सर्ज शुल्क • 30-दिन वारंटी'
-              : 'Verified electricians, plumbers, carpenters & AC technicians • Upfront rates • 30-day warranty'}
-          </p>
-        </div>
+      {/* 1. PRONTO-INSPIRED HERO HEADER (WITH DYNAMIC CATEGORY THEME) */}
+      <ProntoHeroHeader
+        currentLocation={selectedLocation}
+        onOpenLocationSelector={() => setShowAddressModal(true)}
+        onOpenProfile={() => setActiveView('profile')}
+        theme={activeTheme}
+        onInstantServiceClick={handleInstantService}
+        onScheduleServiceClick={handleScheduleService}
+      />
 
-        {/* Wide Search Bar */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+      {/* 2. ACTIVE BOOKING LIVE TRACKING BANNER (IF ACTIVE) */}
+      {activeBooking && (
+        <div style={{ padding: '14px 16px 0' }}>
           <div
+            onClick={() => {
+              setCurrentBookingId(activeBooking.id);
+              setActiveView('tracking');
+            }}
             style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '16px',
+              border: '1.5px solid #BBF7D0',
+              padding: '12px 14px',
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: '#FFFFFF',
-              borderRadius: '6px',
-              padding: '9px 14px',
-              border: '1px solid #E2E8F0',
-              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
-              gap: '10px',
-              height: '42px',
+              justifyContent: 'space-between',
+              boxShadow: '0 4px 12px rgba(12, 131, 31, 0.1)',
+              cursor: 'pointer',
             }}
+            className="hover-card"
           >
-            <Search size={16} color="var(--theme-accent, #0C831F)" style={{ flexShrink: 0 }} />
-            <input
-              type="text"
-              placeholder={
-                language === 'hi'
-                  ? 'इलेक्ट्रीशियन, एसी सर्विस, प्लंबर, डोर लॉक खोजें...'
-                  : 'Search for AC repair, electrician, tap leakage, deep cleaning...'
-              }
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                border: 'none',
-                outline: 'none',
-                width: '100%',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                color: '#111827',
-                backgroundColor: 'transparent',
-              }}
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: '#64748B', display: 'flex' }}
-                aria-label="Clear search"
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  backgroundColor: '#F0FDF4',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#0C831F',
+                  flexShrink: 0,
+                }}
               >
-                <X size={15} />
-              </button>
-            )}
-          </div>
-
-          {/* Quick Search Filter Chips (Horizontally scrollable with smooth touch, no page overflow) */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '6px',
-              overflowX: 'auto',
-              scrollbarWidth: 'none',
-              width: '100%',
-              minWidth: 0,
-              padding: '1px 0 3px',
-              WebkitOverflowScrolling: 'touch',
-            }}
-          >
-            {QUICK_SEARCH_CHIPS.map((chip, idx) => {
-              const isActive = searchQuery === chip.query;
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setSearchQuery(isActive ? '' : chip.query)}
-                  style={{
-                    flexShrink: 0,
-                    padding: '4px 11px',
-                    fontSize: '0.71875rem',
-                    fontWeight: isActive ? 700 : 500,
-                    borderRadius: '9999px',
-                    border: `1px solid ${isActive ? 'var(--theme-accent, #0C831F)' : '#E2E8F0'}`,
-                    backgroundColor: isActive ? 'var(--theme-accent-light, #F0FDF4)' : '#FFFFFF',
-                    color: isActive ? 'var(--theme-accent, #0C831F)' : '#374151',
-                    cursor: 'pointer',
-                    transition: 'all 120ms ease',
-                    whiteSpace: 'nowrap',
-                    height: '26px',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  {chip.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Active Service Tracker Strip (if any active order) */}
-      {activeBooking && (
-        <section
-          onClick={() => {
-            setCurrentBookingId(activeBooking.id);
-            setActiveView('tracking');
-          }}
-          style={{
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #DCFCE7',
-            borderRadius: '6px',
-            padding: '8px 12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            cursor: 'pointer',
-            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
-          }}
-          className="hover-card"
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--theme-accent, #0C831F)',
-                display: 'inline-block',
-              }}
-            />
-            <div>
-              <div style={{ fontSize: '0.625rem', fontWeight: 800, color: 'var(--theme-accent, #0C831F)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                Active Service • {activeBooking.token}
+                <Zap size={20} fill="#0C831F" />
               </div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#111827', marginTop: '1px' }}>
-                {activeBooking.serviceName} ({activeBooking.status.replace(/_/g, ' ')})
+
+              <div>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span>{activeBooking.serviceName}</span>
+                  <span
+                    style={{
+                      fontSize: '0.5625rem',
+                      fontWeight: 800,
+                      backgroundColor: '#DCFCE7',
+                      color: '#166534',
+                      padding: '1px 5px',
+                      borderRadius: '4px',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {activeBooking.status}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
+                  {activeBooking.worker ? `Technician: ${activeBooking.worker.name}` : 'Cooperative Artisan Assigned'} • OTP: <strong>{activeBooking.otp || '4829'}</strong>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.71875rem', fontWeight: 700, color: 'var(--theme-accent, #0C831F)' }}>
-            <span>Track Live</span>
-            <ChevronRight size={14} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 800, color: '#0C831F' }}>
+              <span>Track</span>
+              <ArrowRight size={14} />
+            </div>
           </div>
-        </section>
+        </div>
       )}
 
-      {/* 2. Service Categories (Clean Discovery Grid) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
+      {/* 3. LARGE ROUNDED SEARCH BAR */}
+      <div style={{ padding: '16px 16px 8px' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '18px',
+            border: '1.5px solid #E2E8F0',
+            padding: '12px 16px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.04)',
+            gap: '10px',
+            transition: 'border-color 150ms ease',
+          }}
+        >
+          <Search size={20} color="#64748B" />
+
+          <input
+            type="text"
+            placeholder={`Search for ${activeTheme.id === 'all' ? 'cleaning, electrician, AC...' : activeTheme.name.toLowerCase()}`}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              border: 'none',
+              outline: 'none',
+              width: '100%',
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              color: '#0F172A',
+              backgroundColor: 'transparent',
+            }}
+          />
+
+          {searchQuery ? (
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#64748B',
+                display: 'flex',
+                alignItems: 'center',
+                padding: 0,
+              }}
+            >
+              <X size={18} />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => alert('Voice search activated. Speak your service need.')}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: activeTheme.primary,
+                display: 'flex',
+                alignItems: 'center',
+                padding: 0,
+              }}
+            >
+              <Mic size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* 4. BIGBASKET-STYLE HORIZONTAL CATEGORY TABS BAR */}
+      <div style={{ margin: '6px 0 12px' }}>
+        <CategoryTabsBar
+          selectedCategoryId={selectedCategoryId}
+          onSelectCategory={(catId) => {
+            setSelectedCategoryId(catId);
+            setSearchQuery('');
+          }}
+          activeTheme={activeTheme}
+        />
+      </div>
+
+      {/* 5. SERVICE CARDS LIST / GRID */}
+      <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? 'सेवा श्रेणियां' : 'All Home Services'}
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 900, color: '#0F172A', margin: 0, letterSpacing: '-0.02em' }}>
+              {selectedCategoryId === 'all' ? 'Popular Services' : `${activeTheme.name} Services`}
             </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? 'मानक दर कार्ड के साथ कुशल सहकारी कारीगर' : 'Fixed rate cards & verified trade specialists'}
-            </p>
+            <span style={{ fontSize: '0.6875rem', color: '#64748B' }}>
+              Standard cooperative pricing with 30-day warranty
+            </span>
           </div>
-          <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#64748B' }}>
-            {filteredCategories.length} categories
+
+          <span
+            style={{
+              fontSize: '0.6875rem',
+              fontWeight: 800,
+              backgroundColor: activeTheme.primaryLight,
+              color: activeTheme.primaryDark,
+              border: `1px solid ${activeTheme.primaryBorder}`,
+              padding: '3px 8px',
+              borderRadius: '9999px',
+            }}
+          >
+            {filteredServices.length} options
           </span>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(105px, 1fr))',
-            gap: '8px 6px',
-          }}
-        >
-          {filteredCategories.map((cat) => (
-            <ServiceCard
-              key={cat.id}
-              category={cat}
-              onClick={handleCategorySelect}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 3. Emergency Dispatch Banner */}
-      <EmergencyBanner />
-
-      {/* 4. Most Booked Services (Horizontal Shelf) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? 'सर्वाधिक बुक की गई सेवाएं' : 'Most Booked Services'}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? 'इस सप्ताह ग्राहकों द्वारा सबसे अधिक चुनी गई सेवाएं' : 'Trending repairs & maintenance packages'}
-            </p>
+        {/* Services List */}
+        {filteredServices.length > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {filteredServices.map((service) => (
+              <ProntoServiceCard
+                key={service.id}
+                service={service}
+                theme={activeTheme}
+                onBook={() => handleBookService(service)}
+              />
+            ))}
           </div>
-
-          <button
-            type="button"
-            onClick={() => handleCategorySelect(SERVICE_CATEGORIES[0])}
+        ) : (
+          <div
             style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '0.71875rem',
-              fontWeight: 600,
-              color: 'var(--theme-accent, #0C831F)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '2px',
-              padding: 0,
+              padding: '32px 16px',
+              textAlign: 'center',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '20px',
+              border: '1px solid #E2E8F0',
             }}
           >
-            <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={13} />
-          </button>
-        </div>
+            <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🔍</div>
+            <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#0F172A' }}>
+              No services found
+            </div>
+            <p style={{ fontSize: '0.75rem', color: '#64748B', marginTop: '4px' }}>
+              Try searching for "cleaning", "fan", "leakage" or switch category.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedCategoryId('all');
+                setSearchQuery('');
+              }}
+              style={{
+                marginTop: '10px',
+                padding: '8px 16px',
+                backgroundColor: activeTheme.primary,
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
+      </div>
 
+      {/* 6. TRUST & QUALITY STATS SECTION */}
+      <div style={{ padding: '24px 16px 0' }}>
         <div
           style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '24px',
+            border: '1px solid #E2E8F0',
+            padding: '20px 18px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
             display: 'flex',
-            gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '4px',
-            scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch',
+            flexDirection: 'column',
+            gap: '16px',
           }}
         >
-          {MOST_BOOKED_SERVICES.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="horizontal"
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 5. AC & Cooling Services (Responsive Grid) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.ac_appliance.titleHi : CATEGORY_SECTIONS.ac_appliance.title}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.ac_appliance.subtitleHi : CATEGORY_SECTIONS.ac_appliance.subtitle}
+            <div style={{ fontSize: '0.6875rem', fontWeight: 800, color: activeTheme.primary, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              COOPERATIVE GUARANTEE
+            </div>
+            <h3 style={{ fontSize: '1.0625rem', fontWeight: 900, color: '#0F172A', margin: '2px 0 4px', letterSpacing: '-0.02em' }}>
+              Relax, your home is in professional hands
+            </h3>
+            <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0 }}>
+              Backed by regional artisan cooperatives with verified police credentials and standard rates.
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              const cat = SERVICE_CATEGORIES.find(c => c.id === 'ac_repair') || SERVICE_CATEGORIES[1];
-              handleCategorySelect(cat);
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '0.71875rem',
-              fontWeight: 600,
-              color: 'var(--theme-accent, #0C831F)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '2px',
-              padding: 0,
-            }}
-          >
-            <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={13} />
-          </button>
-        </div>
+          {/* Stats Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', textAlign: 'center' }}>
+            <div style={{ backgroundColor: '#F8FAFC', padding: '10px 6px', borderRadius: '12px' }}>
+              <div style={{ fontSize: '1.125rem', fontWeight: 900, color: '#0F172A' }}>
+                50k+
+              </div>
+              <div style={{ fontSize: '0.625rem', color: '#64748B', fontWeight: 600, marginTop: '2px' }}>
+                Trusted Families
+              </div>
+            </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(204px, 1fr))',
-            gap: '12px',
-          }}
-        >
-          {CATEGORY_SECTIONS.ac_appliance.services.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="grid"
-            />
-          ))}
-        </div>
-      </section>
+            <div style={{ backgroundColor: '#F8FAFC', padding: '10px 6px', borderRadius: '12px' }}>
+              <div style={{ fontSize: '1.125rem', fontWeight: 900, color: '#0C831F' }}>
+                4.88 ★
+              </div>
+              <div style={{ fontSize: '0.625rem', color: '#64748B', fontWeight: 600, marginTop: '2px' }}>
+                Verified Rating
+              </div>
+            </div>
 
-      {/* 6. Electrical Services (Horizontal Track) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.electrical.titleHi : CATEGORY_SECTIONS.electrical.title}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.electrical.subtitleHi : CATEGORY_SECTIONS.electrical.subtitle}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              const cat = SERVICE_CATEGORIES.find(c => c.id === 'electrician') || SERVICE_CATEGORIES[0];
-              handleCategorySelect(cat);
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '0.71875rem',
-              fontWeight: 600,
-              color: 'var(--theme-accent, #0C831F)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '2px',
-              padding: 0,
-            }}
-          >
-            <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={13} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '4px',
-            scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          {CATEGORY_SECTIONS.electrical.services.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="horizontal"
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 7. Featured Deals & Offers (Promotional Banner) */}
-      <SpotlightBanner onSelectPromotion={handleSpotlightSelect} />
-
-      {/* 8. Plumbing & Drainage Services (Responsive Grid) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.plumbing.titleHi : CATEGORY_SECTIONS.plumbing.title}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.plumbing.subtitleHi : CATEGORY_SECTIONS.plumbing.subtitle}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              const cat = SERVICE_CATEGORIES.find(c => c.id === 'plumber') || SERVICE_CATEGORIES[2];
-              handleCategorySelect(cat);
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '0.71875rem',
-              fontWeight: 600,
-              color: 'var(--theme-accent, #0C831F)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '2px',
-              padding: 0,
-            }}
-          >
-            <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={13} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(204px, 1fr))',
-            gap: '12px',
-          }}
-        >
-          {CATEGORY_SECTIONS.plumbing.services.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="grid"
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 9. Carpentry & Home Repair (Horizontal Track) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.carpentry.titleHi : CATEGORY_SECTIONS.carpentry.title}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.carpentry.subtitleHi : CATEGORY_SECTIONS.carpentry.subtitle}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              const cat = SERVICE_CATEGORIES.find(c => c.id === 'carpenter') || SERVICE_CATEGORIES[3];
-              handleCategorySelect(cat);
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '0.71875rem',
-              fontWeight: 600,
-              color: 'var(--theme-accent, #0C831F)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '2px',
-              padding: 0,
-            }}
-          >
-            <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={13} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '4px',
-            scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          {CATEGORY_SECTIONS.carpentry.services.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="horizontal"
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 10. Deep Cleaning & Sanitization (Horizontal Track) */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.cleaning.titleHi : CATEGORY_SECTIONS.cleaning.title}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? CATEGORY_SECTIONS.cleaning.subtitleHi : CATEGORY_SECTIONS.cleaning.subtitle}
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              const cat = SERVICE_CATEGORIES.find(c => c.id === 'cleaner') || SERVICE_CATEGORIES[6];
-              handleCategorySelect(cat);
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '0.71875rem',
-              fontWeight: 600,
-              color: 'var(--theme-accent, #0C831F)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '2px',
-              padding: 0,
-            }}
-          >
-            <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={13} />
-          </button>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '4px',
-            scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          {CATEGORY_SECTIONS.cleaning.services.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="horizontal"
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 11. New & Noteworthy Section */}
-      <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <div>
-            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
-              {language === 'hi' ? 'नई एवं आधुनिक सेवाएं' : 'New & Noteworthy'}
-            </h2>
-            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
-              {language === 'hi' ? 'स्मार्ट लॉक, ईवी चार्जर, हर्बल पेस्ट केयर और मॉड्यूलर फिटिंग्स' : 'Smart locks, EV charger setups & modular upgrades'}
-            </p>
+            <div style={{ backgroundColor: '#F8FAFC', padding: '10px 6px', borderRadius: '12px' }}>
+              <div style={{ fontSize: '1.125rem', fontWeight: 900, color: '#2563EB' }}>
+                30 Days
+              </div>
+              <div style={{ fontSize: '0.625rem', color: '#64748B', fontWeight: 600, marginTop: '2px' }}>
+                Service Warranty
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div
-          style={{
-            display: 'flex',
-            gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '4px',
-            scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          {NEW_NOTEWORTHY_SERVICES.map((item) => (
-            <MarketplaceServiceCard
-              key={item.id}
-              service={item}
-              onSelect={handleServiceSelect}
-              layout="horizontal"
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* 12. Cooperative Trust Guarantee Section */}
-      <CooperativeTrustSection />
+      {/* Address Selector Bottom Sheet Modal */}
+      <AddressSelectorModal
+        isOpen={showAddressModal}
+        onClose={() => setShowAddressModal(false)}
+        selectedAddress={selectedLocation}
+        onSelectAddress={(newLoc) => setSelectedLocation(newLoc)}
+        onAddNewAddress={() => {
+          setShowAddressModal(false);
+          if (onOpenOnboarding) {
+            onOpenOnboarding();
+          }
+        }}
+      />
     </div>
   );
 };

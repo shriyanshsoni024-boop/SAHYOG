@@ -60,7 +60,7 @@ export const BookingTrackingPage: React.FC = () => {
       case 'REQUESTED': return `Request dispatched to ${workerName}. Waiting for artisan to accept...`;
       case 'MATCHED': return `AI matched ${workerName}. Dispatching job request...`;
       case 'ACCEPTED': return `${workerName} has accepted your service order and is gearing up.`;
-      case 'ON_THE_WAY': return `${workerName} is en route to Indiranagar (ETA ~12 mins).`;
+      case 'ON_THE_WAY': return `${workerName} is en route to ${currentBooking.city || 'your area'} (ETA ~12 mins).`;
       case 'IN_PROGRESS': return `Artisan is currently performing ${currentBooking.serviceName} at your premises.`;
       case 'COMPLETED': return 'Work completed and verified. 30-Day SAHYOG warranty is active.';
       case 'CANCELLED': return 'Booking was declined or cancelled.';
@@ -294,7 +294,9 @@ export const BookingTrackingPage: React.FC = () => {
             <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <MapPin size={12} /> Service Address:
             </span>
-            <span style={{ textAlign: 'right', maxWidth: '200px', fontWeight: 600 }}>Indiranagar 4th Block, Bangalore</span>
+            <span style={{ textAlign: 'right', maxWidth: '200px', fontWeight: 600 }}>
+              {currentBooking.address || (currentBooking.city ? `Flat 402, Green Vista, ${currentBooking.city}` : 'Indiranagar 4th Block, Bangalore')}
+            </span>
           </div>
         </div>
       </Card>

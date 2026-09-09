@@ -1,202 +1,321 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../../i18n/LanguageContext';
 import { useBooking } from '../../context/BookingContext';
-import { Card } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
-import { Button } from '../../components/ui/Button';
-import { Rating } from '../../components/ui/Rating';
-import { CalendarCheck, ChevronRight, PlusCircle, RotateCcw, Clock, ShieldCheck } from 'lucide-react';
-import { SERVICE_CATEGORIES } from '../../data/services';
+import {
+  Calendar,
+  MapPin,
+  User,
+  Plus,
+  Zap,
+  ChevronRight,
+} from 'lucide-react';
 
 export const CustomerHistoryPage: React.FC = () => {
-  const { t } = useLanguage();
-  const { bookings, setCurrentBookingId, setActiveView, startServiceBooking } = useBooking();
-  const [activeTab, setActiveTab] = useState<'all' | 'active' | 'completed'>('all');
+  const { bookings, setCurrentBookingId, setActiveView } = useBooking();
+  const [selectedTab, setSelectedTab] = useState<'all' | 'upcoming' | 'ongoing' | 'completed' | 'cancelled'>('all');
 
-  const activeBookings = bookings.filter(b => b.status !== 'COMPLETED' && b.status !== 'CANCELLED');
-  const pastBookings = bookings.filter(b => b.status === 'COMPLETED' || b.status === 'CANCELLED');
+  const upcomingBookings = bookings.filter((b) => b.status === 'REQUESTED' || b.status === 'MATCHED');
+  const ongoingBookings = bookings.filter(
+    (b) => b.status === 'ACCEPTED' || b.status === 'ON_THE_WAY' || b.status === 'IN_PROGRESS'
+  );
+  const completedBookings = bookings.filter((b) => b.status === 'COMPLETED');
+  const cancelledBookings = bookings.filter((b) => b.status === 'CANCELLED');
 
-  const displayedBookings = activeTab === 'active' 
-    ? activeBookings 
-    : activeTab === 'completed' 
-    ? pastBookings 
-    : bookings;
+  let displayedBookings = bookings;
+  if (selectedTab === 'upcoming') displayedBookings = upcomingBookings;
+  if (selectedTab === 'ongoing') displayedBookings = ongoingBookings;
+  if (selectedTab === 'completed') displayedBookings = completedBookings;
+  if (selectedTab === 'cancelled') displayedBookings = cancelledBookings;
 
-  const handleRebook = (serviceName: string) => {
-    const matched = SERVICE_CATEGORIES.find(c => c.name.toLowerCase().includes(serviceName.toLowerCase()) || serviceName.toLowerCase().includes(c.name.toLowerCase())) || SERVICE_CATEGORIES[0];
-    startServiceBooking(matched, false);
+  const handleOpenDetails = (bookingId: string) => {
+    setCurrentBookingId(bookingId);
+    setActiveView('tracking');
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'IN_PROGRESS':
+        return { bg: '#FEF3C7', text: '#92400E', border: '#FDE68A', label: 'Work In Progress' };
+      case 'ON_THE_WAY':
+        return { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: 'Artisan On The Way' };
+      case 'ACCEPTED':
+        return { bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0', label: 'Job Accepted' };
+      case 'COMPLETED':
+        return { bg: '#DCFCE7', text: '#166534', border: '#86EFAC', label: 'Completed' };
+      case 'CANCELLED':
+        return { bg: '#FEE2E2', text: '#B91C1C', border: '#FECACA', label: 'Cancelled' };
+      default:
+        return { bg: '#F1F5F9', text: '#475569', border: '#CBD5E1', label: 'Requested' };
+    }
   };
 
   return (
-    <div style={{ padding: '16px 16px 32px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        backgroundColor: '#F8FAFC',
+        padding: '16px 16px 88px',
+      }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            {t('nav_bookings')}
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', margin: '0 0 2px', letterSpacing: '-0.02em' }}>
+            My Bookings
           </h1>
-          <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
-            Track active requests and view past receipts
-          </span>
+          <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0 }}>
+            Live status, OTP codes, and past service warranties
+          </p>
         </div>
-        <Button
+
+        <button
           type="button"
-          variant="primary"
-          size="sm"
-          leftIcon={<PlusCircle size={14} />}
           onClick={() => setActiveView('home')}
+          style={{
+            padding: '7px 12px',
+            backgroundColor: '#0C831F',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '10px',
+            fontSize: '0.75rem',
+            fontWeight: 800,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+          }}
+          className="sahyog-btn"
         >
-          Book New
-        </Button>
+          <Plus size={14} />
+          <span>Book New</span>
+        </button>
       </div>
 
-      {/* Segmented Filter Bar */}
-      <div style={{ display: 'flex', gap: '6px' }}>
+      {/* Segmented Filter Tabs (Horizontal Scrollable) */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '6px',
+          overflowX: 'auto',
+          paddingBottom: '8px',
+          marginBottom: '14px',
+          scrollbarWidth: 'none',
+        }}
+        className="hide-scrollbar"
+      >
         {[
           { id: 'all', label: `All (${bookings.length})` },
-          { id: 'active', label: `Active (${activeBookings.length})` },
-          { id: 'completed', label: `Completed (${pastBookings.length})` },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setActiveTab(tab.id as 'all' | 'active' | 'completed')}
-            className={`chip ${activeTab === tab.id ? 'active' : ''}`}
-          >
-            {tab.label}
-          </button>
-        ))}
+          { id: 'ongoing', label: `Ongoing (${ongoingBookings.length})` },
+          { id: 'upcoming', label: `Upcoming (${upcomingBookings.length})` },
+          { id: 'completed', label: `Completed (${completedBookings.length})` },
+          { id: 'cancelled', label: `Cancelled (${cancelledBookings.length})` },
+        ].map((tab) => {
+          const isSelected = selectedTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setSelectedTab(tab.id as any)}
+              style={{
+                flex: '0 0 auto',
+                padding: '7px 12px',
+                borderRadius: '9999px',
+                border: `1.5px solid ${isSelected ? '#0C831F' : '#E2E8F0'}`,
+                backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
+                color: isSelected ? '#0C831F' : '#475569',
+                fontSize: '0.75rem',
+                fontWeight: isSelected ? 800 : 600,
+                cursor: 'pointer',
+                transition: 'all 120ms ease',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
 
       {/* Bookings List */}
-      {displayedBookings.length === 0 ? (
-        <Card padding="lg" style={{ textAlign: 'center', backgroundColor: 'var(--bg-surface)' }}>
-          <CalendarCheck size={36} color="var(--text-muted)" style={{ margin: '0 auto 10px' }} />
-          <p style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-            {t('no_bookings_title')}
-          </p>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px', maxWidth: '280px', margin: '4px auto 14px' }}>
-            {t('no_bookings_desc')}
-          </p>
-          <Button
-            type="button"
-            variant="primary"
-            size="sm"
-            onClick={() => setActiveView('home')}
-          >
-            Explore Services
-          </Button>
-        </Card>
-      ) : (
+      {displayedBookings.length > 0 ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {displayedBookings.map((b) => {
-            const isOngoing = b.status !== 'COMPLETED' && b.status !== 'CANCELLED';
+            const badge = getStatusBadge(b.status);
+            const isLive = b.status !== 'COMPLETED' && b.status !== 'CANCELLED';
 
             return (
-              <Card
+              <div
                 key={b.id}
-                variant="default"
-                padding="md"
+                onClick={() => handleOpenDetails(b.id)}
                 style={{
-                  border: isOngoing ? '1.5px solid var(--primary-border)' : '1px solid var(--border-default)',
-                  backgroundColor: isOngoing ? 'var(--primary-light)' : 'var(--bg-surface)',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '18px',
+                  border: `1.5px solid ${isLive ? '#BBF7D0' : '#E2E8F0'}`,
+                  padding: '16px',
+                  boxShadow: isLive ? '0 4px 14px rgba(12, 131, 31, 0.08)' : '0 2px 6px rgba(0,0,0,0.03)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '10px',
-                  boxShadow: 'var(--shadow-xs)',
+                  gap: '12px',
+                  cursor: 'pointer',
+                  transition: 'all 150ms ease',
                 }}
                 className="hover-card"
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 800, color: isOngoing ? 'var(--primary)' : 'var(--text-primary)' }}>
-                        {b.token}
-                      </span>
-                      <Badge variant={isOngoing ? (b.urgency === 'EMERGENCY' ? 'emergency' : 'match') : 'success'} size="sm">
-                        {b.status.replace(/_/g, ' ')}
-                      </Badge>
-                    </div>
-
-                    <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
-                      {b.serviceName} ({b.tier} Tier)
-                    </div>
-
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span>₹{b.totalPrice}</span>
-                      <span>•</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                        <Clock size={11} /> {b.scheduledDate} ({b.scheduledTime})
-                      </span>
-                    </div>
-
-                    {b.worker && (
-                      <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <ShieldCheck size={12} color="var(--success-dark)" />
-                        <span>Artisan: <strong>{b.worker.name}</strong> ({b.worker.cooperativeName})</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {b.customerRating && (
-                    <Rating value={b.customerRating} size={11} />
-                  )}
-                </div>
-
-                {b.customerReview && (
-                  <div
-                    style={{
-                      backgroundColor: 'var(--bg-muted)',
-                      borderRadius: 'var(--radius-sm)',
-                      padding: '6px 10px',
-                      fontSize: '0.6875rem',
-                      color: 'var(--text-secondary)',
-                      fontStyle: 'italic',
-                    }}
-                  >
-                    "{b.customerReview}"
-                  </div>
-                )}
-
-                {/* Actions Footer */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-default)', paddingTop: '8px' }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCurrentBookingId(b.id);
-                      setActiveView('tracking');
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      color: 'var(--primary)',
-                      fontWeight: 800,
-                      fontSize: '0.75rem',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: 0,
-                    }}
-                  >
-                    <span>{isOngoing ? 'Track Live Progress' : 'View Service Details'}</span>
-                    <ChevronRight size={14} />
-                  </button>
-
-                  {!isOngoing && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      leftIcon={<RotateCcw size={12} />}
-                      onClick={() => handleRebook(b.serviceName)}
+                {/* Card Top: Service & Status */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div
+                      style={{
+                        width: '42px',
+                        height: '42px',
+                        borderRadius: '12px',
+                        backgroundColor: '#F0FDF4',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#0C831F',
+                        flexShrink: 0,
+                      }}
                     >
-                      Book Again
-                    </Button>
+                      <Zap size={22} fill="#0C831F" />
+                    </div>
+
+                    <div>
+                      <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                        {b.serviceName}
+                      </h3>
+                      <div style={{ fontSize: '0.6875rem', color: '#64748B', marginTop: '1px' }}>
+                        Token: <strong>{b.token}</strong> • {b.scheduledDate} ({b.scheduledTime})
+                      </div>
+                    </div>
+                  </div>
+
+                  <span
+                    style={{
+                      fontSize: '0.625rem',
+                      fontWeight: 800,
+                      backgroundColor: badge.bg,
+                      color: badge.text,
+                      border: `1px solid ${badge.border}`,
+                      padding: '2px 8px',
+                      borderRadius: '9999px',
+                      textTransform: 'uppercase',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {badge.label}
+                  </span>
+                </div>
+
+                {/* Professional & OTP row */}
+                <div
+                  style={{
+                    backgroundColor: '#F8FAFC',
+                    borderRadius: '12px',
+                    padding: '10px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <User size={15} color="#64748B" />
+                    <span style={{ fontSize: '0.75rem', color: '#334155', fontWeight: 600 }}>
+                      {b.worker ? b.worker.name : 'Cooperative Artisan Assigned'}
+                    </span>
+                  </div>
+
+                  {b.otp && isLive && (
+                    <div
+                      style={{
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #BBF7D0',
+                        padding: '2px 8px',
+                        borderRadius: '6px',
+                        fontSize: '0.6875rem',
+                        fontWeight: 800,
+                        color: '#0C831F',
+                      }}
+                    >
+                      OTP: {b.otp}
+                    </div>
                   )}
                 </div>
-              </Card>
+
+                {/* Address & Price Row */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #F1F5F9', paddingTop: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.6875rem', color: '#64748B', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <MapPin size={13} color="#94A3B8" style={{ flexShrink: 0 }} />
+                    <span>{b.address || 'Indiranagar, Bangalore'}</span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1rem', fontWeight: 900, color: '#0F172A' }}>
+                      ₹{b.totalPrice}
+                    </span>
+                    <ChevronRight size={16} color="#94A3B8" />
+                  </div>
+                </div>
+              </div>
             );
           })}
+        </div>
+      ) : (
+        /* Empty State */
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '24px',
+            border: '1px solid #E2E8F0',
+            padding: '40px 20px',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '12px',
+          }}
+        >
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              backgroundColor: '#F0FDF4',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#0C831F',
+            }}
+          >
+            <Calendar size={28} />
+          </div>
+
+          <h3 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+            No bookings in this tab
+          </h3>
+          <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0, maxWidth: '260px' }}>
+            Book a certified cooperative electrician, plumber, or cleaning pro in minutes.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setActiveView('home')}
+            style={{
+              marginTop: '8px',
+              padding: '10px 20px',
+              backgroundColor: '#0C831F',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '0.8125rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+            }}
+            className="sahyog-btn"
+          >
+            Explore Services
+          </button>
         </div>
       )}
     </div>

@@ -1,0 +1,470 @@
+import React, { useState } from 'react';
+import { Wallet, Plus, ArrowUpRight, ArrowDownLeft, Gift, ShieldCheck, CreditCard, ChevronRight, CheckCircle2 } from 'lucide-react';
+
+export const CustomerMoneyPage: React.FC = () => {
+  const [balance, setBalance] = useState<number>(450);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [addAmount, setAddAmount] = useState<string>('500');
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+
+  const transactions = [
+    {
+      id: 'tx-1',
+      title: 'Cooperative Cashback Bonus',
+      subtitle: 'Electrical Wiring Booking #SYH-48291',
+      date: 'Today, 2:45 PM',
+      amount: '+₹50',
+      isCredit: true,
+      tag: 'CASHBACK',
+    },
+    {
+      id: 'tx-2',
+      title: 'Paid for Bathroom Cleaning',
+      subtitle: 'Booking #SYH-39104 (Ramesh Kumar)',
+      date: 'Yesterday, 11:20 AM',
+      amount: '-₹399',
+      isCredit: false,
+      tag: 'BOOKING',
+    },
+    {
+      id: 'tx-3',
+      title: 'Welcome Referral Credit',
+      subtitle: 'Joined via SAHYOG Member invite',
+      date: '05 Sep 2026',
+      amount: '+₹100',
+      isCredit: true,
+      tag: 'REFERRAL',
+    },
+  ];
+
+  const handleAddCredits = () => {
+    const val = parseInt(addAmount, 10);
+    if (val > 0) {
+      setBalance((prev) => prev + val);
+      setShowAddModal(false);
+    }
+  };
+
+  const handleCopyReferral = () => {
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        padding: '16px 16px 80px',
+        backgroundColor: '#F8FAFC',
+        minHeight: '100vh',
+      }}
+    >
+      {/* 1. Header & Title */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', margin: '0 0 2px', letterSpacing: '-0.02em' }}>
+            SAHYOG Money & Credits
+          </h1>
+          <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0 }}>
+            Zero-brokerage credits, instant refunds & cooperative benefits
+          </p>
+        </div>
+
+        <div
+          style={{
+            padding: '4px 8px',
+            backgroundColor: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            borderRadius: '9999px',
+            fontSize: '0.6875rem',
+            fontWeight: 800,
+            color: '#0C831F',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+          }}
+        >
+          <ShieldCheck size={13} />
+          <span>100% Protected</span>
+        </div>
+      </div>
+
+      {/* 2. Main Balance Card */}
+      <div
+        style={{
+          background: 'linear-gradient(145deg, #0C831F 0%, #086317 100%)',
+          borderRadius: '20px',
+          padding: '22px 20px',
+          color: '#FFFFFF',
+          boxShadow: '0 8px 24px rgba(12, 131, 31, 0.25)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Wallet size={18} />
+            </div>
+            <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'rgba(255, 255, 255, 0.9)' }}>
+              SAHYOG Wallet Balance
+            </span>
+          </div>
+
+          <span
+            style={{
+              fontSize: '0.625rem',
+              fontWeight: 800,
+              backgroundColor: '#FFFFFF',
+              color: '#0C831F',
+              padding: '2px 8px',
+              borderRadius: '9999px',
+            }}
+          >
+            ACTIVE
+          </span>
+        </div>
+
+        <div style={{ fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: '18px' }}>
+          ₹{balance}
+        </div>
+
+        {/* Action Buttons: Add Money & Redeem */}
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button
+            type="button"
+            onClick={() => setShowAddModal(true)}
+            style={{
+              flex: 1,
+              padding: '10px 14px',
+              backgroundColor: '#FFFFFF',
+              color: '#0C831F',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '0.8125rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+            }}
+            className="sahyog-btn"
+          >
+            <Plus size={16} strokeWidth={2.5} />
+            <span>Add Money</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => alert('Cooperative vouchers can be applied directly at checkout!')}
+            style={{
+              flex: 1,
+              padding: '10px 14px',
+              backgroundColor: 'rgba(255, 255, 255, 0.18)',
+              color: '#FFFFFF',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '12px',
+              fontSize: '0.8125rem',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+            }}
+          >
+            <Gift size={16} />
+            <span>Redeem Pass</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 3. Referral Bonus Banner */}
+      <div
+        style={{
+          backgroundColor: '#FFFBEB',
+          borderRadius: '16px',
+          border: '1px solid #FDE68A',
+          padding: '14px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              backgroundColor: '#FEF3C7',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#D97706',
+              flexShrink: 0,
+            }}
+          >
+            <Gift size={18} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#92400E' }}>
+              Refer a neighbor & earn ₹100
+            </div>
+            <div style={{ fontSize: '0.6875rem', color: '#B45309' }}>
+              Your referral code: <strong>SAHYOG100</strong>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleCopyReferral}
+          style={{
+            padding: '6px 12px',
+            backgroundColor: '#D97706',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '0.75rem',
+            fontWeight: 800,
+            cursor: 'pointer',
+            flexShrink: 0,
+          }}
+        >
+          {copiedCode ? 'Copied!' : 'Copy Code'}
+        </button>
+      </div>
+
+      {/* 4. Recent Transactions */}
+      <div
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '18px',
+          border: '1px solid #E2E8F0',
+          padding: '16px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+          <span style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A' }}>
+            Recent Activity & Pass
+          </span>
+          <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#0C831F' }}>
+            View All
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {transactions.map((tx) => (
+            <div
+              key={tx.id}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingBottom: '10px',
+                borderBottom: '1px solid #F1F5F9',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    backgroundColor: tx.isCredit ? '#F0FDF4' : '#FEE2E2',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: tx.isCredit ? '#0C831F' : '#DC2626',
+                  }}
+                >
+                  {tx.isCredit ? <ArrowDownLeft size={16} /> : <ArrowUpRight size={16} />}
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F172A' }}>
+                    {tx.title}
+                  </div>
+                  <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
+                    {tx.subtitle} • {tx.date}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: 800,
+                  color: tx.isCredit ? '#0C831F' : '#0F172A',
+                }}
+              >
+                {tx.amount}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Saved Payment Methods */}
+      <div
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '18px',
+          border: '1px solid #E2E8F0',
+          padding: '16px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+        }}
+      >
+        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>
+          Linked Payment Options
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '10px 12px',
+              backgroundColor: '#F8FAFC',
+              borderRadius: '12px',
+              border: '1px solid #E2E8F0',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{ fontSize: '1.25rem' }}>📱</div>
+              <div>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F172A' }}>
+                  UPI / GPay / PhonePe
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
+                  Primary instant payment mode
+                </div>
+              </div>
+            </div>
+            <CheckCircle2 size={16} color="#0C831F" />
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '10px 12px',
+              backgroundColor: '#F8FAFC',
+              borderRadius: '12px',
+              border: '1px solid #E2E8F0',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <CreditCard size={18} color="#64748B" />
+              <div>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F172A' }}>
+                  Debit / Credit Card
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
+                  Visa / Mastercard / RuPay
+                </div>
+              </div>
+            </div>
+            <ChevronRight size={16} color="#94A3B8" />
+          </div>
+        </div>
+      </div>
+
+      {/* Add Money Modal */}
+      {showAddModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: 'rgba(0,0,0,0.6)',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+          }}
+          onClick={() => setShowAddModal(false)}
+        >
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '480px',
+              backgroundColor: '#FFFFFF',
+              borderRadius: '24px 24px 0 0',
+              padding: '24px 20px 36px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+              Add SAHYOG Wallet Balance
+            </h3>
+
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {['200', '500', '1000', '2000'].map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => setAddAmount(amt)}
+                  style={{
+                    flex: 1,
+                    padding: '8px',
+                    borderRadius: '8px',
+                    border: `1.5px solid ${addAmount === amt ? '#0C831F' : '#E2E8F0'}`,
+                    backgroundColor: addAmount === amt ? '#F0FDF4' : '#FFFFFF',
+                    color: addAmount === amt ? '#0C831F' : '#0F172A',
+                    fontSize: '0.8125rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  ₹{amt}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddCredits}
+              style={{
+                width: '100%',
+                padding: '14px',
+                backgroundColor: '#0C831F',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '0.9375rem',
+                fontWeight: 800,
+                cursor: 'pointer',
+                marginTop: '8px',
+              }}
+              className="sahyog-btn"
+            >
+              Add ₹{addAmount} via UPI
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

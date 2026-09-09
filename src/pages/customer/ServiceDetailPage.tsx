@@ -19,6 +19,8 @@ export const ServiceDetailPage: React.FC = () => {
     photoEstimate,
     setPhotoEstimate,
     setActiveView,
+    selectedLocation,
+    setShowLocationModal,
   } = useBooking();
 
   const [simulatingAi, setSimulatingAi] = useState(false);
@@ -462,10 +464,13 @@ export const ServiceDetailPage: React.FC = () => {
             <MapPin size={15} color="var(--theme-accent, #0C831F)" />
             <div>
               <div style={{ fontWeight: 700, color: 'var(--theme-text, #111827)' }}>{t('current_location')}</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--theme-text-muted, #6B7280)' }}>Sector 62, Noida • 15m Dispatch Area</div>
+              <div style={{ fontSize: '0.625rem', color: 'var(--theme-text-muted, #6B7280)' }}>{selectedLocation} • 15m Dispatch Area</div>
             </div>
           </div>
-          <span style={{ color: 'var(--theme-accent, #0C831F)', fontWeight: 800, fontSize: '0.6875rem', cursor: 'pointer' }}>
+          <span
+            onClick={() => setShowLocationModal(true)}
+            style={{ color: 'var(--theme-accent, #0C831F)', fontWeight: 800, fontSize: '0.6875rem', cursor: 'pointer' }}
+          >
             {t('change_location')}
           </span>
         </div>
