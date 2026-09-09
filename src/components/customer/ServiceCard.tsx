@@ -35,28 +35,28 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
         alignItems: 'center',
         textAlign: 'center',
         cursor: 'pointer',
-        position: 'relative',
-        padding: '4px 2px',
+        padding: '6px 2px 8px',
         borderRadius: 'var(--radius-sm)',
-        transition: 'all var(--transition-fast)',
+        transition: 'transform var(--transition-fast), background-color var(--transition-fast)',
         userSelect: 'none',
+        backgroundColor: selected ? 'var(--theme-accent-light, #F0FDF4)' : 'transparent',
       }}
       className="hover-card"
     >
-      {/* Category Visual Tile */}
+      {/* Category Image Thumbnail */}
       <div
         style={{
-          width: '56px',
-          height: '56px',
+          width: '64px',
+          height: '64px',
           borderRadius: 'var(--radius-md)',
-          backgroundColor: '#FFFFFF',
-          border: `1.5px solid ${selected ? 'var(--primary-hover)' : 'var(--border-default)'}`,
+          backgroundColor: '#F3F4F6',
+          border: `1px solid ${selected ? 'var(--theme-accent, #0C831F)' : 'var(--border-default)'}`,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          marginBottom: '5px',
-          boxShadow: selected ? '0 0 0 2px var(--primary-light)' : 'var(--shadow-xs)',
+          marginBottom: '6px',
+          boxShadow: selected ? '0 0 0 2px var(--theme-accent-light, #F0FDF4)' : 'none',
           position: 'relative',
         }}
       >
@@ -74,8 +74,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
             loading="lazy"
           />
         ) : (
-          <div style={{ color: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <IconComponent size={22} strokeWidth={2} />
+          <div style={{ color: 'var(--theme-accent, #0C831F)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <IconComponent size={24} strokeWidth={1.8} />
           </div>
         )}
       </div>
@@ -83,11 +83,11 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
       {/* Label */}
       <span
         style={{
-          fontSize: '0.6875rem',
-          fontWeight: selected ? 700 : 600,
-          color: selected ? 'var(--primary-dark)' : 'var(--text-primary)',
-          lineHeight: 1.2,
-          minHeight: '22px',
+          fontSize: '0.75rem',
+          fontWeight: selected ? 800 : 600,
+          color: selected ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text, #111827)',
+          lineHeight: 1.25,
+          minHeight: '28px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -102,9 +102,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
       <span
         style={{
           fontSize: '0.625rem',
-          color: 'var(--secondary)',
+          color: 'var(--theme-text-muted, #6B7280)',
           marginTop: '1px',
-          fontWeight: 700,
+          fontWeight: 600,
         }}
       >
         ₹{category.basePrice}+
@@ -112,3 +112,4 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
     </div>
   );
 };
+

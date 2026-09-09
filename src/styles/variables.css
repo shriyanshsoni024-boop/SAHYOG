@@ -19,6 +19,24 @@
   --accent-warm-border: #FDE68A;
   --accent-warm-dark: #92400E;
 
+  /* Dynamic Section Theme Tokens (Customer default) */
+  --theme-banner: #FFFBEB;
+  --theme-banner-text: #92400E;
+  --theme-banner-border: #FDE68A;
+  --theme-header: #FFFFFF;
+  --theme-header-border: #E5E7EB;
+  --theme-text: #111827;
+  --theme-text-secondary: #374151;
+  --theme-text-muted: #6B7280;
+  --theme-accent: #0C831F;
+  --theme-accent-hover: #096818;
+  --theme-accent-light: #F0FDF4;
+  --theme-accent-border: #BBF7D0;
+  --theme-surface: #FFFFFF;
+  --theme-surface-elevated: #FFFFFF;
+  --theme-muted: #F8F9FA;
+  --theme-border: #E5E7EB;
+
   /* Status Colors */
   --success: #0C831F;           /* Fresh Commerce Green */
   --success-light: #F0FDF4;
@@ -85,9 +103,16 @@
   /* Transitions */
   --transition-fast: 120ms ease-in-out;
   --transition-normal: 180ms ease-in-out;
+  --transition-theme: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Layout Widths */
   --mobile-max-width: 440px;
   --container-max-width: 1200px;
 }
+
+/* Theme Smooth Transitions */
+.theme-transition {
+  transition: background-color var(--transition-theme), color var(--transition-theme), border-color var(--transition-theme), box-shadow var(--transition-theme);
+}
+
 

@@ -10,63 +10,64 @@ export const MarketplaceFooter: React.FC = () => {
   return (
     <footer
       style={{
-        backgroundColor: '#111827',
-        color: '#9CA3AF',
-        padding: '32px 16px 24px',
-        borderTop: '1px solid #1F2937',
-        marginTop: '24px',
+        backgroundColor: '#0F172A',
+        color: '#94A3B8',
+        padding: '30px 16px 20px',
+        borderTop: '1px solid #1E293B',
+        marginTop: '20px',
         fontSize: '0.75rem',
       }}
     >
-      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '22px' }}>
         {/* Top Tier: Brand, Tagline & Helpline */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div
               style={{
                 width: '28px',
                 height: '28px',
-                borderRadius: 'var(--radius-sm)',
-                backgroundColor: 'var(--primary)',
+                borderRadius: 'var(--radius-xs)',
+                backgroundColor: 'var(--theme-accent, #0C831F)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--primary-text)',
+                color: '#FFFFFF',
               }}
             >
               <ShieldCheck size={18} strokeWidth={2.5} />
             </div>
-            <span style={{ fontSize: '1.125rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+            <span style={{ fontSize: '1.125rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
               SAHYOG
             </span>
             <span
               style={{
                 fontSize: '0.625rem',
                 fontWeight: 800,
-                color: 'var(--primary)',
-                backgroundColor: 'rgba(248, 203, 70, 0.15)',
+                color: '#6EE7B7',
+                backgroundColor: 'rgba(16, 185, 129, 0.15)',
                 padding: '2px 6px',
                 borderRadius: 'var(--radius-xs)',
-                border: '1px solid rgba(248, 203, 70, 0.3)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                letterSpacing: '0.04em',
               }}
             >
               COOPERATIVE FEDERATION
             </span>
           </div>
 
-          <p style={{ color: '#D1D5DB', fontSize: '0.75rem', lineHeight: 1.4, margin: 0, maxWidth: '600px' }}>
+          <p style={{ color: '#CBD5E1', fontSize: '0.75rem', lineHeight: 1.4, margin: 0, maxWidth: '640px' }}>
             {language === 'hi'
               ? 'सहयोग भारत का पहला राष्ट्रीय सहकारी कुशल कार्यबल मंच है, जो कारीगरों को सम्मानजनक आजीविका और ग्राहकों को पारदर्शी व प्रमाणित सेवाएं प्रदान करता है।'
-              : 'SAHYOG is India’s first national worker cooperative platform connecting households with verified electricians, plumbers, carpenters, and appliance specialists under transparent, standard rate cards.'}
+              : 'SAHYOG is India’s national worker cooperative platform connecting households with verified electricians, plumbers, carpenters, and appliance specialists under transparent, standard rate cards.'}
           </p>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F9FAFB' }}>
-              <Phone size={13} color="#10B981" />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '2px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#F8FAFC' }}>
+              <Phone size={13} color="#34D399" />
               <span>24x7 Helpline: <strong>1800-SAHYOG-CARE</strong></span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#F9FAFB' }}>
-              <Mail size={13} color="#10B981" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#F8FAFC' }}>
+              <Mail size={13} color="#34D399" />
               <span>help@sahyog-coop.org.in</span>
             </div>
           </div>
@@ -135,16 +136,16 @@ export const MarketplaceFooter: React.FC = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <p style={{ margin: 0, color: '#94A3B8', lineHeight: 1.35 }}>
                 {language === 'hi'
-                  ? 'सत्यापित सहकारी कारीगर बनें और सम्मानजनक कमाई करें।'
-                  : 'Join as a certified artisan partner and earn fair wages.'}
+                  ? 'सत्यापित सहकारी कारीगर बनें और 85-90% पारिश्रमिक प्राप्त करें।'
+                  : 'Join as a certified artisan partner and earn fair cooperative wages.'}
               </p>
               <button
                 type="button"
                 style={{
-                  padding: '6px 12px',
-                  backgroundColor: 'var(--secondary)',
+                  padding: '5px 10px',
+                  backgroundColor: 'var(--theme-accent, #0C831F)',
                   color: '#FFFFFF',
-                  borderRadius: 'var(--radius-sm)',
+                  borderRadius: 'var(--radius-xs)',
                   fontWeight: 700,
                   fontSize: '0.6875rem',
                   border: 'none',
@@ -155,7 +156,7 @@ export const MarketplaceFooter: React.FC = () => {
                   width: 'fit-content',
                 }}
               >
-                <span>{language === 'hi' ? 'कारीगर के रूप में जुड़ें' : 'Join as Worker Partner'}</span>
+                <span>{language === 'hi' ? 'कारीगर साथी बनें' : 'Join as Artisan Partner'}</span>
                 <ExternalLink size={11} />
               </button>
             </div>

@@ -18,17 +18,17 @@ export const BottomNav: React.FC = () => {
 
   return (
     <nav
-      className="hide-desktop"
+      className="hide-desktop theme-transition"
       style={{
         position: 'sticky',
         bottom: 0,
         zIndex: 50,
-        backgroundColor: 'var(--bg-surface)',
+        backgroundColor: 'var(--theme-surface, #FFFFFF)',
         borderTop: '1px solid var(--border-default)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around',
-        padding: '6px 4px 8px',
+        padding: '5px 4px 6px',
         boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.04)',
       }}
       aria-label="Customer navigation"
@@ -46,31 +46,32 @@ export const BottomNav: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '3px',
-              padding: '6px 12px',
-              borderRadius: 'var(--radius-md)',
-              color: isActive ? 'var(--secondary)' : 'var(--text-muted)',
+              gap: '2px',
+              padding: '4px 10px',
+              borderRadius: 'var(--radius-xs)',
+              color: isActive ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-muted, #6B7280)',
               transition: 'all var(--transition-fast)',
               position: 'relative',
-              background: 'none',
+              background: isActive ? 'var(--theme-accent-light, #F0FDF4)' : 'none',
               border: 'none',
               cursor: 'pointer',
+              minWidth: '58px',
             }}
           >
-            <div style={{ position: 'relative' }}>
-              <Icon size={20} color={isActive ? 'var(--secondary)' : 'var(--text-muted)'} />
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon size={19} color={isActive ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-muted, #6B7280)'} strokeWidth={isActive ? 2.3 : 1.8} />
               {item.view === 'history' && activeBookingsCount > 0 && (
                 <span
                   style={{
                     position: 'absolute',
                     top: '-4px',
                     right: '-8px',
-                    backgroundColor: 'var(--secondary)',
+                    backgroundColor: 'var(--theme-accent, #0C831F)',
                     color: '#ffffff',
-                    fontSize: '0.625rem',
-                    fontWeight: 700,
-                    width: '16px',
-                    height: '16px',
+                    fontSize: '0.5625rem',
+                    fontWeight: 800,
+                    width: '15px',
+                    height: '15px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
@@ -81,7 +82,7 @@ export const BottomNav: React.FC = () => {
                 </span>
               )}
             </div>
-            <span style={{ fontSize: '0.6875rem', fontWeight: isActive ? 700 : 500 }}>
+            <span style={{ fontSize: '0.6875rem', fontWeight: isActive ? 800 : 500, letterSpacing: '-0.01em' }}>
               {t(item.labelKey)}
             </span>
           </button>

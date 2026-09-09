@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useBooking } from '../../context/BookingContext';
 import { LanguageToggle } from './LanguageToggle';
-import { MapPin, ChevronDown, ShieldCheck, User, ShoppingBag, Zap, Check, X } from 'lucide-react';
+import { MapPin, ChevronDown, ShieldCheck, User, CalendarCheck, Zap, Check, X } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const { language } = useLanguage();
@@ -13,8 +13,8 @@ export const Header: React.FC = () => {
   const activeBookingsCount = bookings.filter(b => b.status !== 'COMPLETED' && b.status !== 'CANCELLED').length;
 
   const LOCATIONS = [
-    { city: 'Delhi NCR', area: 'Sector 62, Noida', tag: '48 Verified Artisans' },
-    { city: 'Delhi NCR', area: 'DLF Phase 3, Gurgaon', tag: 'Fast 15m Dispatch' },
+    { city: 'Delhi NCR', area: 'Sector 62, Noida', tag: '48 Verified Artisans • 15m Dispatch' },
+    { city: 'Delhi NCR', area: 'DLF Phase 3, Gurgaon', tag: 'Fast 15m Hub' },
     { city: 'Delhi NCR', area: 'Saket, South Delhi', tag: 'Co-op Guild Hub' },
     { city: 'Bengaluru', area: 'Indiranagar 4th Block', tag: 'Cooperative Hub' },
     { city: 'Bengaluru', area: 'HSR Layout Sector 2', tag: 'High Density Zone' },
@@ -30,7 +30,10 @@ export const Header: React.FC = () => {
           zIndex: 50,
           backgroundColor: '#FFFFFF',
           borderBottom: '1px solid var(--border-default)',
+          boxShadow: 'var(--shadow-xs)',
+          transition: 'background-color var(--transition-theme), border-color var(--transition-theme)',
         }}
+        className="theme-transition"
       >
         <div
           style={{
@@ -43,8 +46,8 @@ export const Header: React.FC = () => {
             gap: '12px',
           }}
         >
-          {/* Left: Brand Logo & Location Selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Left: Brand Logo & Locality Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', minWidth: 0 }}>
             {/* Logo */}
             <div
               onClick={() => setActiveView('home')}
@@ -54,28 +57,32 @@ export const Header: React.FC = () => {
                 gap: '8px',
                 cursor: 'pointer',
                 userSelect: 'none',
+                flexShrink: 0,
               }}
+              title="SAHYOG Home"
             >
               <div
                 style={{
-                  width: '30px',
-                  height: '30px',
+                  width: '32px',
+                  height: '32px',
                   borderRadius: 'var(--radius-xs)',
-                  backgroundColor: 'var(--primary)',
+                  backgroundColor: 'var(--theme-accent, #0C831F)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'var(--text-primary)',
+                  color: '#FFFFFF',
+                  boxShadow: '0 1px 3px rgba(12, 131, 31, 0.2)',
+                  transition: 'background-color var(--transition-theme)',
                 }}
               >
-                <ShieldCheck size={18} strokeWidth={2.5} />
+                <ShieldCheck size={18} strokeWidth={2.4} />
               </div>
               <div>
                 <span
                   style={{
-                    fontSize: '1.0625rem',
+                    fontSize: '1.125rem',
                     fontWeight: 900,
-                    color: 'var(--text-primary)',
+                    color: 'var(--theme-text, #111827)',
                     letterSpacing: '-0.03em',
                     lineHeight: 1,
                     display: 'block',
@@ -87,9 +94,11 @@ export const Header: React.FC = () => {
                   style={{
                     fontSize: '0.5625rem',
                     fontWeight: 800,
-                    color: 'var(--secondary)',
+                    color: 'var(--theme-accent, #0C831F)',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.04em',
+                    letterSpacing: '0.05em',
+                    display: 'block',
+                    marginTop: '2px',
                   }}
                 >
                   COOPERATIVE
@@ -97,48 +106,51 @@ export const Header: React.FC = () => {
               </div>
             </div>
 
-            {/* Location Selector */}
+            {/* Subtle Vertical Divider */}
+            <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-default)' }} className="hide-mobile" />
+
+            {/* Location Selector (Compact, Practical) */}
             <div
               onClick={() => setShowLocationModal(true)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '5px',
-                padding: '5px 8px',
-                backgroundColor: 'var(--bg-muted)',
-                border: '1px solid var(--border-default)',
+                padding: '4px 8px',
+                backgroundColor: 'transparent',
                 borderRadius: 'var(--radius-xs)',
                 cursor: 'pointer',
-                transition: 'border-color var(--transition-fast)',
+                transition: 'background-color var(--transition-fast)',
+                maxWidth: '240px',
               }}
               className="hover-card"
+              title="Change locality"
             >
-              <MapPin size={14} color="var(--secondary)" />
-              <span
-                style={{
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  maxWidth: '160px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {selectedLocation}
-              </span>
-              <ChevronDown size={12} color="var(--text-muted)" />
+              <MapPin size={14} color="var(--theme-accent, #0C831F)" style={{ flexShrink: 0 }} />
+              <div style={{ minWidth: 0 }}>
+                <div
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: 'var(--theme-text, #111827)',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {selectedLocation}
+                </div>
+              </div>
+              <ChevronDown size={12} color="var(--theme-text-muted, #6B7280)" style={{ flexShrink: 0 }} />
             </div>
           </div>
 
-          {/* Right: Actions (Bookings, Profile, Language) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* Quick Emergency 15m Dispatch link on desktop */}
+          {/* Right: Actions (Bookings, Profile, Language, 24x7 Help) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            {/* Quick Emergency 15m Dispatch CTA on desktop */}
             <button
               type="button"
-              onClick={() => {
-                setActiveView('service-detail');
-              }}
+              onClick={() => setActiveView('service-detail')}
               style={{
                 display: 'none',
                 alignItems: 'center',
@@ -149,7 +161,7 @@ export const Header: React.FC = () => {
                 border: '1px solid var(--danger-border)',
                 borderRadius: 'var(--radius-xs)',
                 fontSize: '0.75rem',
-                fontWeight: 700,
+                fontWeight: 800,
                 cursor: 'pointer',
               }}
               className="desktop-emergency-btn sahyog-btn"
@@ -166,11 +178,11 @@ export const Header: React.FC = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '5px',
-                padding: '5px 10px',
-                backgroundColor: 'transparent',
-                border: '1px solid var(--border-default)',
+                padding: '6px 10px',
+                backgroundColor: activeBookingsCount > 0 ? 'var(--theme-accent-light, #F0FDF4)' : 'transparent',
+                border: `1px solid ${activeBookingsCount > 0 ? 'var(--theme-accent-border, #BBF7D0)' : 'transparent'}`,
                 borderRadius: 'var(--radius-xs)',
-                color: 'var(--text-secondary)',
+                color: activeBookingsCount > 0 ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-secondary, #374151)',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -178,7 +190,7 @@ export const Header: React.FC = () => {
               }}
               className="sahyog-btn"
             >
-              <ShoppingBag size={14} color="var(--text-primary)" />
+              <CalendarCheck size={15} color="currentColor" />
               <span className="hide-mobile">{language === 'hi' ? 'बुकिंग्स' : 'Bookings'}</span>
               {activeBookingsCount > 0 && (
                 <span
@@ -186,7 +198,7 @@ export const Header: React.FC = () => {
                     width: '16px',
                     height: '16px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--secondary)',
+                    backgroundColor: 'var(--theme-accent, #0C831F)',
                     color: '#FFFFFF',
                     fontSize: '0.625rem',
                     fontWeight: 800,
@@ -208,19 +220,19 @@ export const Header: React.FC = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px',
-                padding: '5px 10px',
+                padding: '6px 10px',
                 backgroundColor: 'transparent',
-                border: '1px solid var(--border-default)',
+                border: '1px solid transparent',
                 borderRadius: 'var(--radius-xs)',
-                color: 'var(--text-secondary)',
+                color: 'var(--theme-text-secondary, #374151)',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 cursor: 'pointer',
               }}
               className="sahyog-btn"
             >
-              <User size={14} color="var(--text-primary)" />
-              <span className="hide-mobile">{language === 'hi' ? 'प्रोफ़ाइल' : 'Account'}</span>
+              <User size={15} color="var(--theme-text, #111827)" />
+              <span className="hide-mobile">{language === 'hi' ? 'खाता' : 'Account'}</span>
             </button>
 
             {/* Language Toggle */}
@@ -229,6 +241,7 @@ export const Header: React.FC = () => {
         </div>
       </header>
 
+
       {/* Location Selector Modal */}
       {showLocationModal && (
         <div
@@ -236,7 +249,7 @@ export const Header: React.FC = () => {
             position: 'fixed',
             inset: 0,
             zIndex: 100,
-            backgroundColor: 'rgba(15, 23, 42, 0.5)',
+            backgroundColor: 'rgba(15, 23, 42, 0.55)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -248,21 +261,22 @@ export const Header: React.FC = () => {
             style={{
               backgroundColor: '#FFFFFF',
               borderRadius: 'var(--radius-md)',
-              maxWidth: '420px',
+              maxWidth: '440px',
               width: '100%',
               padding: '18px',
               boxShadow: 'var(--shadow-lg)',
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
+              border: '1px solid var(--border-default)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <MapPin size={16} color="var(--primary)" />
+                <MapPin size={17} color="var(--theme-accent, #0C831F)" />
                 <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
-                  {language === 'hi' ? 'सेवा क्षेत्र चुनें' : 'Select Service Location'}
+                  {language === 'hi' ? 'सेवा क्षेत्र चुनें' : 'Select Service Locality'}
                 </h3>
               </div>
               <button
@@ -270,17 +284,17 @@ export const Header: React.FC = () => {
                 onClick={() => setShowLocationModal(false)}
                 style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
               >
-                <X size={16} />
+                <X size={17} />
               </button>
             </div>
 
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0 }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>
               {language === 'hi'
                 ? 'सहकारी तकनीशियन आपके निकटतम क्षेत्र से 15-20 मिनट में उपलब्ध होंगे।'
-                : 'Choose your locality to view nearby verified cooperative artisans and dispatch times.'}
+                : 'Choose your locality to view nearby verified cooperative artisans and dispatch arrival times.'}
             </p>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '260px', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '280px', overflowY: 'auto' }}>
               {LOCATIONS.map((loc, idx) => {
                 const label = `${loc.area} (${loc.city})`;
                 const isSelected = selectedLocation === label;
@@ -292,10 +306,10 @@ export const Header: React.FC = () => {
                       setShowLocationModal(false);
                     }}
                     style={{
-                      padding: '8px 10px',
+                      padding: '9px 12px',
                       borderRadius: 'var(--radius-xs)',
-                      border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-default)'}`,
-                      backgroundColor: isSelected ? 'var(--secondary-light)' : '#FFFFFF',
+                      border: `1.5px solid ${isSelected ? 'var(--theme-accent, #0C831F)' : 'var(--border-default)'}`,
+                      backgroundColor: isSelected ? 'var(--theme-accent-light, #F0FDF4)' : '#FFFFFF',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
@@ -306,11 +320,11 @@ export const Header: React.FC = () => {
                       <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                         {loc.area}, {loc.city}
                       </div>
-                      <div style={{ fontSize: '0.6875rem', color: isSelected ? 'var(--secondary)' : 'var(--text-muted)' }}>
+                      <div style={{ fontSize: '0.6875rem', color: isSelected ? 'var(--theme-accent, #0C831F)' : 'var(--text-muted)' }}>
                         {loc.tag}
                       </div>
                     </div>
-                    {isSelected && <Check size={14} color="var(--secondary)" />}
+                    {isSelected && <Check size={16} color="var(--theme-accent, #0C831F)" strokeWidth={2.5} />}
                   </div>
                 );
               })}

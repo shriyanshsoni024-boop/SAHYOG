@@ -16,38 +16,27 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 2px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', margin: 0 }}>
-            {language === 'hi' ? 'विशेष ऑफर एवं अभियान' : 'Featured Deals'}
+        <div>
+          <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            {language === 'hi' ? 'विशेष ऑफर एवं अभियान' : 'Featured Deals & Offers'}
           </h2>
-          <span
-            style={{
-              fontSize: '0.625rem',
-              fontWeight: 700,
-              backgroundColor: 'var(--primary-light)',
-              color: 'var(--primary-dark)',
-              padding: '1px 6px',
-              borderRadius: 'var(--radius-xs)',
-              border: '1px solid var(--primary-border)',
-              textTransform: 'uppercase',
-            }}
-          >
-            Cooperative Deals
-          </span>
+          <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            {language === 'hi' ? 'सहकारी गारंटी के साथ मौसमी छूट' : 'Seasonal discounts backed by 30-day rework cover'}
+          </p>
         </div>
 
         {/* Carousel indicators */}
-        <div style={{ display: 'flex', gap: '4px' }}>
+        <div style={{ display: 'flex', gap: '5px' }}>
           {SPOTLIGHT_PROMOTIONS.map((_, i) => (
             <button
               key={i}
               type="button"
               onClick={() => setActiveIdx(i)}
               style={{
-                width: i === activeIdx ? '18px' : '6px',
-                height: '5px',
+                width: i === activeIdx ? '20px' : '6px',
+                height: '6px',
                 borderRadius: 'var(--radius-full)',
-                backgroundColor: i === activeIdx ? 'var(--secondary)' : 'var(--border-strong)',
+                backgroundColor: i === activeIdx ? 'var(--theme-accent, #0C831F)' : 'var(--border-strong)',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all var(--transition-fast)',
@@ -59,7 +48,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
         </div>
       </div>
 
-      {/* Main Promotional Card with Photo & Text Overlay */}
+      {/* Main Promotional Card with Realistic Trade Image & Clean Overlay */}
       <div
         onClick={() => onSelectPromotion(current)}
         style={{
@@ -68,17 +57,17 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
           overflow: 'hidden',
           cursor: 'pointer',
           boxShadow: 'var(--shadow-xs)',
-          minHeight: '140px',
+          minHeight: '150px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '16px 20px',
+          padding: '18px 22px',
           color: '#FFFFFF',
           border: '1px solid var(--border-default)',
         }}
         className="hover-card"
       >
-        {/* Background Image with Dark Gradient Overlay */}
+        {/* Background Image with Dark Dimmer */}
         {current.image && (
           <img
             src={current.image}
@@ -97,7 +86,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(90deg, rgba(17, 24, 39, 0.92) 0%, rgba(17, 24, 39, 0.75) 55%, rgba(17, 24, 39, 0.4) 100%)',
+            background: 'linear-gradient(90deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.75) 60%, rgba(15, 23, 42, 0.4) 100%)',
             zIndex: 1,
           }}
         />
@@ -109,11 +98,10 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
               fontSize: '0.625rem',
               fontWeight: 800,
               letterSpacing: '0.04em',
-              backgroundColor: 'var(--primary)',
-              color: 'var(--primary-text)',
+              backgroundColor: '#F8CB46',
+              color: '#111827',
               padding: '2px 8px',
               borderRadius: 'var(--radius-xs)',
-              border: '1px solid var(--primary-hover)',
               textTransform: 'uppercase',
             }}
           >
@@ -125,7 +113,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
               fontSize: '0.75rem',
               fontWeight: 800,
               color: '#FEF08A',
-              backgroundColor: 'rgba(0, 0, 0, 0.45)',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
               padding: '2px 8px',
               borderRadius: 'var(--radius-xs)',
               border: '1px solid rgba(254, 240, 138, 0.3)',
@@ -137,19 +125,19 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
 
         {/* Title & Subtitle */}
         <div style={{ position: 'relative', zIndex: 2, margin: '8px 0' }}>
-          <h3 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.25, margin: '0 0 3px' }}>
+          <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.25, margin: '0 0 3px' }}>
             {language === 'hi' ? current.titleHi : current.title}
           </h3>
-          <p style={{ fontSize: '0.75rem', color: '#E5E7EB', margin: 0, lineHeight: 1.35, maxWidth: '85%' }}>
+          <p style={{ fontSize: '0.75rem', color: '#E2E8F0', margin: 0, lineHeight: 1.35, maxWidth: '80%' }}>
             {language === 'hi' ? current.subtitleHi : current.subtitle}
           </p>
         </div>
 
         {/* Bottom CTA Row */}
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.6875rem', color: '#D1D5DB' }}>
-            <ShieldCheck size={13} color="#10B981" />
-            <span>{language === 'hi' ? '30-दिन नि:शुल्क वारंटी' : '30-Day SAHYOG Cover'}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.6875rem', color: '#CBD5E1' }}>
+            <ShieldCheck size={14} color="#34D399" />
+            <span>{language === 'hi' ? '30-दिन नि:शुल्क वारंटी' : '30-Day SAHYOG Guarantee'}</span>
           </div>
 
           <div
@@ -157,8 +145,8 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              backgroundColor: 'var(--primary)',
-              color: 'var(--primary-text)',
+              backgroundColor: '#FFFFFF',
+              color: '#111827',
               fontSize: '0.75rem',
               fontWeight: 800,
               padding: '5px 12px',
@@ -174,3 +162,4 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
     </div>
   );
 };
+
