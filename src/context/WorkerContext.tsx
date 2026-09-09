@@ -7,7 +7,7 @@ import { workerService } from '../services/workerService';
 import { storageService } from '../services/storage/storageService';
 import { STORAGE_KEYS } from '../services/storage/storageKeys';
 
-export type WorkerTab = 'jobs' | 'skills' | 'training' | 'earnings' | 'profile';
+export type WorkerTab = 'home' | 'jobs' | 'skills' | 'training' | 'earnings' | 'profile';
 
 interface WorkerContextType {
   activeTab: WorkerTab;
@@ -51,7 +51,7 @@ const WorkerContext = createContext<WorkerContextType | undefined>(undefined);
 
 export const WorkerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { bookings, updateBookingStatus } = useBooking();
-  const [activeTab, setActiveTab] = useState<WorkerTab>('jobs');
+  const [activeTab, setActiveTab] = useState<WorkerTab>('home');
 
   // Synchronous initialization from storageService for zero-flicker UI
   const [worker, setWorker] = useState<Worker>(() => {

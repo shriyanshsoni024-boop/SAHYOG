@@ -1,80 +1,97 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { WorkerHomePage } from '../../pages/worker/WorkerHomePage';
 import { WorkerNav } from '../worker/WorkerNav';
 import { HardHat } from 'lucide-react';
 import { LanguageToggle } from '../common/LanguageToggle';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useWorker } from '../../context/WorkerContext';
+import { getWorkerTheme } from '../../styles/workerThemes';
 
 export const WorkerShell: React.FC = () => {
   const { language } = useLanguage();
+  const { worker } = useWorker();
+
+  const theme = getWorkerTheme(worker.professions);
+
+  // Apply dynamic worker theme CSS variables to document
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty('--worker-primary', theme.primary);
+    root.style.setProperty('--worker-primary-dark', theme.primaryDark);
+    root.style.setProperty('--worker-primary-light', theme.primaryLight);
+    root.style.setProperty('--worker-primary-border', theme.primaryBorder);
+    root.style.setProperty('--worker-accent', theme.accent);
+  }, [theme]);
 
   return (
     <div
-      className="container-mobile animate-fade-in theme-transition"
       style={{
+        width: '100%',
+        maxWidth: '440px',
+        margin: '0 auto',
+        minHeight: '100vh',
+        backgroundColor: '#F8FAFC',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
-        backgroundColor: 'var(--bg-app)',
-        boxShadow: '0 0 35px rgba(0, 0, 0, 0.1)',
         position: 'relative',
+        boxShadow: '0 0 40px rgba(0, 0, 0, 0.08)',
       }}
     >
-      {/* Worker App Header */}
+      {/* Worker App Sticky Header */}
       <header
         style={{
           position: 'sticky',
           top: 0,
           zIndex: 50,
-          backgroundColor: 'var(--theme-header, #FFFFFF)',
-          borderBottom: '1px solid var(--theme-header-border, var(--border-default))',
+          backgroundColor: '#FFFFFF',
+          borderBottom: '1px solid #E2E8F0',
           padding: '10px 16px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          boxShadow: 'var(--shadow-xs)',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
         }}
-        className="theme-transition"
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div
             style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: 'var(--radius-xs)',
-              backgroundColor: 'var(--theme-accent, #0D9488)',
+              width: '36px',
+              height: '36px',
+              borderRadius: '12px',
+              backgroundColor: theme.primary,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#ffffff',
-              boxShadow: 'var(--shadow-xs)',
-              transition: 'background-color var(--transition-theme)',
+              color: '#FFFFFF',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.12)',
+              transition: 'background-color 300ms ease',
             }}
           >
-            <HardHat size={18} />
+            <HardHat size={20} />
           </div>
+
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '1.0625rem', fontWeight: 900, color: 'var(--theme-text, #111827)', letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: '1.0625rem', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.02em' }}>
                 SAHYOG
               </span>
               <span
                 style={{
                   fontSize: '0.5625rem',
                   fontWeight: 800,
-                  backgroundColor: 'var(--theme-accent-light, #F0FDFA)',
-                  color: 'var(--theme-accent, #0D9488)',
-                  padding: '1px 5px',
-                  borderRadius: 'var(--radius-xs)',
-                  border: '1px solid var(--theme-accent-border, #99F6E4)',
-                  letterSpacing: '0.03em',
+                  backgroundColor: theme.primaryLight,
+                  color: theme.primary,
+                  padding: '2px 6px',
+                  borderRadius: '6px',
+                  border: `1px solid ${theme.primaryBorder}`,
+                  letterSpacing: '0.04em',
                 }}
               >
                 ARTISAN PRO
               </span>
             </div>
-            <div style={{ fontSize: '0.6875rem', color: 'var(--theme-text-muted, #6B7280)' }}>
-              {language === 'hi' ? 'कारीगर साथी मंच' : 'Cooperative Artisan Partner'}
+            <div style={{ fontSize: '0.6875rem', color: '#64748B', fontWeight: 600 }}>
+              {language === 'hi' ? theme.taglineHi : theme.tagline}
             </div>
           </div>
         </div>
@@ -82,10 +99,12 @@ export const WorkerShell: React.FC = () => {
         <LanguageToggle />
       </header>
 
-      <main style={{ flex: 1, paddingBottom: '16px' }}>
+      {/* Main Tab Content */}
+      <main style={{ flex: 1, position: 'relative' }}>
         <WorkerHomePage />
       </main>
 
+      {/* Floating Bottom Navigation */}
       <WorkerNav />
     </div>
   );

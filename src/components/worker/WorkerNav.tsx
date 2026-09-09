@@ -2,95 +2,132 @@ import React from 'react';
 import { useWorker, WorkerTab } from '../../context/WorkerContext';
 import { useBooking } from '../../context/BookingContext';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { Briefcase, Award, PlayCircle, IndianRupee, User, LucideIcon } from 'lucide-react';
+import { Home, Briefcase, Wallet, User, LucideIcon } from 'lucide-react';
+import { getWorkerTheme } from '../../styles/workerThemes';
 
 export const WorkerNav: React.FC = () => {
-  const { activeTab, setActiveTab } = useWorker();
+  const { activeTab, setActiveTab, worker } = useWorker();
   const { bookings } = useBooking();
   const { language } = useLanguage();
 
-  const activeJobsCount = bookings.filter(b => b.status === 'ACCEPTED' || b.status === 'ON_THE_WAY' || b.status === 'IN_PROGRESS').length;
+  const theme = getWorkerTheme(worker.professions);
 
-  const tabs: { id: WorkerTab; label: string; labelHi: string; icon: LucideIcon }[] = [
-    { id: 'jobs', label: 'Jobs', labelHi: 'कार्य (Jobs)', icon: Briefcase },
-    { id: 'skills', label: 'Skills', labelHi: 'कौशल (Skills)', icon: Award },
-    { id: 'training', label: 'Training', labelHi: 'प्रशिक्षण (LMS)', icon: PlayCircle },
-    { id: 'earnings', label: 'Earnings', labelHi: 'कमाई (Earnings)', icon: IndianRupee },
+  // Active / pending jobs count
+  const pendingOrActiveCount = bookings.filter(
+    (b) =>
+      b.status === 'REQUESTED' ||
+      b.status === 'MATCHED' ||
+      b.status === 'ACCEPTED' ||
+      b.status === 'ON_THE_WAY' ||
+      b.status === 'IN_PROGRESS'
+  ).length;
+
+  const navItems: { id: WorkerTab; label: string; labelHi: string; icon: LucideIcon }[] = [
+    { id: 'home', label: 'Home', labelHi: 'होम', icon: Home },
+    { id: 'jobs', label: 'Jobs', labelHi: 'कार्य', icon: Briefcase },
+    { id: 'earnings', label: 'Earnings', labelHi: 'कमाई', icon: Wallet },
     { id: 'profile', label: 'Profile', labelHi: 'प्रोफ़ाइल', icon: User },
   ];
 
   return (
-    <nav
+    <div
       style={{
-        position: 'sticky',
-        bottom: 0,
-        zIndex: 50,
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid var(--border-default)',
+        position: 'fixed',
+        bottom: '14px',
+        left: 0,
+        right: 0,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        padding: '6px 4px 8px',
-        boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
+        justifyContent: 'center',
+        zIndex: 100,
+        pointerEvents: 'none',
+        padding: '0 16px',
       }}
-      aria-label="Worker bottom navigation"
     >
-      {tabs.map((tab) => {
-        const isActive = activeTab === tab.id;
-        const Icon = tab.icon;
+      <nav
+        style={{
+          pointerEvents: 'auto',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '9999px',
+          border: '1px solid rgba(226, 232, 240, 0.85)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '6px 8px',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+          backdropFilter: 'blur(12px)',
+          maxWidth: '400px',
+          width: '100%',
+          justifyContent: 'space-around',
+        }}
+        aria-label="Worker floating navigation"
+      >
+        {navItems.map((item) => {
+          const isActive =
+            activeTab === item.id ||
+            (item.id === 'jobs' && (activeTab === 'skills' || activeTab === 'training'));
+          const Icon = item.icon;
 
-        return (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setActiveTab(tab.id)}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '3px',
-              padding: '6px 10px',
-              borderRadius: 'var(--radius-md)',
-              color: isActive ? 'var(--secondary)' : 'var(--text-muted)',
-              transition: 'all var(--transition-fast)',
-              position: 'relative',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              flex: 1,
-            }}
-          >
-            <div style={{ position: 'relative' }}>
-              <Icon size={20} color={isActive ? 'var(--secondary)' : 'var(--text-muted)'} strokeWidth={isActive ? 2.5 : 2} />
-              {tab.id === 'jobs' && activeJobsCount > 0 && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: '-4px',
-                    right: '-8px',
-                    backgroundColor: 'var(--danger)',
-                    color: '#ffffff',
-                    fontSize: '0.625rem',
-                    fontWeight: 800,
-                    width: '16px',
-                    height: '16px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 0 0 2px #FFFFFF',
-                  }}
-                >
-                  {activeJobsCount}
-                </span>
-              )}
-            </div>
-            <span style={{ fontSize: '0.6875rem', fontWeight: isActive ? 800 : 500 }}>
-              {language === 'hi' ? tab.labelHi : tab.label}
-            </span>
-          </button>
-        );
-      })}
-    </nav>
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setActiveTab(item.id)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: isActive ? '8px 16px' : '8px 10px',
+                borderRadius: '9999px',
+                color: isActive ? theme.primary : '#64748B',
+                transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+                position: 'relative',
+                background: isActive ? theme.primaryLight : 'transparent',
+                border: isActive ? `1px solid ${theme.primaryBorder}` : '1px solid transparent',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Icon
+                  size={19}
+                  color={isActive ? theme.primary : '#64748B'}
+                  strokeWidth={isActive ? 2.5 : 2}
+                />
+                {item.id === 'jobs' && pendingOrActiveCount > 0 && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '-4px',
+                      right: '-8px',
+                      backgroundColor: '#EF4444',
+                      color: '#ffffff',
+                      fontSize: '0.5625rem',
+                      fontWeight: 800,
+                      width: '15px',
+                      height: '15px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {pendingOrActiveCount}
+                  </span>
+                )}
+              </div>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: isActive ? 800 : 600,
+                  display: isActive ? 'inline-block' : 'none',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {language === 'hi' ? item.labelHi : item.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
+    </div>
   );
 };
