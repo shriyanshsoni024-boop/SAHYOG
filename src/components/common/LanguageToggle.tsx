@@ -9,25 +9,30 @@ export const LanguageToggle: React.FC = () => {
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        backgroundColor: 'var(--bg-muted)',
+        backgroundColor: '#F3F4F6',
         padding: '2px',
-        borderRadius: 'var(--radius-sm)',
-        border: '1px solid var(--border-default)',
+        borderRadius: '4px',
+        border: '1px solid #E5E7EB',
+        height: '24px',
       }}
     >
       <button
         type="button"
         onClick={() => setLanguage('en')}
         style={{
-          padding: '2px 8px',
-          borderRadius: 'var(--radius-xs)',
-          fontSize: '0.6875rem',
-          fontWeight: 700,
-          backgroundColor: language === 'en' ? 'var(--bg-surface)' : 'transparent',
-          color: language === 'en' ? 'var(--text-primary)' : 'var(--text-muted)',
-          boxShadow: language === 'en' ? 'var(--shadow-xs)' : 'none',
+          padding: '1px 6px',
+          borderRadius: '3px',
+          fontSize: '0.65625rem',
+          fontWeight: language === 'en' ? 800 : 500,
+          backgroundColor: language === 'en' ? '#FFFFFF' : 'transparent',
+          color: language === 'en' ? '#111827' : '#6B7280',
+          boxShadow: language === 'en' ? '0 1px 2px rgba(0, 0, 0, 0.05)' : 'none',
           border: 'none',
           cursor: 'pointer',
+          lineHeight: '18px',
+          height: '18px',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         EN
@@ -36,15 +41,19 @@ export const LanguageToggle: React.FC = () => {
         type="button"
         onClick={() => setLanguage('hi')}
         style={{
-          padding: '2px 8px',
-          borderRadius: 'var(--radius-xs)',
-          fontSize: '0.6875rem',
-          fontWeight: 700,
-          backgroundColor: language === 'hi' ? 'var(--bg-surface)' : 'transparent',
-          color: language === 'hi' ? 'var(--text-primary)' : 'var(--text-muted)',
-          boxShadow: language === 'hi' ? 'var(--shadow-xs)' : 'none',
+          padding: '1px 6px',
+          borderRadius: '3px',
+          fontSize: '0.65625rem',
+          fontWeight: language === 'hi' ? 800 : 500,
+          backgroundColor: language === 'hi' ? '#FFFFFF' : 'transparent',
+          color: language === 'hi' ? '#111827' : '#6B7280',
+          boxShadow: language === 'hi' ? '0 1px 2px rgba(0, 0, 0, 0.05)' : 'none',
           border: 'none',
           cursor: 'pointer',
+          lineHeight: '18px',
+          height: '18px',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         हिंदी

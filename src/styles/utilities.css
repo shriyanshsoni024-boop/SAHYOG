@@ -158,6 +158,9 @@
   .hide-mobile {
     display: none !important;
   }
+  .show-mobile-flex {
+    display: flex !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -169,5 +172,8 @@
   }
   .hide-desktop {
     display: none !important;
+  }
+  .show-desktop-flex {
+    display: flex !important;
   }
 }

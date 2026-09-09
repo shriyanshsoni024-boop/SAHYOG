@@ -67,50 +67,51 @@ export const CustomerHomePage: React.FC = () => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '32px',
+        gap: '24px',
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '20px 16px 48px',
+        padding: '16px 16px 40px',
+        width: '100%',
       }}
     >
       {/* 1. Direct, Unboxed Search & Discovery Header */}
-      <section style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div>
           <h1
             style={{
-              fontSize: '1.5rem',
+              fontSize: '1.3125rem',
               fontWeight: 800,
-              color: 'var(--theme-text, #111827)',
+              color: '#111827',
               letterSpacing: '-0.025em',
               lineHeight: 1.25,
-              margin: '0 0 4px',
+              margin: '0 0 3px',
             }}
           >
             {language === 'hi' ? 'घरेलू सेवाएं, उचित एवं मानक दरों पर' : 'Home services at standard cooperative rates'}
           </h1>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--theme-text-muted, #6B7280)', margin: 0 }}>
+          <p style={{ fontSize: '0.78125rem', color: '#64748B', margin: 0 }}>
             {language === 'hi'
               ? 'प्रमाणित इलेक्ट्रीशियन, प्लंबर, कारपेंटर और एसी तकनीशियन • 0% सर्ज शुल्क • 30-दिन वारंटी'
-              : 'Verified electricians, plumbers, carpenters & AC technicians across your city • Zero surge pricing'}
+              : 'Verified electricians, plumbers, carpenters & AC technicians • Upfront rates • 30-day warranty'}
           </p>
         </div>
 
         {/* Wide Search Bar */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               backgroundColor: '#FFFFFF',
-              borderRadius: 'var(--radius-md)',
-              padding: '11px 16px',
-              border: '1.5px solid var(--border-default)',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
-              gap: '12px',
-              transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
+              borderRadius: '6px',
+              padding: '9px 14px',
+              border: '1px solid #E2E8F0',
+              boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+              gap: '10px',
+              height: '42px',
             }}
           >
-            <Search size={18} color="var(--theme-accent, #0C831F)" />
+            <Search size={16} color="var(--theme-accent, #0C831F)" style={{ flexShrink: 0 }} />
             <input
               type="text"
               placeholder={
@@ -124,9 +125,9 @@ export const CustomerHomePage: React.FC = () => {
                 border: 'none',
                 outline: 'none',
                 width: '100%',
-                fontSize: '0.9375rem',
+                fontSize: '0.875rem',
                 fontWeight: 500,
-                color: 'var(--theme-text, #111827)',
+                color: '#111827',
                 backgroundColor: 'transparent',
               }}
             />
@@ -134,22 +135,25 @@ export const CustomerHomePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: 'var(--theme-text-muted, #6B7280)' }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px', color: '#64748B', display: 'flex' }}
                 aria-label="Clear search"
               >
-                <X size={16} />
+                <X size={15} />
               </button>
             )}
           </div>
 
-          {/* Quick Search Chips */}
+          {/* Quick Search Filter Chips (Horizontally scrollable with smooth touch, no page overflow) */}
           <div
             style={{
               display: 'flex',
               gap: '6px',
               overflowX: 'auto',
-              paddingBottom: '2px',
               scrollbarWidth: 'none',
+              width: '100%',
+              minWidth: 0,
+              padding: '1px 0 3px',
+              WebkitOverflowScrolling: 'touch',
             }}
           >
             {QUICK_SEARCH_CHIPS.map((chip, idx) => {
@@ -161,16 +165,19 @@ export const CustomerHomePage: React.FC = () => {
                   onClick={() => setSearchQuery(isActive ? '' : chip.query)}
                   style={{
                     flexShrink: 0,
-                    padding: '5px 12px',
-                    fontSize: '0.75rem',
+                    padding: '4px 11px',
+                    fontSize: '0.71875rem',
                     fontWeight: isActive ? 700 : 500,
-                    borderRadius: 'var(--radius-full)',
-                    border: `1px solid ${isActive ? 'var(--theme-accent, #0C831F)' : 'var(--border-default)'}`,
+                    borderRadius: '9999px',
+                    border: `1px solid ${isActive ? 'var(--theme-accent, #0C831F)' : '#E2E8F0'}`,
                     backgroundColor: isActive ? 'var(--theme-accent-light, #F0FDF4)' : '#FFFFFF',
-                    color: isActive ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-secondary, #374151)',
+                    color: isActive ? 'var(--theme-accent, #0C831F)' : '#374151',
                     cursor: 'pointer',
-                    transition: 'all var(--transition-fast)',
+                    transition: 'all 120ms ease',
                     whiteSpace: 'nowrap',
+                    height: '26px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
                   }}
                 >
                   {chip.label}
@@ -181,7 +188,7 @@ export const CustomerHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Active Service Tracker Banner (if any active order) */}
+      {/* Active Service Tracker Strip (if any active order) */}
       {activeBooking && (
         <section
           onClick={() => {
@@ -189,57 +196,57 @@ export const CustomerHomePage: React.FC = () => {
             setActiveView('tracking');
           }}
           style={{
-            backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
-            border: '1px solid var(--theme-accent-border, #BBF7D0)',
-            borderRadius: 'var(--radius-md)',
-            padding: '12px 16px',
+            backgroundColor: '#F0FDF4',
+            border: '1px solid #DCFCE7',
+            borderRadius: '6px',
+            padding: '8px 12px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             cursor: 'pointer',
-            boxShadow: 'var(--shadow-xs)',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
           }}
           className="hover-card"
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span
               style={{
-                width: '8px',
-                height: '8px',
+                width: '7px',
+                height: '7px',
                 borderRadius: '50%',
                 backgroundColor: 'var(--theme-accent, #0C831F)',
                 display: 'inline-block',
               }}
             />
             <div>
-              <div style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--theme-accent, #0C831F)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              <div style={{ fontSize: '0.625rem', fontWeight: 800, color: 'var(--theme-accent, #0C831F)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                 Active Service • {activeBooking.token}
               </div>
-              <div style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--theme-text, #111827)', marginTop: '1px' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#111827', marginTop: '1px' }}>
                 {activeBooking.serviceName} ({activeBooking.status.replace(/_/g, ' ')})
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.75rem', fontWeight: 800, color: 'var(--theme-accent, #0C831F)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', fontSize: '0.71875rem', fontWeight: 700, color: 'var(--theme-accent, #0C831F)' }}>
             <span>Track Live</span>
-            <ChevronRight size={15} />
+            <ChevronRight size={14} />
           </div>
         </section>
       )}
 
-      {/* 2. Service Categories (Clean Unboxed Grid) */}
+      {/* 2. Service Categories (Clean Discovery Grid) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? 'सेवा श्रेणियां' : 'All Home Services'}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
               {language === 'hi' ? 'मानक दर कार्ड के साथ कुशल सहकारी कारीगर' : 'Fixed rate cards & verified trade specialists'}
             </p>
           </div>
-          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--theme-text-muted, #6B7280)' }}>
+          <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#64748B' }}>
             {filteredCategories.length} categories
           </span>
         </div>
@@ -247,8 +254,8 @@ export const CustomerHomePage: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(115px, 1fr))',
-            gap: '8px',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(105px, 1fr))',
+            gap: '8px 6px',
           }}
         >
           {filteredCategories.map((cat) => (
@@ -266,13 +273,13 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 4. Most Booked Services (Horizontal Shelf) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? 'सर्वाधिक बुक की गई सेवाएं' : 'Most Booked Services'}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
-              {language === 'hi' ? 'इस सप्ताह ग्राहकों द्वारा सबसे अधिक चुनी गई सेवाएं' : 'Trending repairs & maintenance packages in your area'}
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
+              {language === 'hi' ? 'इस सप्ताह ग्राहकों द्वारा सबसे अधिक चुनी गई सेवाएं' : 'Trending repairs & maintenance packages'}
             </p>
           </div>
 
@@ -282,8 +289,8 @@ export const CustomerHomePage: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.71875rem',
+              fontWeight: 600,
               color: 'var(--theme-accent, #0C831F)',
               cursor: 'pointer',
               display: 'flex',
@@ -293,7 +300,7 @@ export const CustomerHomePage: React.FC = () => {
             }}
           >
             <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         </div>
 
@@ -302,8 +309,9 @@ export const CustomerHomePage: React.FC = () => {
             display: 'flex',
             gap: '12px',
             overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
+            paddingBottom: '4px',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {MOST_BOOKED_SERVICES.map((item) => (
@@ -319,12 +327,12 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 5. AC & Cooling Services (Responsive Grid) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.ac_appliance.titleHi : CATEGORY_SECTIONS.ac_appliance.title}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
               {language === 'hi' ? CATEGORY_SECTIONS.ac_appliance.subtitleHi : CATEGORY_SECTIONS.ac_appliance.subtitle}
             </p>
           </div>
@@ -338,8 +346,8 @@ export const CustomerHomePage: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.71875rem',
+              fontWeight: 600,
               color: 'var(--theme-accent, #0C831F)',
               cursor: 'pointer',
               display: 'flex',
@@ -349,14 +357,14 @@ export const CustomerHomePage: React.FC = () => {
             }}
           >
             <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         </div>
 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(216px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(204px, 1fr))',
             gap: '12px',
           }}
         >
@@ -373,12 +381,12 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 6. Electrical Services (Horizontal Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.electrical.titleHi : CATEGORY_SECTIONS.electrical.title}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
               {language === 'hi' ? CATEGORY_SECTIONS.electrical.subtitleHi : CATEGORY_SECTIONS.electrical.subtitle}
             </p>
           </div>
@@ -392,8 +400,8 @@ export const CustomerHomePage: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.71875rem',
+              fontWeight: 600,
               color: 'var(--theme-accent, #0C831F)',
               cursor: 'pointer',
               display: 'flex',
@@ -403,7 +411,7 @@ export const CustomerHomePage: React.FC = () => {
             }}
           >
             <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         </div>
 
@@ -412,8 +420,9 @@ export const CustomerHomePage: React.FC = () => {
             display: 'flex',
             gap: '12px',
             overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
+            paddingBottom: '4px',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {CATEGORY_SECTIONS.electrical.services.map((item) => (
@@ -432,12 +441,12 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 8. Plumbing & Drainage Services (Responsive Grid) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.plumbing.titleHi : CATEGORY_SECTIONS.plumbing.title}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
               {language === 'hi' ? CATEGORY_SECTIONS.plumbing.subtitleHi : CATEGORY_SECTIONS.plumbing.subtitle}
             </p>
           </div>
@@ -451,8 +460,8 @@ export const CustomerHomePage: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.71875rem',
+              fontWeight: 600,
               color: 'var(--theme-accent, #0C831F)',
               cursor: 'pointer',
               display: 'flex',
@@ -462,14 +471,14 @@ export const CustomerHomePage: React.FC = () => {
             }}
           >
             <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         </div>
 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(216px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(204px, 1fr))',
             gap: '12px',
           }}
         >
@@ -486,12 +495,12 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 9. Carpentry & Home Repair (Horizontal Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.carpentry.titleHi : CATEGORY_SECTIONS.carpentry.title}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
               {language === 'hi' ? CATEGORY_SECTIONS.carpentry.subtitleHi : CATEGORY_SECTIONS.carpentry.subtitle}
             </p>
           </div>
@@ -505,8 +514,8 @@ export const CustomerHomePage: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.71875rem',
+              fontWeight: 600,
               color: 'var(--theme-accent, #0C831F)',
               cursor: 'pointer',
               display: 'flex',
@@ -516,7 +525,7 @@ export const CustomerHomePage: React.FC = () => {
             }}
           >
             <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         </div>
 
@@ -525,8 +534,9 @@ export const CustomerHomePage: React.FC = () => {
             display: 'flex',
             gap: '12px',
             overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
+            paddingBottom: '4px',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {CATEGORY_SECTIONS.carpentry.services.map((item) => (
@@ -542,12 +552,12 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 10. Deep Cleaning & Sanitization (Horizontal Track) */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? CATEGORY_SECTIONS.cleaning.titleHi : CATEGORY_SECTIONS.cleaning.title}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
               {language === 'hi' ? CATEGORY_SECTIONS.cleaning.subtitleHi : CATEGORY_SECTIONS.cleaning.subtitle}
             </p>
           </div>
@@ -561,8 +571,8 @@ export const CustomerHomePage: React.FC = () => {
             style={{
               background: 'none',
               border: 'none',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.71875rem',
+              fontWeight: 600,
               color: 'var(--theme-accent, #0C831F)',
               cursor: 'pointer',
               display: 'flex',
@@ -572,7 +582,7 @@ export const CustomerHomePage: React.FC = () => {
             }}
           >
             <span>{language === 'hi' ? 'सभी देखें' : 'See all'}</span>
-            <ChevronRight size={14} />
+            <ChevronRight size={13} />
           </button>
         </div>
 
@@ -581,8 +591,9 @@ export const CustomerHomePage: React.FC = () => {
             display: 'flex',
             gap: '12px',
             overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
+            paddingBottom: '4px',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {CATEGORY_SECTIONS.cleaning.services.map((item) => (
@@ -598,13 +609,13 @@ export const CustomerHomePage: React.FC = () => {
 
       {/* 11. New & Noteworthy Section */}
       <section>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '10px' }}>
           <div>
-            <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: 0 }}>
+            <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: 0 }}>
               {language === 'hi' ? 'नई एवं आधुनिक सेवाएं' : 'New & Noteworthy'}
             </h2>
-            <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: '2px 0 0' }}>
-              {language === 'hi' ? 'स्मार्ट लॉक, ईवी चार्जर, हर्बल पेस्ट केयर और मॉड्यूलर फिटिंग्स' : 'Smart locks, EV charger setups, herbal drain shields & modular upgrades'}
+            <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: '2px 0 0' }}>
+              {language === 'hi' ? 'स्मार्ट लॉक, ईवी चार्जर, हर्बल पेस्ट केयर और मॉड्यूलर फिटिंग्स' : 'Smart locks, EV charger setups & modular upgrades'}
             </p>
           </div>
         </div>
@@ -614,8 +625,9 @@ export const CustomerHomePage: React.FC = () => {
             display: 'flex',
             gap: '12px',
             overflowX: 'auto',
-            paddingBottom: '6px',
-            scrollbarWidth: 'thin',
+            paddingBottom: '4px',
+            scrollbarWidth: 'none',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           {NEW_NOTEWORTHY_SERVICES.map((item) => (

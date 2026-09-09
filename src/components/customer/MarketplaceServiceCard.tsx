@@ -30,19 +30,19 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
     <div
       onClick={() => onSelect(service)}
       style={{
-        width: layout === 'horizontal' ? '216px' : '100%',
-        minWidth: layout === 'horizontal' ? '216px' : 'auto',
+        width: layout === 'horizontal' ? '204px' : '100%',
+        minWidth: layout === 'horizontal' ? '204px' : 'auto',
         backgroundColor: '#FFFFFF',
-        border: '1px solid var(--border-default)',
-        borderRadius: 'var(--radius-md)',
+        border: '1px solid #E5E7EB',
+        borderRadius: '8px',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         cursor: 'pointer',
-        boxShadow: 'var(--shadow-xs)',
+        boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
         position: 'relative',
-        transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast)',
+        transition: 'border-color 120ms ease, box-shadow 120ms ease',
         flexShrink: 0,
         scrollSnapAlign: 'start',
       }}
@@ -52,7 +52,7 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
         {/* 1. Image (Visually dominant, sharp) */}
         <div
           style={{
-            height: '136px',
+            height: '128px',
             width: '100%',
             backgroundColor: '#F3F4F6',
             position: 'relative',
@@ -69,7 +69,6 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
                 height: '100%',
                 objectFit: 'cover',
                 display: 'block',
-                transition: 'transform 0.25s ease',
               }}
               loading="lazy"
             />
@@ -82,10 +81,10 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#F8FAFC',
-                color: 'var(--text-muted)',
+                color: '#94A3B8',
               }}
             >
-              <Wrench size={24} strokeWidth={1.5} />
+              <Wrench size={22} strokeWidth={1.5} />
             </div>
           )}
 
@@ -94,17 +93,16 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
             <span
               style={{
                 position: 'absolute',
-                top: '8px',
-                left: '8px',
-                backgroundColor: 'rgba(15, 23, 42, 0.82)',
+                top: '6px',
+                left: '6px',
+                backgroundColor: 'rgba(15, 23, 42, 0.85)',
                 color: '#FFFFFF',
-                fontSize: '0.5625rem',
+                fontSize: '0.53125rem',
                 fontWeight: 700,
-                padding: '2px 6px',
-                borderRadius: 'var(--radius-xs)',
+                padding: '2px 5px',
+                borderRadius: '3px',
                 letterSpacing: '0.02em',
                 textTransform: 'uppercase',
-                backdropFilter: 'blur(2px)',
               }}
             >
               {badge}
@@ -113,16 +111,16 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
         </div>
 
         {/* 2. Service Details Body */}
-        <div style={{ padding: '10px 12px 6px' }}>
+        <div style={{ padding: '8px 10px 4px' }}>
           {/* Service Name */}
           <h3
             style={{
-              fontSize: '0.8125rem',
+              fontSize: '0.78125rem',
               fontWeight: 700,
-              color: 'var(--text-primary)',
-              lineHeight: 1.35,
-              margin: '0 0 5px',
-              minHeight: '34px',
+              color: '#0F172A',
+              lineHeight: 1.3,
+              margin: '0 0 4px',
+              minHeight: '32px',
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
@@ -134,17 +132,17 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
 
           {/* 3. Rating & Reviews */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.6875rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px', fontSize: '0.6875rem', fontWeight: 700, color: '#111827' }}>
               <Star size={11} fill="#F59E0B" color="#F59E0B" />
               {service.rating}
             </span>
-            <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: '0.65625rem', color: '#64748B' }}>
               ({formatReviewCount(service.reviewCount)})
             </span>
           </div>
 
           {/* 4. Duration / Specs */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px', fontSize: '0.6875rem', color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', marginTop: '3px', fontSize: '0.65625rem', color: '#64748B' }}>
             <Clock size={11} />
             <span>{duration}</span>
           </div>
@@ -154,21 +152,21 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
       {/* 5. Price & Simple CTA Row */}
       <div
         style={{
-          padding: '8px 12px 10px',
-          borderTop: '1px solid var(--border-subtle)',
+          padding: '6px 10px 8px',
+          borderTop: '1px solid #F1F5F9',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginTop: '4px',
+          marginTop: '2px',
         }}
       >
         <div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '5px' }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+            <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#0F172A' }}>
               ₹{service.price}
             </span>
             {service.originalPrice > service.price && (
-              <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', textDecoration: 'line-through' }}>
+              <span style={{ fontSize: '0.65625rem', color: '#94A3B8', textDecoration: 'line-through' }}>
                 ₹{service.originalPrice}
               </span>
             )}
@@ -182,20 +180,21 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
             onSelect(service);
           }}
           style={{
-            padding: '5px 14px',
-            backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
+            padding: '3px 10px',
+            backgroundColor: '#F0FDF4',
             color: 'var(--theme-accent, #0C831F)',
-            border: '1.5px solid var(--theme-accent, #0C831F)',
-            borderRadius: 'var(--radius-xs)',
-            fontWeight: 800,
-            fontSize: '0.6875rem',
+            border: '1px solid var(--theme-accent, #0C831F)',
+            borderRadius: '4px',
+            fontWeight: 700,
+            fontSize: '0.65625rem',
             cursor: 'pointer',
-            transition: 'all var(--transition-fast)',
+            transition: 'all 120ms ease',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             textTransform: 'uppercase',
-            letterSpacing: '0.04em',
+            letterSpacing: '0.03em',
+            height: '24px',
           }}
           className="sahyog-btn"
         >

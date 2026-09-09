@@ -18,31 +18,30 @@ export const EmergencyBanner: React.FC = () => {
       style={{
         backgroundColor: '#FEF2F2',
         border: '1px solid #FECACA',
-        borderRadius: 'var(--radius-md)',
-        padding: '12px 16px',
+        borderRadius: '8px',
+        padding: '10px 14px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '12px',
-        boxShadow: 'var(--shadow-xs)',
+        boxShadow: '0 1px 2px rgba(220, 38, 38, 0.04)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
         <div
           style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: 'var(--radius-sm)',
+            width: '32px',
+            height: '32px',
+            borderRadius: '6px',
             backgroundColor: '#DC2626',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: '#FFFFFF',
             flexShrink: 0,
-            boxShadow: '0 2px 6px rgba(220, 38, 38, 0.25)',
           }}
         >
-          <Zap size={18} fill="#FFFFFF" />
+          <Zap size={16} fill="#FFFFFF" />
         </div>
         <div style={{ minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
@@ -53,21 +52,21 @@ export const EmergencyBanner: React.FC = () => {
                 backgroundColor: '#DC2626',
                 color: '#FFFFFF',
                 padding: '1px 5px',
-                borderRadius: 'var(--radius-xs)',
+                borderRadius: '3px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
               }}
             >
               15m Squad
             </span>
-            <span style={{ fontSize: '0.875rem', fontWeight: 800, color: '#991B1B' }}>
-              {language === 'hi' ? 'आपातकालीन त्वरित सेवा' : 'Need Immediate Emergency Repair?'}
+            <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#991B1B' }}>
+              {language === 'hi' ? 'आपातकालीन त्वरित सहायता' : 'Immediate Emergency Repair?'}
             </span>
           </div>
           <div
             style={{
-              fontSize: '0.75rem',
-              color: 'var(--text-secondary)',
+              fontSize: '0.71875rem',
+              color: '#4B5563',
               marginTop: '1px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -75,8 +74,8 @@ export const EmergencyBanner: React.FC = () => {
             }}
           >
             {language === 'hi'
-              ? 'शॉर्ट सर्किट, स्पार्किंग या पाइप फटने पर 15 मिनट में सहायता'
-              : 'Short circuits, sparking & burst pipes • Priority dispatch under 15 mins'}
+              ? 'शॉर्ट सर्किट, स्पार्किंग या पाइप लीकेज • 15 मिनट में प्राथमिकता आवंटन'
+              : 'Short circuits, sparking & burst pipes • Priority dispatch in 15 mins'}
           </div>
         </div>
       </div>
@@ -88,22 +87,22 @@ export const EmergencyBanner: React.FC = () => {
           backgroundColor: '#DC2626',
           color: '#FFFFFF',
           border: 'none',
-          borderRadius: 'var(--radius-xs)',
-          padding: '7px 14px',
-          fontSize: '0.75rem',
-          fontWeight: 800,
+          borderRadius: '4px',
+          padding: '5px 12px',
+          fontSize: '0.71875rem',
+          fontWeight: 700,
           display: 'flex',
           alignItems: 'center',
           gap: '4px',
           cursor: 'pointer',
           flexShrink: 0,
           whiteSpace: 'nowrap',
-          boxShadow: '0 1px 3px rgba(220, 38, 38, 0.3)',
+          height: '28px',
         }}
         className="sahyog-btn"
       >
-        <span>{language === 'hi' ? 'तुरंत बुलाएं' : 'Book Emergency'}</span>
-        <ArrowRight size={13} />
+        <span>{language === 'hi' ? 'तुरंत बुलाएं' : 'Book 15m Help'}</span>
+        <ArrowRight size={12} />
       </button>
     </div>
   );

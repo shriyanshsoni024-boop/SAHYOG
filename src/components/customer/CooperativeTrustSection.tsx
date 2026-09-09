@@ -39,16 +39,16 @@ export const CooperativeTrustSection: React.FC = () => {
   return (
     <section
       style={{
-        padding: '24px 0 10px',
-        borderTop: '1px solid var(--border-default)',
-        marginTop: '10px',
+        padding: '20px 0 8px',
+        borderTop: '1px solid #E5E7EB',
+        marginTop: '6px',
       }}
     >
-      <div style={{ marginBottom: '18px' }}>
-        <h2 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--theme-text, #111827)', letterSpacing: '-0.01em', margin: '0 0 4px' }}>
+      <div style={{ marginBottom: '14px' }}>
+        <h2 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#111827', letterSpacing: '-0.01em', margin: '0 0 3px' }}>
           {language === 'hi' ? 'सहयोग सहकारी मंच की विशेषताएं' : 'The SAHYOG Cooperative Guarantee'}
         </h2>
-        <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-muted, #6B7280)', margin: 0, maxWidth: '640px' }}>
+        <p style={{ fontSize: '0.71875rem', color: '#64748B', margin: 0, maxWidth: '640px' }}>
           {language === 'hi'
             ? 'निजी कंपनियों के भारी कमीशन के विपरीत, हमारा मंच कारीगरों और ग्राहकों दोनों के लिए पारदर्शी है।'
             : 'India’s transparent home-services federation ensuring quality repairs and ethical artisan livelihoods.'}
@@ -58,8 +58,8 @@ export const CooperativeTrustSection: React.FC = () => {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '16px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '14px',
         }}
       >
         {PILLARS.map((pillar, idx) => {
@@ -69,17 +69,17 @@ export const CooperativeTrustSection: React.FC = () => {
               key={idx}
               style={{
                 display: 'flex',
-                gap: '12px',
+                gap: '10px',
                 alignItems: 'flex-start',
               }}
             >
               <div
                 style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
-                  border: '1px solid var(--theme-accent-border, #BBF7D0)',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '6px',
+                  backgroundColor: '#F0FDF4',
+                  border: '1px solid #DCFCE7',
                   color: 'var(--theme-accent, #0C831F)',
                   display: 'flex',
                   alignItems: 'center',
@@ -87,13 +87,13 @@ export const CooperativeTrustSection: React.FC = () => {
                   flexShrink: 0,
                 }}
               >
-                <Icon size={18} strokeWidth={2.2} />
+                <Icon size={16} strokeWidth={2.2} />
               </div>
               <div>
-                <h4 style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--theme-text, #111827)', margin: '0 0 2px' }}>
+                <h4 style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#111827', margin: '0 0 1px' }}>
                   {pillar.title}
                 </h4>
-                <p style={{ fontSize: '0.75rem', color: 'var(--theme-text-secondary, #374151)', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '0.6875rem', color: '#4B5563', margin: 0, lineHeight: 1.35 }}>
                   {pillar.desc}
                 </p>
               </div>
