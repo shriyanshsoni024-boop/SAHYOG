@@ -1,37 +1,109 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { HardHat, Phone, ArrowRight, Briefcase, Award, Sparkles, KeyRound, RefreshCw, Edit3 } from 'lucide-react';
+import { ShieldCheck, ArrowRight, ArrowLeft, MapPin, Briefcase, Award, Clock, RefreshCw, Edit2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { isValidIndianMobile } from '../../lib/supabase';
+import { DEFAULT_LOCATION } from '../../data/locations';
 
-export const WorkerLoginPage: React.FC = () => {
-  const { sendPhoneOtp, verifyPhoneOtp, authMode, navigate } = useAuth();
+const TRADE_OPTIONS = [
+  'Electrician',
+  'Plumber',
+  'Carpenter',
+  'Cleaner',
+  'Painter',
+  'Appliance Technician',
+  'Other',
+];
 
-  // Auth Steps: 'PHONE' | 'OTP'
-  const [step, setStep] = useState<'PHONE' | 'OTP'>('PHONE');
+const AVAILABILITY_OPTIONS = [
+  { label: 'Available Full-Time', value: 'AVAILABLE' as const },
+  { label: 'Available Part-Time / Flexible', value: 'AVAILABLE' as const },
+  { label: 'On-Demand & Emergency Ready', value: 'AVAILABLE' as const },
+];
+
+interface WorkerLoginPageProps {
+  initialView?: 'LOGIN' | 'SIGNUP';
+}
+
+export const WorkerLoginPage: React.FC<WorkerLoginPageProps> = ({ initialView }) => {
+  const { sendPhoneOtp, verifyPhoneOtp, currentPath, navigate } = useAuth();
+
+  // Mode: 'LOGIN' | 'SIGNUP'
+  const [authView, setAuthView] = useState<'LOGIN' | 'SIGNUP'>(() => {
+    if (initialView) return initialView;
+    return currentPath === '/worker/signup' ? 'SIGNUP' : 'LOGIN';
+  });
+
+  // Signup Multi-Step: 1 (Basic Details) | 2 (Worker Details)
+  const [signupStep, setSignupStep] = useState<1 | 2>(1);
+
+  // Auth Step: 'FORM' | 'OTP'
+  const [authStep, setAuthStep] = useState<'FORM' | 'OTP'>('FORM');
+
+  // Form Fields - Page 1 (Basic Details)
   const [phone, setPhone] = useState('9876543210');
-  const [otpCode, setOtpCode] = useState('');
-  const [name, setName] = useState('Ramesh Kumar');
+  const [name, setName] = useState('');
+  const [locality, setLocality] = useState(DEFAULT_LOCATION);
+
+  // Form Fields - Page 2 (Worker Details)
   const [profession, setProfession] = useState('Electrician');
-  const [cooperativeBranch, setCooperativeBranch] = useState('Bengaluru East Electrical Union');
-  const [experienceYears, setExperienceYears] = useState('8');
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [skillsText, setSkillsText] = useState('Wiring, Fan Installation, Switchboard Repair');
+  const [experienceYears, setExperienceYears] = useState('5');
+  const [cooperativeBranch, setCooperativeBranch] = useState('Noida District Artisan Federation');
+  const [availability, setAvailability] = useState<'AVAILABLE' | 'BUSY' | 'NOT_AVAILABLE'>('AVAILABLE');
+  const [email, setEmail] = useState('');
+
+  // OTP State
+  const [otpCode, setOtpCode] = useState('');
   const [countdown, setCountdown] = useState(45);
   const [canResend, setCanResend] = useState(false);
 
+  // UI Feedback States
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync state if currentPath changes externally
+  useEffect(() => {
+    if (currentPath === '/worker/signup' && authView !== 'SIGNUP') {
+      setAuthView('SIGNUP');
+      setSignupStep(1);
+      setAuthStep('FORM');
+      setErrorMsg(null);
+      setSuccessMsg(null);
+    } else if (currentPath === '/worker/login' && authView !== 'LOGIN') {
+      setAuthView('LOGIN');
+      setSignupStep(1);
+      setAuthStep('FORM');
+      setErrorMsg(null);
+      setSuccessMsg(null);
+    }
+  }, [currentPath]);
+
   // Countdown timer for OTP resend
   useEffect(() => {
-    let timer: any;
-    if (step === 'OTP' && countdown > 0) {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    if (authStep === 'OTP' && countdown > 0) {
       timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
     } else if (countdown === 0) {
       setCanResend(true);
     }
-    return () => clearTimeout(timer);
-  }, [step, countdown]);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [authStep, countdown]);
 
-  const handleSendOtp = async (e: React.FormEvent) => {
+  const switchView = (newView: 'LOGIN' | 'SIGNUP') => {
+    setAuthView(newView);
+    setSignupStep(1);
+    setAuthStep('FORM');
+    setErrorMsg(null);
+    setSuccessMsg(null);
+    setOtpCode('');
+    navigate(newView === 'SIGNUP' ? '/worker/signup' : '/worker/login');
+  };
+
+  // Handle Page 1 Submission (Login or Signup Step 1)
+  const handlePage1Submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
@@ -42,16 +114,32 @@ export const WorkerLoginPage: React.FC = () => {
       return;
     }
 
+    if (authView === 'SIGNUP') {
+      if (!name.trim() || name.trim().length < 2) {
+        setErrorMsg('Please enter your full name as per official ID.');
+        return;
+      }
+      if (!locality.trim()) {
+        setErrorMsg('Please enter your service locality / area.');
+        return;
+      }
+
+      // Validated Page 1 -> Move to Page 2
+      setSignupStep(2);
+      return;
+    }
+
+    // In Login mode -> Send OTP directly
     setIsSubmitting(true);
     try {
       const res = await sendPhoneOtp({ phone: cleanPhone });
       if (res.success) {
-        setSuccessMsg(res.message || `OTP sent to +91 ${cleanPhone}`);
-        setStep('OTP');
+        setSuccessMsg(res.message || `Verification code sent to +91 ${cleanPhone}`);
+        setAuthStep('OTP');
         setCountdown(45);
         setCanResend(false);
       } else {
-        setErrorMsg(res.error || 'Failed to send OTP. Please try again.');
+        setErrorMsg(res.error || 'Failed to send verification code. Please try again.');
       }
     } catch {
       setErrorMsg('An unexpected network error occurred.');
@@ -60,15 +148,68 @@ export const WorkerLoginPage: React.FC = () => {
     }
   };
 
+  // Handle Page 2 Submission (Signup Step 2 -> Send OTP)
+  const handlePage2Submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setSuccessMsg(null);
+
+    if (!profession.trim()) {
+      setErrorMsg('Please select your service trade / category.');
+      return;
+    }
+    if (!skillsText.trim()) {
+      setErrorMsg('Please list the specific services or skills you provide.');
+      return;
+    }
+    const expNum = parseInt(experienceYears, 10);
+    if (isNaN(expNum) || expNum < 0 || expNum > 50) {
+      setErrorMsg('Please enter valid years of experience (1-50).');
+      return;
+    }
+    if (!cooperativeBranch.trim()) {
+      setErrorMsg('Please specify your cooperative union branch or service hub.');
+      return;
+    }
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+
+    const cleanPhone = phone.trim().replace(/\D/g, '');
+    setIsSubmitting(true);
+    try {
+      const res = await sendPhoneOtp({ phone: cleanPhone });
+      if (res.success) {
+        setSuccessMsg(res.message || `Verification code sent to +91 ${cleanPhone}`);
+        setAuthStep('OTP');
+        setCountdown(45);
+        setCanResend(false);
+      } else {
+        setErrorMsg(res.error || 'Failed to send verification code. Please try again.');
+      }
+    } catch {
+      setErrorMsg('An unexpected network error occurred.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handle OTP Verification
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
 
     const token = otpCode.trim();
     if (!token || token.length < 4) {
-      setErrorMsg('Please enter a valid OTP code.');
+      setErrorMsg('Please enter a valid verification code.');
       return;
     }
+
+    const parsedSkills = skillsText
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     setIsSubmitting(true);
     try {
@@ -76,14 +217,18 @@ export const WorkerLoginPage: React.FC = () => {
         phone: phone.trim().replace(/\D/g, ''),
         token,
         role: 'worker',
-        name: name.trim() || 'Artisan Partner',
-        profession,
-        cooperativeBranch,
+        name: name.trim() || (authView === 'SIGNUP' ? 'Artisan Partner' : 'Ramesh Kumar'),
+        locality: locality.trim() || DEFAULT_LOCATION,
+        email: email.trim() || undefined,
+        profession: profession.trim() || 'Electrician',
+        skills: parsedSkills.length > 0 ? parsedSkills : [profession],
         experienceYears: parseInt(experienceYears, 10) || 5,
+        cooperativeBranch: cooperativeBranch.trim() || 'SAHYOG Central Federation',
+        availability,
       });
 
       if (!res.success) {
-        setErrorMsg(res.error || 'Invalid OTP code. Please verify artisan credentials.');
+        setErrorMsg(res.error || 'Invalid code. Please check and retry.');
       }
     } catch {
       setErrorMsg('Verification failed. Please try again.');
@@ -92,19 +237,20 @@ export const WorkerLoginPage: React.FC = () => {
     }
   };
 
+  // Handle OTP Resend
   const handleResendOtp = async () => {
-    if (!canResend) return;
+    if (!canResend || isSubmitting) return;
     setErrorMsg(null);
     setIsSubmitting(true);
     try {
       const cleanPhone = phone.trim().replace(/\D/g, '');
       const res = await sendPhoneOtp({ phone: cleanPhone });
       if (res.success) {
-        setSuccessMsg(`New OTP sent to +91 ${cleanPhone}`);
+        setSuccessMsg(`New code sent to +91 ${cleanPhone}`);
         setCountdown(45);
         setCanResend(false);
       } else {
-        setErrorMsg(res.error || 'Failed to resend OTP.');
+        setErrorMsg(res.error || 'Failed to resend code.');
       }
     } catch {
       setErrorMsg('Network error. Please try again.');
@@ -113,400 +259,772 @@ export const WorkerLoginPage: React.FC = () => {
     }
   };
 
-  const handleQuickDemoFill = () => {
-    setPhone('9876543210');
-    setName('Ramesh Kumar');
-    setProfession('Electrician');
-    setCooperativeBranch('Bengaluru East Electrical Union');
-    setExperienceYears('8');
-    setOtpCode('123456');
-    setErrorMsg(null);
-  };
-
   return (
     <div
       style={{
         minHeight: '100vh',
+        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px 16px',
-        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
-        width: '100%',
+        backgroundColor: '#F8FAFC',
+        fontFamily: 'var(--font-sans)',
+        boxSizing: 'border-box',
       }}
     >
       <div
         style={{
           width: '100%',
-          maxWidth: '430px',
+          maxWidth: '410px',
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
-          border: '1px solid var(--primary-border, #D9E9C8)',
-          boxShadow: '0 4px 24px -2px rgba(29, 170, 92, 0.10)',
-          padding: '28px 24px',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02)',
+          padding: '32px 28px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px',
+          gap: '22px',
+          boxSizing: 'border-box',
         }}
       >
         {/* Brand Header */}
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
           <div
             style={{
-              width: '48px',
-              height: '48px',
+              width: '44px',
+              height: '44px',
               borderRadius: '12px',
               backgroundColor: '#1DAA5C',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 4px 14px rgba(29, 170, 92, 0.25)',
               marginBottom: '12px',
             }}
           >
-            <HardHat size={28} strokeWidth={2.3} />
+            <ShieldCheck size={26} strokeWidth={2.2} />
           </div>
 
           <h1
             style={{
-              fontSize: '1.375rem',
-              fontWeight: 900,
+              fontSize: '1.25rem',
+              fontWeight: 800,
               color: '#0B0B0B',
-              letterSpacing: '-0.03em',
-              margin: '0 0 4px',
+              letterSpacing: '-0.02em',
+              margin: '0 0 2px',
+              fontFamily: 'var(--font-display)',
             }}
           >
             SAHYOG
           </h1>
 
+          <h2
+            style={{
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              color: '#334155',
+              margin: '0 0 6px',
+            }}
+          >
+            {authStep === 'OTP'
+              ? 'Verification Code'
+              : authView === 'LOGIN'
+              ? 'Worker Login'
+              : signupStep === 1
+              ? 'Create Worker Account'
+              : 'Worker Details'}
+          </h2>
+
+          <p
+            style={{
+              fontSize: '0.8125rem',
+              color: '#64748B',
+              margin: 0,
+              lineHeight: 1.45,
+            }}
+          >
+            {authStep === 'OTP'
+              ? `Enter the 6-digit code sent to +91 ${phone}`
+              : authView === 'LOGIN'
+              ? 'Sign in to manage your services and bookings'
+              : signupStep === 1
+              ? 'Join as a certified cooperative service professional'
+              : 'Tell us about your trade, skills and experience'}
+          </p>
+
+          {/* Minimal Step Indicator for Sign Up */}
+          {authView === 'SIGNUP' && authStep === 'FORM' && (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                marginTop: '10px',
+              }}
+            >
+              <div
+                style={{
+                  width: '24px',
+                  height: '4px',
+                  borderRadius: '9999px',
+                  backgroundColor: '#1DAA5C',
+                }}
+              />
+              <div
+                style={{
+                  width: '24px',
+                  height: '4px',
+                  borderRadius: '9999px',
+                  backgroundColor: signupStep === 2 ? '#1DAA5C' : '#E2E8F0',
+                  transition: 'background-color 200ms ease',
+                }}
+              />
+              <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#64748B', marginLeft: '4px' }}>
+                Step {signupStep} of 2
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Alerts */}
+        {errorMsg && (
           <div
+            role="alert"
             style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              marginBottom: '8px',
-              flexWrap: 'wrap',
-            }}
-          >
-            <div
-              style={{
-                fontSize: '0.625rem',
-                fontWeight: 800,
-                color: '#1DAA5C',
-                backgroundColor: '#F0FDF4',
-                border: '1px solid #D9E9C8',
-                padding: '2px 8px',
-                borderRadius: '9999px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-              }}
-            >
-              ARTISAN PRO • 0% COMMISSION • AUTH
-            </div>
-
-            {/* Live Environment Status Badge */}
-            <div
-              style={{
-                fontSize: '0.5625rem',
-                fontWeight: 800,
-                color: authMode === 'SUPABASE_LIVE' ? '#047857' : authMode === 'UNCONFIGURED_PROD' ? '#B91C1C' : '#B45309',
-                backgroundColor: authMode === 'SUPABASE_LIVE' ? '#ECFDF5' : authMode === 'UNCONFIGURED_PROD' ? '#FEF2F2' : '#FFFBEB',
-                border: `1px solid ${authMode === 'SUPABASE_LIVE' ? '#A7F3D0' : authMode === 'UNCONFIGURED_PROD' ? '#FECACA' : '#FDE68A'}`,
-                padding: '2px 7px',
-                borderRadius: '9999px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            >
-              {authMode === 'SUPABASE_LIVE' ? '🟢 Live SMS OTP' : authMode === 'UNCONFIGURED_PROD' ? '🔴 Unconfigured' : '🟡 Dev Sandbox'}
-            </div>
-          </div>
-
-          <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0, lineHeight: 1.4 }}>
-            {step === 'PHONE'
-              ? 'Enter your mobile number to sign in or register as a certified cooperative artisan'
-              : `Enter the 6-digit verification code sent to +91 ${phone}`}
-          </p>
-        </div>
-
-        {/* Error Alert */}
-        {errorMsg && (
-          <div
-            style={{
+              gap: '8px',
               padding: '10px 12px',
               backgroundColor: '#FEF2F2',
               border: '1px solid #FECACA',
               borderRadius: '8px',
-              fontSize: '0.75rem',
-              color: '#DC2626',
+              fontSize: '0.8125rem',
+              color: '#B91C1C',
               lineHeight: 1.4,
             }}
           >
-            {errorMsg}
+            <AlertCircle size={16} style={{ flexShrink: 0 }} />
+            <span>{errorMsg}</span>
           </div>
         )}
 
-        {/* Success Alert */}
         {successMsg && !errorMsg && (
           <div
+            role="status"
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
               padding: '10px 12px',
-              backgroundColor: 'var(--primary-light, #F0FDF4)',
-              border: '1px solid var(--primary-border, #D9E9C8)',
+              backgroundColor: '#F0FDF4',
+              border: '1px solid #BBF7D0',
               borderRadius: '8px',
-              fontSize: '0.75rem',
-              color: 'var(--primary-dark, #0F7A3E)',
+              fontSize: '0.8125rem',
+              color: '#15803D',
               lineHeight: 1.4,
             }}
           >
-            {successMsg}
+            <CheckCircle2 size={16} style={{ flexShrink: 0 }} />
+            <span>{successMsg}</span>
           </div>
         )}
 
-        {step === 'PHONE' ? (
-          /* ========================================================= */
-          /* STEP 1: ARTISAN MOBILE & TRADE DETAILS                   */
-          /* ========================================================= */
-          <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  color: '#334155',
-                  marginBottom: '5px',
-                }}
-              >
-                Registered Mobile Number
-              </label>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: '1.5px solid #CBD5E1',
-                  borderRadius: '8px',
-                  backgroundColor: '#FFFFFF',
-                  overflow: 'hidden',
-                }}
-              >
-                <div
-                  style={{
-                    padding: '10px 12px',
-                    backgroundColor: 'var(--primary-light, #F0FDF4)',
-                    borderRight: '1px solid var(--primary-border, #D9E9C8)',
-                    fontSize: '0.875rem',
-                    fontWeight: 700,
-                    color: 'var(--primary-dark, #0F7A3E)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                  }}
-                >
-                  <span>🇮🇳</span>
-                  <span>+91</span>
-                </div>
-                <input
-                  type="tel"
-                  maxLength={10}
-                  placeholder="98765 43210"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    width: '100%',
-                    padding: '10px 12px',
-                    fontSize: '0.9375rem',
-                    fontWeight: 600,
-                    color: '#0F172A',
-                    letterSpacing: '0.04em',
-                  }}
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  color: '#334155',
-                  marginBottom: '5px',
-                }}
-              >
-                Full Name (as per Aadhaar)
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Ramesh Kumar"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{
-                  width: '100%',
-                  border: '1px solid #CBD5E1',
-                  borderRadius: '8px',
-                  padding: '9px 12px',
-                  fontSize: '0.875rem',
-                  color: '#0F172A',
-                }}
-                required
-              />
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              <div>
+        {authStep === 'FORM' ? (
+          authView === 'LOGIN' ? (
+            /* ========================================================= */
+            /* WORKER LOGIN FORM                                         */
+            /* ========================================================= */
+            <form onSubmit={handlePage1Submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <label
+                  htmlFor="worker-login-phone"
                   style={{
-                    display: 'block',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    color: '#334155',
-                    marginBottom: '5px',
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
                   }}
                 >
-                  Primary Trade
+                  Mobile Number
                 </label>
+
                 <div
+                  className="sahyog-input-container"
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     border: '1px solid #CBD5E1',
-                    borderRadius: '8px',
-                    padding: '8px 10px',
+                    borderRadius: '10px',
                     backgroundColor: '#FFFFFF',
-                    gap: '6px',
+                    overflow: 'hidden',
+                    height: '46px',
                   }}
                 >
-                  <Briefcase size={15} color="var(--primary, #1DAA5C)" />
+                  <div
+                    style={{
+                      padding: '0 12px',
+                      backgroundColor: '#F8FAFC',
+                      borderRight: '1px solid #E2E8F0',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      color: '#475569',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      height: '100%',
+                      userSelect: 'none',
+                    }}
+                  >
+                    <span aria-hidden="true">🇮🇳</span>
+                    <span>+91</span>
+                  </div>
+
+                  <input
+                    id="worker-login-phone"
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={10}
+                    placeholder="Enter 10-digit number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                    style={{
+                      flex: 1,
+                      border: 'none',
+                      outline: 'none',
+                      padding: '0 12px',
+                      fontSize: '0.9375rem',
+                      fontWeight: 500,
+                      color: '#0F172A',
+                      backgroundColor: 'transparent',
+                      height: '100%',
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={{
+                  marginTop: '4px',
+                  height: '46px',
+                  backgroundColor: '#1DAA5C',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  opacity: isSubmitting ? 0.7 : 1,
+                  transition: 'background-color 150ms ease, opacity 150ms ease, transform 100ms ease',
+                }}
+                className="sahyog-btn"
+              >
+                <span>{isSubmitting ? 'Sending Code...' : 'Continue'}</span>
+                {!isSubmitting && <ArrowRight size={16} />}
+              </button>
+            </form>
+          ) : signupStep === 1 ? (
+            /* ========================================================= */
+            /* WORKER SIGNUP - PAGE 1: BASIC DETAILS                     */
+            /* ========================================================= */
+            <form onSubmit={handlePage1Submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Mobile Number */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label
+                  htmlFor="worker-signup-phone"
+                  style={{
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
+                  }}
+                >
+                  Mobile Number
+                </label>
+
+                <div
+                  className="sahyog-input-container"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '10px',
+                    backgroundColor: '#FFFFFF',
+                    overflow: 'hidden',
+                    height: '46px',
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: '0 12px',
+                      backgroundColor: '#F8FAFC',
+                      borderRight: '1px solid #E2E8F0',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      color: '#475569',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      height: '100%',
+                      userSelect: 'none',
+                    }}
+                  >
+                    <span aria-hidden="true">🇮🇳</span>
+                    <span>+91</span>
+                  </div>
+
+                  <input
+                    id="worker-signup-phone"
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={10}
+                    placeholder="Enter 10-digit number"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                    style={{
+                      flex: 1,
+                      border: 'none',
+                      outline: 'none',
+                      padding: '0 12px',
+                      fontSize: '0.9375rem',
+                      fontWeight: 500,
+                      color: '#0F172A',
+                      backgroundColor: 'transparent',
+                      height: '100%',
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Full Name */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label
+                  htmlFor="worker-signup-name"
+                  style={{
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
+                  }}
+                >
+                  Full Name
+                </label>
+                <input
+                  id="worker-signup-name"
+                  type="text"
+                  placeholder="e.g. Ramesh Kumar"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{
+                    height: '44px',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '10px',
+                    padding: '0 12px',
+                    fontSize: '0.875rem',
+                    color: '#0F172A',
+                    outline: 'none',
+                    backgroundColor: '#FFFFFF',
+                    boxSizing: 'border-box',
+                  }}
+                  required
+                />
+              </div>
+
+              {/* Service Locality / Location (Area only) */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label
+                  htmlFor="worker-signup-locality"
+                  style={{
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
+                  }}
+                >
+                  Service Locality / Location
+                </label>
+                <div
+                  className="sahyog-input-container"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '10px',
+                    backgroundColor: '#FFFFFF',
+                    padding: '0 12px',
+                    height: '44px',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <MapPin size={15} color="#94A3B8" style={{ flexShrink: 0, marginRight: '8px' }} />
+                  <input
+                    id="worker-signup-locality"
+                    type="text"
+                    placeholder="e.g. Sector 62, Noida"
+                    value={locality}
+                    onChange={(e) => setLocality(e.target.value)}
+                    style={{
+                      flex: 1,
+                      border: 'none',
+                      outline: 'none',
+                      fontSize: '0.875rem',
+                      color: '#0F172A',
+                      backgroundColor: 'transparent',
+                      height: '100%',
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Page 1 CTA */}
+              <button
+                type="submit"
+                style={{
+                  marginTop: '4px',
+                  height: '46px',
+                  backgroundColor: '#1DAA5C',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  transition: 'background-color 150ms ease, opacity 150ms ease, transform 100ms ease',
+                }}
+                className="sahyog-btn"
+              >
+                <span>Continue</span>
+                <ArrowRight size={16} />
+              </button>
+            </form>
+          ) : (
+            /* ========================================================= */
+            /* WORKER SIGNUP - PAGE 2: WORKER DETAILS                    */
+            /* ========================================================= */
+            <form onSubmit={handlePage2Submit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {/* Back to Page 1 trigger */}
+              <button
+                type="button"
+                onClick={() => {
+                  setSignupStep(1);
+                  setErrorMsg(null);
+                }}
+                style={{
+                  alignSelf: 'flex-start',
+                  background: 'none',
+                  border: 'none',
+                  color: '#64748B',
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2px 0',
+                  margin: '-4px 0 2px',
+                }}
+              >
+                <ArrowLeft size={13} />
+                <span>Back to Basic Details</span>
+              </button>
+
+              {/* Trade / Category */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                <label
+                  htmlFor="worker-profession-select"
+                  style={{
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
+                  }}
+                >
+                  Service Category / Trade
+                </label>
+                <div
+                  className="sahyog-input-container"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '10px',
+                    backgroundColor: '#FFFFFF',
+                    padding: '0 12px',
+                    height: '44px',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <Briefcase size={15} color="#1DAA5C" style={{ flexShrink: 0, marginRight: '8px' }} />
                   <select
+                    id="worker-profession-select"
                     value={profession}
                     onChange={(e) => setProfession(e.target.value)}
                     style={{
+                      flex: 1,
                       border: 'none',
                       outline: 'none',
-                      width: '100%',
-                      fontSize: '0.8125rem',
+                      fontSize: '0.875rem',
+                      color: '#0F172A',
                       backgroundColor: 'transparent',
+                      height: '100%',
+                      cursor: 'pointer',
                     }}
+                    required
                   >
-                    <option value="Electrician">Electrician</option>
-                    <option value="Plumber">Plumber</option>
-                    <option value="AC Repair">AC Repair</option>
-                    <option value="Carpenter">Carpenter</option>
-                    <option value="Appliance">Appliance</option>
-                    <option value="Cleaning">Cleaning</option>
+                    {TRADE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
 
-              <div>
+              {/* Skills / Services Offered */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                 <label
+                  htmlFor="worker-skills-input"
                   style={{
-                    display: 'block',
-                    fontSize: '0.75rem',
-                    fontWeight: 700,
-                    color: '#334155',
-                    marginBottom: '5px',
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
                   }}
                 >
-                  Experience (Yrs)
+                  Skills / Services Offered
                 </label>
                 <input
-                  type="number"
-                  min="1"
-                  max="40"
-                  value={experienceYears}
-                  onChange={(e) => setExperienceYears(e.target.value)}
+                  id="worker-skills-input"
+                  type="text"
+                  placeholder="e.g. Wiring, MCB Setup, Fan Fitting"
+                  value={skillsText}
+                  onChange={(e) => setSkillsText(e.target.value)}
                   style={{
-                    width: '100%',
+                    height: '44px',
                     border: '1px solid #CBD5E1',
-                    borderRadius: '8px',
-                    padding: '8px 12px',
+                    borderRadius: '10px',
+                    padding: '0 12px',
                     fontSize: '0.875rem',
                     color: '#0F172A',
+                    outline: 'none',
+                    backgroundColor: '#FFFFFF',
+                    boxSizing: 'border-box',
                   }}
                   required
                 />
               </div>
-            </div>
 
-            <div>
-              <label
+              {/* Experience & Availability Row */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <label
+                    htmlFor="worker-exp-input"
+                    style={{
+                      fontSize: '0.8125rem',
+                      fontWeight: 600,
+                      color: '#1E293B',
+                    }}
+                  >
+                    Experience (Yrs)
+                  </label>
+                  <input
+                    id="worker-exp-input"
+                    type="number"
+                    min="1"
+                    max="40"
+                    placeholder="e.g. 5"
+                    value={experienceYears}
+                    onChange={(e) => setExperienceYears(e.target.value)}
+                    style={{
+                      height: '44px',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '10px',
+                      padding: '0 12px',
+                      fontSize: '0.875rem',
+                      color: '#0F172A',
+                      outline: 'none',
+                      backgroundColor: '#FFFFFF',
+                      boxSizing: 'border-box',
+                    }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <label
+                    htmlFor="worker-avail-select"
+                    style={{
+                      fontSize: '0.8125rem',
+                      fontWeight: 600,
+                      color: '#1E293B',
+                    }}
+                  >
+                    Availability
+                  </label>
+                  <div
+                    className="sahyog-input-container"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '10px',
+                      backgroundColor: '#FFFFFF',
+                      padding: '0 8px',
+                      height: '44px',
+                      boxSizing: 'border-box',
+                    }}
+                  >
+                    <Clock size={14} color="#1DAA5C" style={{ flexShrink: 0, marginRight: '4px' }} />
+                    <select
+                      id="worker-avail-select"
+                      value={availability}
+                      onChange={(e) => setAvailability(e.target.value as any)}
+                      style={{
+                        flex: 1,
+                        border: 'none',
+                        outline: 'none',
+                        fontSize: '0.75rem',
+                        color: '#0F172A',
+                        backgroundColor: 'transparent',
+                        height: '100%',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {AVAILABILITY_OPTIONS.map((opt) => (
+                        <option key={opt.label} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cooperative Branch / Service Hub */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                <label
+                  htmlFor="worker-coop-input"
+                  style={{
+                    fontSize: '0.8125rem',
+                    fontWeight: 600,
+                    color: '#1E293B',
+                  }}
+                >
+                  Cooperative Branch / Service Hub
+                </label>
+                <div
+                  className="sahyog-input-container"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '10px',
+                    backgroundColor: '#FFFFFF',
+                    padding: '0 12px',
+                    height: '44px',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <Award size={15} color="#1DAA5C" style={{ flexShrink: 0, marginRight: '8px' }} />
+                  <input
+                    id="worker-coop-input"
+                    type="text"
+                    placeholder="e.g. Noida District Artisan Federation"
+                    value={cooperativeBranch}
+                    onChange={(e) => setCooperativeBranch(e.target.value)}
+                    style={{
+                      flex: 1,
+                      border: 'none',
+                      outline: 'none',
+                      fontSize: '0.875rem',
+                      color: '#0F172A',
+                      backgroundColor: 'transparent',
+                      height: '100%',
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Email Address (Optional) */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <label
+                    htmlFor="worker-email-input"
+                    style={{
+                      fontSize: '0.8125rem',
+                      fontWeight: 600,
+                      color: '#1E293B',
+                    }}
+                  >
+                    Email Address
+                  </label>
+                  <span style={{ fontSize: '0.6875rem', color: '#94A3B8' }}>Optional</span>
+                </div>
+                <input
+                  id="worker-email-input"
+                  type="email"
+                  placeholder="e.g. ramesh.kumar@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{
+                    height: '44px',
+                    border: '1px solid #CBD5E1',
+                    borderRadius: '10px',
+                    padding: '0 12px',
+                    fontSize: '0.875rem',
+                    color: '#0F172A',
+                    outline: 'none',
+                    backgroundColor: '#FFFFFF',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              {/* Page 2 Primary CTA */}
+              <button
+                type="submit"
+                disabled={isSubmitting}
                 style={{
-                  display: 'block',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  color: '#334155',
-                  marginBottom: '5px',
-                }}
-              >
-                Cooperative Union Branch
-              </label>
-              <div
-                style={{
+                  marginTop: '4px',
+                  height: '46px',
+                  backgroundColor: '#1DAA5C',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  cursor: isSubmitting ? 'not-allowed' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
-                  border: '1px solid #CBD5E1',
-                  borderRadius: '8px',
-                  padding: '8px 12px',
-                  backgroundColor: '#FFFFFF',
+                  justifyContent: 'center',
                   gap: '8px',
+                  opacity: isSubmitting ? 0.7 : 1,
+                  transition: 'background-color 150ms ease, opacity 150ms ease, transform 100ms ease',
                 }}
+                className="sahyog-btn"
               >
-                <Award size={16} color="var(--primary, #1DAA5C)" />
-                <input
-                  type="text"
-                  placeholder="e.g. Bengaluru East Electrical Union"
-                  value={cooperativeBranch}
-                  onChange={(e) => setCooperativeBranch(e.target.value)}
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    width: '100%',
-                    fontSize: '0.875rem',
-                    color: '#0F172A',
-                  }}
-                  required
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              style={{
-                marginTop: '4px',
-                padding: '12px',
-                backgroundColor: '#1DAA5C',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                boxShadow: '0 2px 8px rgba(29, 170, 92, 0.25)',
-              }}
-              className="sahyog-btn"
-            >
-              <span>{isSubmitting ? 'Sending SMS OTP...' : 'Get OTP on Phone'}</span>
-              <ArrowRight size={16} />
-            </button>
-          </form>
+                <span>{isSubmitting ? 'Sending Code...' : 'Create Account'}</span>
+                {!isSubmitting && <ArrowRight size={16} />}
+              </button>
+            </form>
+          )
         ) : (
           /* ========================================================= */
-          /* STEP 2: 6-DIGIT OTP VERIFICATION                         */
+          /* OTP VERIFICATION STEP                                     */
           /* ========================================================= */
-          <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            {/* Phone Summary & Change Link */}
             <div
               style={{
                 display: 'flex',
@@ -518,16 +1036,13 @@ export const WorkerLoginPage: React.FC = () => {
                 border: '1px solid #E2E8F0',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Phone size={14} color="#1DAA5C" />
-                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F7A3E' }}>
-                  +91 {phone} ({profession})
-                </span>
-              </div>
+              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#1E293B' }}>
+                +91 {phone} {profession ? `(${profession})` : ''}
+              </span>
               <button
                 type="button"
                 onClick={() => {
-                  setStep('PHONE');
+                  setAuthStep('FORM');
                   setErrorMsg(null);
                   setSuccessMsg(null);
                 }}
@@ -536,46 +1051,50 @@ export const WorkerLoginPage: React.FC = () => {
                   border: 'none',
                   color: '#1DAA5C',
                   fontSize: '0.75rem',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
+                  padding: '2px 4px',
                 }}
               >
-                <Edit3 size={13} />
+                <Edit2 size={12} />
                 <span>Change</span>
               </button>
             </div>
 
-            <div>
+            {/* OTP Input */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label
+                htmlFor="worker-otp-input"
                 style={{
-                  display: 'block',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  color: '#334155',
-                  marginBottom: '6px',
+                  fontSize: '0.8125rem',
+                  fontWeight: 600,
+                  color: '#1E293B',
                   textAlign: 'center',
                 }}
               >
-                Enter 6-Digit OTP Code
+                Enter 6-Digit Code
               </label>
+
               <div
+                className="sahyog-input-container"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '1.5px solid #CBD5E1',
-                  borderRadius: '8px',
-                  padding: '10px 14px',
+                  border: '1px solid #CBD5E1',
+                  borderRadius: '10px',
                   backgroundColor: '#FFFFFF',
-                  gap: '8px',
+                  height: '52px',
                 }}
               >
-                <KeyRound size={18} color="#1DAA5C" />
                 <input
+                  id="worker-otp-input"
                   type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   maxLength={6}
                   autoFocus
                   placeholder="• • • • • •"
@@ -584,23 +1103,24 @@ export const WorkerLoginPage: React.FC = () => {
                   style={{
                     border: 'none',
                     outline: 'none',
-                    width: '140px',
+                    width: '100%',
                     fontSize: '1.25rem',
-                    fontWeight: 800,
-                    letterSpacing: '0.3em',
+                    fontWeight: 700,
+                    letterSpacing: '0.35em',
                     textAlign: 'center',
                     color: '#0B0B0B',
+                    backgroundColor: 'transparent',
                   }}
                   required
                 />
               </div>
             </div>
 
-            {/* Countdown & Resend */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+            {/* Resend OTP */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {!canResend ? (
                 <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
-                  Resend OTP in <strong>{countdown}s</strong>
+                  Resend code in <strong>{countdown}s</strong>
                 </span>
               ) : (
                 <button
@@ -611,139 +1131,104 @@ export const WorkerLoginPage: React.FC = () => {
                     background: 'none',
                     border: 'none',
                     fontSize: '0.75rem',
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: '#1DAA5C',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px',
+                    padding: '2px 4px',
                   }}
                 >
-                  <RefreshCw size={13} />
-                  <span>Resend OTP SMS</span>
+                  <RefreshCw size={12} />
+                  <span>Resend code via SMS</span>
                 </button>
               )}
             </div>
 
+            {/* Verify CTA */}
             <button
               type="submit"
               disabled={isSubmitting}
               style={{
-                padding: '12px',
+                height: '46px',
                 backgroundColor: '#1DAA5C',
                 color: '#FFFFFF',
                 border: 'none',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 fontSize: '0.875rem',
-                fontWeight: 700,
-                cursor: 'pointer',
+                fontWeight: 600,
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(29, 170, 92, 0.25)',
+                opacity: isSubmitting ? 0.7 : 1,
+                transition: 'background-color 150ms ease, opacity 150ms ease, transform 100ms ease',
               }}
               className="sahyog-btn"
             >
-              <span>{isSubmitting ? 'Verifying OTP...' : 'Verify OTP & Access Artisan Pro'}</span>
-              <ArrowRight size={16} />
+              <span>
+                {isSubmitting
+                  ? 'Verifying...'
+                  : authView === 'SIGNUP'
+                  ? 'Verify & Create Account'
+                  : 'Verify & Continue'}
+              </span>
+              {!isSubmitting && <ArrowRight size={16} />}
             </button>
           </form>
         )}
 
-        {/* Quick Demo Pre-fill Shortcut (Only shown in DEV_SANDBOX mode, hidden in Production) */}
-        {authMode === 'DEV_SANDBOX' && (
-          <div
-            style={{
-              padding: '10px 12px',
-              backgroundColor: '#F8FAFC',
-              border: '1px dashed #D9E9C8',
-              borderRadius: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '6px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#0F7A3E', textTransform: 'uppercase' }}>
-                SIH Sandbox Test Credentials
-              </span>
-              <span style={{ fontSize: '0.625rem', color: '#1DAA5C', fontWeight: 700 }}>Dev Mode Only</span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleQuickDemoFill}
-              style={{
-                padding: '6px 10px',
-                backgroundColor: '#FFFFFF',
-                border: '1px solid #E2E8F0',
-                borderRadius: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                color: '#0B0B0B',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-              }}
-            >
-              <Sparkles size={14} color="#F4C430" />
-              <span>Pre-fill Demo Artisan: Ramesh Kumar & OTP</span>
-            </button>
-          </div>
-        )}
-
-        {/* Cross-Role Navigation Links */}
+        {/* Bottom Switch between Login and Sign Up */}
         <div
           style={{
             borderTop: '1px solid #F1F5F9',
-            paddingTop: '14px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
+            paddingTop: '16px',
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
-            Looking to book a service?{' '}
-            <button
-              type="button"
-              onClick={() => navigate('/customer/login')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#1DAA5C',
-                fontWeight: 700,
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Customer Marketplace Login
-            </button>
-          </div>
-
-          <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
-            Cooperative official or admin?{' '}
-            <button
-              type="button"
-              onClick={() => navigate('/admin/login')}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#1DAA5C',
-                fontWeight: 700,
-                cursor: 'pointer',
-                padding: 0,
-              }}
-            >
-              Federation Command Login
-            </button>
-          </div>
+          {authView === 'LOGIN' ? (
+            <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
+              Don't have an account?{' '}
+              <button
+                type="button"
+                onClick={() => switchView('SIGNUP')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#1DAA5C',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0,
+                  fontSize: '0.8125rem',
+                }}
+              >
+                Sign Up
+              </button>
+            </p>
+          ) : (
+            <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
+              Already have an account?{' '}
+              <button
+                type="button"
+                onClick={() => switchView('LOGIN')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#1DAA5C',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: 0,
+                  fontSize: '0.8125rem',
+                }}
+              >
+                Login
+              </button>
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 };
-

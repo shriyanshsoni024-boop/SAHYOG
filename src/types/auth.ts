@@ -62,10 +62,13 @@ export interface PhoneOtpVerifyDto {
   token: string;
   role: Role;
   name?: string;
+  email?: string;
   profession?: string;
+  skills?: string[];
   cooperativeBranch?: string;
   experienceYears?: number;
   locality?: string;
+  availability?: 'AVAILABLE' | 'BUSY' | 'NOT_AVAILABLE';
 }
 
 export interface CustomerLoginDto {

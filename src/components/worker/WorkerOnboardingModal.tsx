@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useWorker } from '../../context/WorkerContext';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { TRADE_SKILLS_BY_PROFESSION } from '../../data/workerTrainingData';
+import { adminService } from '../../services/adminService';
 import {
   X,
   CheckCircle,
@@ -123,6 +124,18 @@ export const WorkerOnboardingModal: React.FC = () => {
       cooperativeName: formData.cooperativeName,
       verificationStatus: 'VERIFIED',
     });
+
+    adminService.submitKycRecord({
+      workerId: worker.id,
+      workerName: formData.name,
+      phone: formData.phone,
+      profession: formData.professions.join(', '),
+      cooperativeBranch: formData.cooperativeName,
+      aadhaarNumber: formData.aadhaarNumber,
+      certificateNumber: formData.certIdNumber,
+      documents: formData.uploadedDocs,
+    });
+
     setShowOnboardingModal(false);
   };
 
@@ -139,6 +152,7 @@ export const WorkerOnboardingModal: React.FC = () => {
 
   return (
     <div
+      className="animate-backdrop"
       style={{
         position: 'fixed',
         inset: 0,
@@ -148,11 +162,12 @@ export const WorkerOnboardingModal: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(6px)',
       }}
       onClick={() => setShowOnboardingModal(false)}
     >
       <div
+        className="animate-modal-enter"
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: 'var(--radius-lg)',

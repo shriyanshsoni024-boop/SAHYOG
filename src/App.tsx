@@ -23,15 +23,17 @@ const AppRouter: React.FC = () => {
   // Check if we are on a standalone public login page
   const isLoginPage =
     currentPath === '/customer/login' ||
+    currentPath === '/customer/signup' ||
     currentPath === '/worker/login' ||
+    currentPath === '/worker/signup' ||
     currentPath === '/admin/login';
 
   const renderCurrentView = () => {
     // 1. Standalone Login Routes
-    if (currentPath === '/customer/login') {
+    if (currentPath === '/customer/login' || currentPath === '/customer/signup') {
       return <CustomerLoginPage />;
     }
-    if (currentPath === '/worker/login') {
+    if (currentPath === '/worker/login' || currentPath === '/worker/signup') {
       return <WorkerLoginPage />;
     }
     if (currentPath === '/admin/login') {

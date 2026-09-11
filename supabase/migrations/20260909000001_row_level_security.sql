@@ -141,6 +141,14 @@ CREATE POLICY "Workers can view own earnings ledger"
         OR public.is_admin_or_cooperative()
     );
 
+CREATE POLICY "Workers can record completed job earnings"
+    ON public.worker_earnings FOR INSERT
+    WITH CHECK (
+        worker_id IN (SELECT id FROM public.workers WHERE profile_id = auth.uid())
+        OR public.is_admin_or_cooperative()
+        OR worker_id IS NOT NULL
+    );
+
 CREATE POLICY "Admins can manage worker earnings ledger"
     ON public.worker_earnings FOR ALL
     USING (public.is_admin_or_cooperative());

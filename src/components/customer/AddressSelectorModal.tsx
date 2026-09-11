@@ -101,11 +101,13 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
 
   return (
     <div
+      className="animate-backdrop"
       style={{
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backdropFilter: 'blur(6px)',
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'center',
@@ -113,6 +115,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
       onClick={onClose}
     >
       <div
+        className="animate-slide-up"
         style={{
           width: '100%',
           maxWidth: '480px',
@@ -123,7 +126,6 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
           display: 'flex',
           flexDirection: 'column',
           boxShadow: '0 -10px 30px rgba(0,0,0,0.15)',
-          animation: 'slideUp 220ms ease',
           overflowY: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}

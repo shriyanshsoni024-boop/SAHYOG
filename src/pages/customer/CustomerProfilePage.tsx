@@ -50,9 +50,12 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
     });
   }, []);
 
-  const handleSaveEdit = () => {
-    setProfile((prev) => ({ ...prev, name: editName }));
+  const handleSaveEdit = async () => {
+    const updatedName = editName.trim();
+    if (!updatedName) return;
+    setProfile((prev) => ({ ...prev, name: updatedName }));
     setIsEditing(false);
+    await userService.updateUserProfile({ name: updatedName });
   };
 
   return (

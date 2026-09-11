@@ -6,6 +6,9 @@ import { bookingService } from '../services/bookingService';
 import { storageService } from '../services/storage/storageService';
 import { STORAGE_KEYS } from '../services/storage/storageKeys';
 import { LOCATIONS, DEFAULT_LOCATION, ServiceLocation } from '../data/locations';
+import { authService } from '../services/auth/authService';
+import { realtimeService } from '../lib/realtime';
+import { userService } from '../services/userService';
 
 export type CustomerView =
   | 'home'
@@ -65,6 +68,9 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const setSelectedLocation = (location: string) => {
     setSelectedLocationState(location);
     storageService.setItem(STORAGE_KEYS.SELECTED_LOCATION, location);
+    const locObj = LOCATIONS.find((l) => l.area === location);
+    const city = locObj ? locObj.city : location;
+    userService.updateUserProfile({ city, address: location }).catch(() => {});
   };
   
   // Initialize state synchronously from storageService to eliminate layout shift/flicker
@@ -91,6 +97,36 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
     refreshBookings();
   }, []);
 
+  // Supabase Realtime synchronization for active booking tracking
+  useEffect(() => {
+    if (!currentBookingId) return;
+
+    const unsubscribe = realtimeService.subscribeToBooking(currentBookingId, (updatedPartial) => {
+      setBookings((prev) =>
+        prev.map((b) => {
+          if (b.id !== currentBookingId && b.token !== currentBookingId) return b;
+          const statusChanged = updatedPartial.status && updatedPartial.status !== b.status;
+          return {
+            ...b,
+            ...updatedPartial,
+            statusHistory: statusChanged
+              ? [
+                  ...b.statusHistory,
+                  {
+                    status: updatedPartial.status!,
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    note: `Status updated to ${updatedPartial.status}`,
+                  },
+                ]
+              : b.statusHistory,
+          };
+        })
+      );
+    });
+
+    return () => unsubscribe();
+  }, [currentBookingId]);
+
   const startServiceBooking = (category: ServiceCategory, isEmergency: boolean = false) => {
     setSelectedCategory(category);
     setUrgency(isEmergency ? 'EMERGENCY' : 'NORMAL');
@@ -102,6 +138,8 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const createBooking = (worker: Worker): Booking => {
     const targetCategory = selectedCategory || SERVICE_CATEGORIES[0];
+    const currentSession = authService.getCurrentSession();
+    const activeUser = currentSession?.user;
     
     // Call booking service
     const tempRandom = Math.floor(10000 + Math.random() * 90000);
@@ -118,12 +156,16 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       : `Flat 402, Green Vista, ${selectedLocation}`;
     const bookingCity = locObj ? locObj.city : (selectedLocation.includes(',') ? selectedLocation.split(',').pop()?.trim() || 'Custom Area' : 'Custom Area');
 
+    const customerId = activeUser?.id || 'cust-1';
+    const customerName = activeUser?.name || 'Ananya Deshmukh';
+    const customerPhone = activeUser?.phone || '+91 99801 22334';
+
     const newBooking: Booking = {
       id: `b-${Date.now()}`,
       token,
-      customerId: 'cust-1',
-      customerName: 'Ananya Deshmukh',
-      customerPhone: '+91 99801 22334',
+      customerId,
+      customerName,
+      customerPhone,
       serviceId: targetCategory.id,
       serviceName: targetCategory.name,
       serviceCategory: targetCategory.category || 'General',

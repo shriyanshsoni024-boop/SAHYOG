@@ -140,15 +140,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (profile) {
           const userRole: Role = (profile.role === 'cooperative' ? 'admin' : profile.role) as Role;
+          let workerData: any = null;
+          if (userRole === 'worker') {
+            const { data: w } = await supabase
+              .from('workers')
+              .select('*')
+              .eq('profile_id', profile.id)
+              .maybeSingle();
+            workerData = w;
+          }
+
           const authUser: AuthUser = {
             id: profile.id,
             name: profile.name,
             phone: profile.phone,
             email: profile.email || undefined,
             role: userRole,
-            verificationStatus: 'VERIFIED',
+            verificationStatus: (workerData?.verification_status || 'VERIFIED') as any,
             createdAt: profile.created_at,
-            zone: profile.city,
+            zone: workerData?.zone || profile.city,
+            profession: workerData?.trade || workerData?.professions?.[0],
+            cooperativeBranch: workerData?.cooperative_branch,
+            experienceYears: workerData?.experience_years,
+            avatar: workerData?.avatar || profile.avatar_url || undefined,
           };
           setSession({
             isAuthenticated: true,
@@ -183,6 +197,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           if (profile) {
             const userRole: Role = (profile.role === 'cooperative' ? 'admin' : profile.role) as Role;
+            let workerData: any = null;
+            if (userRole === 'worker') {
+              const { data: w } = await supabase
+                .from('workers')
+                .select('*')
+                .eq('profile_id', profile.id)
+                .maybeSingle();
+              workerData = w;
+            }
 
             const authUser: AuthUser = {
               id: profile.id,
@@ -190,9 +213,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               phone: profile.phone,
               email: profile.email || undefined,
               role: userRole,
-              verificationStatus: 'VERIFIED',
+              verificationStatus: (workerData?.verification_status || 'VERIFIED') as any,
               createdAt: profile.created_at,
-              zone: profile.city,
+              zone: workerData?.zone || profile.city,
+              profession: workerData?.trade || workerData?.professions?.[0],
+              cooperativeBranch: workerData?.cooperative_branch,
+              experienceYears: workerData?.experience_years,
+              avatar: workerData?.avatar || profile.avatar_url || undefined,
             };
 
             const updatedSession: AuthSession = {

@@ -7,6 +7,9 @@ import { workerService } from '../services/workerService';
 import { storageService } from '../services/storage/storageService';
 import { STORAGE_KEYS } from '../services/storage/storageKeys';
 
+import { authService } from '../services/auth/authService';
+import { realtimeService } from '../lib/realtime';
+
 export type WorkerTab = 'home' | 'jobs' | 'skills' | 'training' | 'earnings' | 'profile';
 
 interface WorkerContextType {
@@ -97,16 +100,26 @@ export const WorkerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Hydrate data from workerService
   const refreshWorkerData = async () => {
+    const session = authService.getCurrentSession();
+    let currentWorkerId = worker.id;
+
+    if (session?.user && session.role === 'worker') {
+      const profileRes = await workerService.getWorkerByProfileId(session.user.id);
+      if (profileRes.success && profileRes.data) {
+        currentWorkerId = profileRes.data.id;
+      }
+    }
+
     const [workersRes, earningsRes, modulesRes, certsRes, skillsRes] = await Promise.all([
       workerService.getWorkers(),
-      workerService.getWorkerEarnings(worker.id),
+      workerService.getWorkerEarnings(currentWorkerId),
       workerService.getTrainingModules(),
       workerService.getCertificates(),
       workerService.getSkillsMatrix(),
     ]);
 
     if (workersRes.success && workersRes.data && workersRes.data.length > 0) {
-      const current = workersRes.data.find(w => w.id === worker.id) || workersRes.data[0];
+      const current = workersRes.data.find(w => w.id === currentWorkerId) || workersRes.data[0];
       setWorker(current);
       setIsAvailableState(current.availability === 'AVAILABLE');
       setIsEmergencyAvailableState(current.emergencyAvailable !== false);
@@ -128,6 +141,17 @@ export const WorkerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   useEffect(() => {
     refreshWorkerData();
   }, []);
+
+  // Realtime subscription for incoming worker bookings/dispatches
+  useEffect(() => {
+    if (!worker?.id) return;
+    const unsubscribe = realtimeService.subscribeToWorkerDispatches(worker.id, () => {
+      refreshWorkerData();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [worker?.id]);
 
   // Earnings calculations
   const todayEarnings =

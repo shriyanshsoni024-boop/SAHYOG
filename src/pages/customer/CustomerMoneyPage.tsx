@@ -392,11 +392,13 @@ export const CustomerMoneyPage: React.FC = () => {
       {/* Add Money Modal */}
       {showAddModal && (
         <div
+          className="animate-backdrop"
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 1000,
             backgroundColor: 'rgba(0,0,0,0.6)',
+            backdropFilter: 'blur(6px)',
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
@@ -404,6 +406,7 @@ export const CustomerMoneyPage: React.FC = () => {
           onClick={() => setShowAddModal(false)}
         >
           <div
+            className="animate-slide-up"
             style={{
               width: '100%',
               maxWidth: '480px',

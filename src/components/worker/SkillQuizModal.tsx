@@ -71,6 +71,7 @@ export const SkillQuizModal: React.FC = () => {
 
   return (
     <div
+      className="animate-backdrop"
       style={{
         position: 'fixed',
         inset: 0,
@@ -80,11 +81,12 @@ export const SkillQuizModal: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(6px)',
       }}
       onClick={() => setShowQuizModal(false)}
     >
       <div
+        className="animate-modal-enter"
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: 'var(--radius-lg)',

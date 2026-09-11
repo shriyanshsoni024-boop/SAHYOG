@@ -41,7 +41,20 @@ class RealtimeService {
         },
         (payload) => {
           if (payload.new) {
-            onUpdate(payload.new as unknown as Partial<Booking>);
+            const raw = payload.new as any;
+            const updated: Partial<Booking> = {
+              id: raw.id,
+              token: raw.token,
+              status: raw.status,
+              paymentStatus: raw.payment_status,
+              completedAt: raw.completed_at || undefined,
+              customerRating: raw.customer_rating ? Number(raw.customer_rating) : undefined,
+              customerReview: raw.customer_review || undefined,
+              workerRating: raw.worker_rating ? Number(raw.worker_rating) : undefined,
+              workerReview: raw.worker_review || undefined,
+              otp: raw.otp,
+            };
+            onUpdate(updated);
           }
         }
       )
@@ -79,7 +92,40 @@ class RealtimeService {
         },
         (payload) => {
           if (payload.new) {
-            onNewDispatch(payload.new as unknown as Booking);
+            const raw = payload.new as any;
+            const newBooking: Partial<Booking> = {
+              id: raw.id,
+              token: raw.token,
+              customerId: raw.customer_id,
+              customerName: raw.customer_name,
+              customerPhone: raw.customer_phone,
+              serviceId: raw.service_id,
+              serviceName: raw.service_name,
+              serviceCategory: raw.service_category,
+              description: raw.description,
+              imageUrl: raw.image_url,
+              address: raw.address,
+              city: raw.city,
+              scheduledDate: raw.scheduled_date,
+              scheduledTime: raw.scheduled_time,
+              urgency: raw.urgency,
+              tier: raw.tier,
+              estimatedPrice: raw.estimated_price,
+              connectionFee: raw.connection_fee,
+              totalPrice: raw.total_price,
+              status: raw.status,
+              otp: raw.otp,
+              paymentStatus: raw.payment_status,
+              createdAt: raw.created_at,
+              statusHistory: [
+                {
+                  status: raw.status,
+                  timestamp: new Date(raw.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                  note: 'New dispatch request',
+                },
+              ],
+            };
+            onNewDispatch(newBooking as Booking);
           }
         }
       )

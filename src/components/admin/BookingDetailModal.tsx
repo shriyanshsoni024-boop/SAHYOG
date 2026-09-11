@@ -16,12 +16,13 @@ export const BookingDetailModal: React.FC<BookingDetailModalProps> = ({ booking,
 
   return (
     <div
+      className="animate-backdrop"
       style={{
         position: 'fixed',
         inset: 0,
         zIndex: 100,
         backgroundColor: 'rgba(0, 0, 0, 0.55)',
-        backdropFilter: 'blur(2px)',
+        backdropFilter: 'blur(6px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -30,6 +31,7 @@ export const BookingDetailModal: React.FC<BookingDetailModalProps> = ({ booking,
       onClick={onClose}
     >
       <div
+        className="animate-modal-enter"
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: 'var(--radius-lg)',
@@ -56,12 +58,18 @@ export const BookingDetailModal: React.FC<BookingDetailModalProps> = ({ booking,
           <button
             type="button"
             onClick={onClose}
+            className="sahyog-btn"
             style={{
               background: 'none',
               border: 'none',
               cursor: 'pointer',
               color: 'var(--text-muted)',
               padding: '4px',
+              borderRadius: 'var(--radius-xs)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all var(--transition-fast) var(--ease-out-smooth)',
             }}
           >
             <X size={18} />

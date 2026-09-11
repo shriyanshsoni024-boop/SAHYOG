@@ -11,6 +11,7 @@ export const CertificateModal: React.FC = () => {
 
   return (
     <div
+      className="animate-backdrop"
       style={{
         position: 'fixed',
         inset: 0,
@@ -20,11 +21,12 @@ export const CertificateModal: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '16px',
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(6px)',
       }}
       onClick={() => setShowCertificateModal(false)}
     >
       <div
+        className="animate-modal-enter"
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: 'var(--radius-lg)',

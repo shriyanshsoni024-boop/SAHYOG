@@ -29,6 +29,7 @@ export const Rating: React.FC<RatingProps> = ({
                 key={star}
                 type="button"
                 onClick={() => onChange && onChange(star)}
+                className="sahyog-btn"
                 style={{
                   background: 'none',
                   border: 'none',
@@ -37,6 +38,7 @@ export const Rating: React.FC<RatingProps> = ({
                   color: isFilled ? '#F4C430' : '#CBD5E1',
                   display: 'flex',
                   alignItems: 'center',
+                  transition: 'transform var(--transition-fast) var(--ease-out-smooth), color var(--transition-fast)',
                 }}
                 aria-label={`Rate ${star} stars`}
               >

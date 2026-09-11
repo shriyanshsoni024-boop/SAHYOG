@@ -152,7 +152,7 @@ class AuthApiClient {
           role: dto.role,
           name: dto.name || data.user.user_metadata?.name || 'SAHYOG User',
           phone: e164Phone,
-          email: data.user.email || undefined,
+          email: dto.email || data.user.email || undefined,
           city: dto.locality || 'Noida',
         });
 
@@ -162,8 +162,11 @@ class AuthApiClient {
             name: dto.name || 'Artisan Partner',
             phone: e164Phone,
             professions: dto.profession ? [dto.profession] : ['Electrician'],
+            skills: dto.skills || (dto.profession ? [dto.profession] : ['General Repairs']),
             experienceYears: dto.experienceYears || 5,
             cooperativeName: dto.cooperativeBranch || 'Noida District Artisan Federation',
+            zone: dto.locality || 'Noida Sector 62',
+            availability: dto.availability || 'AVAILABLE',
           });
         }
 
@@ -335,33 +338,65 @@ class AuthApiClient {
    */
   public async ensureWorkerProfile(
     userId: string,
-    workerData: { name: string; phone: string; professions: string[]; experienceYears: number; cooperativeName: string }
+    workerData: {
+      name: string;
+      phone: string;
+      professions: string[];
+      skills?: string[];
+      experienceYears: number;
+      cooperativeName: string;
+      zone?: string;
+      availability?: 'AVAILABLE' | 'BUSY' | 'NOT_AVAILABLE';
+    }
   ): Promise<void> {
     if (!isSupabaseConfigured()) return;
 
     const { data: existing } = await supabase
       .from('workers')
-      .select('id')
-      .eq('profile_id', userId)
+      .select('id, profile_id')
+      .or(`profile_id.eq.${userId},phone.eq.${workerData.phone}`)
       .maybeSingle();
 
-    if (!existing) {
-      await supabase.from('workers').insert([
-        {
-          profile_id: userId,
-          name: workerData.name,
-          phone: workerData.phone,
-          trade: workerData.professions[0] || 'Electrician',
-          professions: workerData.professions,
-          experience_years: workerData.experienceYears,
-          experience_level: 'Intermediate',
-          cooperative_branch: workerData.cooperativeName,
-          zone: 'Noida Sector 62',
-          verification_status: 'VERIFIED',
-          availability: 'AVAILABLE',
-        },
-      ]);
+    if (existing) {
+      const updates: any = {};
+      if (!existing.profile_id) updates.profile_id = userId;
+      if (workerData.professions && workerData.professions.length > 0) {
+        updates.trade = workerData.professions[0];
+        updates.professions = workerData.professions;
+      }
+      if (workerData.skills && workerData.skills.length > 0) {
+        updates.skills = workerData.skills;
+      }
+      if (workerData.experienceYears) updates.experience_years = workerData.experienceYears;
+      if (workerData.cooperativeName) updates.cooperative_branch = workerData.cooperativeName;
+      if (workerData.zone) updates.zone = workerData.zone;
+      if (workerData.availability) updates.availability = workerData.availability;
+
+      if (Object.keys(updates).length > 0) {
+        await supabase
+          .from('workers')
+          .update(updates)
+          .eq('id', existing.id);
+      }
+      return;
     }
+
+    await supabase.from('workers').insert([
+      {
+        profile_id: userId,
+        name: workerData.name,
+        phone: workerData.phone,
+        trade: workerData.professions[0] || 'Electrician',
+        professions: workerData.professions,
+        skills: workerData.skills || workerData.professions,
+        experience_years: workerData.experienceYears,
+        experience_level: 'Intermediate',
+        cooperative_branch: workerData.cooperativeName,
+        zone: workerData.zone || 'Noida Sector 62',
+        verification_status: 'VERIFIED',
+        availability: workerData.availability || 'AVAILABLE',
+      },
+    ]);
   }
 
   /**
@@ -404,8 +439,9 @@ class AuthApiClient {
     if (!user) {
       user = {
         id: `usr-${Date.now()}`,
-        name: dto.name || (dto.role === 'worker' ? 'Ramesh Kumar (Artisan)' : 'Ananya Deshmukh'),
+        name: dto.name || (dto.role === 'worker' ? 'Ramesh Kumar (Artisan)' : 'SAHYOG Customer'),
         phone: e164Phone,
+        email: dto.email || undefined,
         role: dto.role,
         passwordHash: 'dev_mode',
         passwordSalt: 'dev_salt',
@@ -420,6 +456,14 @@ class AuthApiClient {
         createdAt: new Date().toISOString(),
       };
       vault.push(user);
+      this.saveUsersVault(vault);
+    } else {
+      if (dto.name) user.name = dto.name;
+      if (dto.email) user.email = dto.email;
+      if (dto.locality) user.zone = dto.locality;
+      if (dto.profession) user.profession = dto.profession;
+      if (dto.cooperativeBranch) user.cooperativeBranch = dto.cooperativeBranch;
+      if (dto.experienceYears) user.experienceYears = dto.experienceYears;
       this.saveUsersVault(vault);
     }
 
