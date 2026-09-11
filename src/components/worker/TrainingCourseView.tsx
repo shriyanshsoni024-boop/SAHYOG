@@ -94,7 +94,7 @@ export const TrainingCourseView: React.FC = () => {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <BookOpen size={18} color="var(--secondary)" />
+            <BookOpen size={18} color="var(--primary)" />
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
               {language === 'hi' ? 'सहकारी व्यावसायिक प्रशिक्षण (LMS)' : 'Worker Vocational LMS & Training'}
             </h2>
@@ -103,11 +103,11 @@ export const TrainingCourseView: React.FC = () => {
             style={{
               fontSize: '0.625rem',
               fontWeight: 800,
-              backgroundColor: 'var(--secondary-light)',
-              color: 'var(--secondary)',
+              backgroundColor: 'var(--primary-light)',
+              color: 'var(--primary-dark)',
               padding: '2px 8px',
               borderRadius: 'var(--radius-xs)',
-              border: '1px solid #99F6E4',
+              border: '1px solid var(--primary-border, #D9E9C8)',
               textTransform: 'uppercase',
             }}
           >
@@ -128,7 +128,7 @@ export const TrainingCourseView: React.FC = () => {
               {language === 'hi' ? 'कुल प्रशिक्षण प्रगति:' : 'Overall Training Progress:'}{' '}
               <strong>{completedCount} of {totalCount} Modules Certified</strong>
             </span>
-            <span style={{ color: 'var(--secondary)', fontWeight: 800 }}>{overallProgressPercent}% Complete</span>
+            <span style={{ color: 'var(--primary)', fontWeight: 800 }}>{overallProgressPercent}% Complete</span>
           </div>
 
           <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
@@ -136,7 +136,7 @@ export const TrainingCourseView: React.FC = () => {
               style={{
                 width: `${overallProgressPercent}%`,
                 height: '100%',
-                backgroundColor: 'var(--secondary)',
+                backgroundColor: 'var(--primary)',
                 transition: 'width var(--transition-fast)',
               }}
             />
@@ -201,7 +201,7 @@ export const TrainingCourseView: React.FC = () => {
               }}
               style={{
                 padding: '8px 14px',
-                backgroundColor: 'var(--secondary)',
+                backgroundColor: 'var(--primary)',
                 color: '#FFFFFF',
                 borderRadius: 'var(--radius-xs)',
                 fontWeight: 800,
@@ -232,8 +232,8 @@ export const TrainingCourseView: React.FC = () => {
               borderRadius: 'var(--radius-xs)',
               fontSize: '0.75rem',
               fontWeight: filterTab === 'all' ? 800 : 600,
-              border: `1px solid ${filterTab === 'all' ? 'var(--secondary)' : 'var(--border-default)'}`,
-              backgroundColor: filterTab === 'all' ? 'var(--secondary)' : '#FFFFFF',
+              border: `1px solid ${filterTab === 'all' ? 'var(--primary)' : 'var(--border-default)'}`,
+              backgroundColor: filterTab === 'all' ? 'var(--primary)' : '#FFFFFF',
               color: filterTab === 'all' ? '#FFFFFF' : 'var(--text-primary)',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
@@ -250,8 +250,8 @@ export const TrainingCourseView: React.FC = () => {
               borderRadius: 'var(--radius-xs)',
               fontSize: '0.75rem',
               fontWeight: filterTab === 'required' ? 800 : 600,
-              border: `1px solid ${filterTab === 'required' ? 'var(--secondary)' : 'var(--border-default)'}`,
-              backgroundColor: filterTab === 'required' ? 'var(--secondary)' : '#FFFFFF',
+              border: `1px solid ${filterTab === 'required' ? 'var(--primary)' : 'var(--border-default)'}`,
+              backgroundColor: filterTab === 'required' ? 'var(--primary)' : '#FFFFFF',
               color: filterTab === 'required' ? '#FFFFFF' : 'var(--text-primary)',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
@@ -268,8 +268,8 @@ export const TrainingCourseView: React.FC = () => {
               borderRadius: 'var(--radius-xs)',
               fontSize: '0.75rem',
               fontWeight: filterTab === 'recommended' ? 800 : 600,
-              border: `1px solid ${filterTab === 'recommended' ? 'var(--secondary)' : 'var(--border-default)'}`,
-              backgroundColor: filterTab === 'recommended' ? 'var(--secondary)' : '#FFFFFF',
+              border: `1px solid ${filterTab === 'recommended' ? 'var(--primary)' : 'var(--border-default)'}`,
+              backgroundColor: filterTab === 'recommended' ? 'var(--primary)' : '#FFFFFF',
               color: filterTab === 'recommended' ? '#FFFFFF' : 'var(--text-primary)',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
@@ -286,8 +286,8 @@ export const TrainingCourseView: React.FC = () => {
               borderRadius: 'var(--radius-xs)',
               fontSize: '0.75rem',
               fontWeight: filterTab === 'completed' ? 800 : 600,
-              border: `1px solid ${filterTab === 'completed' ? 'var(--secondary)' : 'var(--border-default)'}`,
-              backgroundColor: filterTab === 'completed' ? 'var(--secondary)' : '#FFFFFF',
+              border: `1px solid ${filterTab === 'completed' ? 'var(--primary)' : 'var(--border-default)'}`,
+              backgroundColor: filterTab === 'completed' ? 'var(--primary)' : '#FFFFFF',
               color: filterTab === 'completed' ? '#FFFFFF' : 'var(--text-primary)',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
@@ -509,7 +509,7 @@ export const TrainingCourseView: React.FC = () => {
                           borderRadius: 'var(--radius-xs)',
                           backgroundColor: '#FFFFFF',
                           border: '1px solid var(--border-default)',
-                          color: 'var(--secondary)',
+                          color: 'var(--primary)',
                           fontSize: '0.6875rem',
                           fontWeight: 800,
                           cursor: 'pointer',
@@ -529,7 +529,7 @@ export const TrainingCourseView: React.FC = () => {
                       style={{
                         padding: '5px 12px',
                         borderRadius: 'var(--radius-xs)',
-                        backgroundColor: mod.completed ? 'var(--bg-app)' : 'var(--secondary)',
+                        backgroundColor: mod.completed ? 'var(--bg-app)' : 'var(--primary)',
                         color: mod.completed ? 'var(--text-secondary)' : '#FFFFFF',
                         border: mod.completed ? '1px solid var(--border-default)' : 'none',
                         fontSize: '0.6875rem',

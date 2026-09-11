@@ -36,7 +36,7 @@ export const CustomerHistoryPage: React.FC = () => {
       case 'IN_PROGRESS':
         return { bg: '#FEF3C7', text: '#92400E', border: '#FDE68A', label: 'Work In Progress' };
       case 'ON_THE_WAY':
-        return { bg: '#EFF6FF', text: '#1D4ED8', border: '#BFDBFE', label: 'Artisan On The Way' };
+        return { bg: 'var(--primary-light, #F0FDF4)', text: 'var(--sahyog-green-dark, #0F7A3E)', border: 'var(--primary-border, #D9E9C8)', label: 'Artisan On The Way' };
       case 'ACCEPTED':
         return { bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0', label: 'Job Accepted' };
       case 'COMPLETED':
@@ -54,14 +54,14 @@ export const CustomerHistoryPage: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
         padding: '16px 16px 88px',
       }}
     >
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', margin: '0 0 2px', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--sahyog-ink, #0B0B0B)', margin: '0 0 2px', letterSpacing: '-0.02em' }}>
             My Bookings
           </h1>
           <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0 }}>
@@ -74,7 +74,7 @@ export const CustomerHistoryPage: React.FC = () => {
           onClick={() => setActiveView('home')}
           style={{
             padding: '7px 12px',
-            backgroundColor: '#0C831F',
+            backgroundColor: 'var(--sahyog-green, #1DAA5C)',
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '10px',
@@ -121,9 +121,9 @@ export const CustomerHistoryPage: React.FC = () => {
                 flex: '0 0 auto',
                 padding: '7px 12px',
                 borderRadius: '9999px',
-                border: `1.5px solid ${isSelected ? '#0C831F' : '#E2E8F0'}`,
+                border: `1.5px solid ${isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#E2E8F0'}`,
                 backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
-                color: isSelected ? '#0C831F' : '#475569',
+                color: isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#475569',
                 fontSize: '0.75rem',
                 fontWeight: isSelected ? 800 : 600,
                 cursor: 'pointer',
@@ -151,9 +151,9 @@ export const CustomerHistoryPage: React.FC = () => {
                 style={{
                   backgroundColor: '#FFFFFF',
                   borderRadius: '18px',
-                  border: `1.5px solid ${isLive ? '#BBF7D0' : '#E2E8F0'}`,
+                  border: `1.5px solid ${isLive ? 'var(--sahyog-sage, #D9E9C8)' : '#E2E8F0'}`,
                   padding: '16px',
-                  boxShadow: isLive ? '0 4px 14px rgba(12, 131, 31, 0.08)' : '0 2px 6px rgba(0,0,0,0.03)',
+                  boxShadow: isLive ? '0 4px 14px rgba(29, 170, 92, 0.08)' : '0 2px 6px rgba(0,0,0,0.03)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
@@ -174,15 +174,15 @@ export const CustomerHistoryPage: React.FC = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#0C831F',
+                        color: 'var(--sahyog-green, #1DAA5C)',
                         flexShrink: 0,
                       }}
                     >
-                      <Zap size={22} fill="#0C831F" />
+                      <Zap size={22} fill="var(--sahyog-green, #1DAA5C)" />
                     </div>
 
                     <div>
-                      <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                      <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', margin: 0 }}>
                         {b.serviceName}
                       </h3>
                       <div style={{ fontSize: '0.6875rem', color: '#64748B', marginTop: '1px' }}>
@@ -230,12 +230,12 @@ export const CustomerHistoryPage: React.FC = () => {
                     <div
                       style={{
                         backgroundColor: '#FFFFFF',
-                        border: '1px solid #BBF7D0',
+                        border: '1px solid var(--sahyog-sage, #D9E9C8)',
                         padding: '2px 8px',
                         borderRadius: '6px',
                         fontSize: '0.6875rem',
                         fontWeight: 800,
-                        color: '#0C831F',
+                        color: 'var(--sahyog-green, #1DAA5C)',
                       }}
                     >
                       OTP: {b.otp}
@@ -251,7 +251,7 @@ export const CustomerHistoryPage: React.FC = () => {
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '1rem', fontWeight: 900, color: '#0F172A' }}>
+                    <span style={{ fontSize: '1rem', fontWeight: 900, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                       ₹{b.totalPrice}
                     </span>
                     <ChevronRight size={16} color="#94A3B8" />
@@ -285,13 +285,13 @@ export const CustomerHistoryPage: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#0C831F',
+              color: 'var(--sahyog-green, #1DAA5C)',
             }}
           >
             <Calendar size={28} />
           </div>
 
-          <h3 style={{ fontSize: '1.0625rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+          <h3 style={{ fontSize: '1.0625rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', margin: 0 }}>
             No bookings in this tab
           </h3>
           <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0, maxWidth: '260px' }}>
@@ -304,7 +304,7 @@ export const CustomerHistoryPage: React.FC = () => {
             style={{
               marginTop: '8px',
               padding: '10px 20px',
-              backgroundColor: '#0C831F',
+              backgroundColor: 'var(--sahyog-green, #1DAA5C)',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: '12px',

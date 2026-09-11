@@ -143,7 +143,7 @@ export const CustomerShell: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--pronto-cream, #FCFBF4)',
         width: '100%',
         maxWidth: '440px',
         margin: '0 auto',
@@ -152,8 +152,10 @@ export const CustomerShell: React.FC = () => {
       }}
       className="animate-fade-in"
     >
-      <main style={{ flex: 1 }}>
-        {renderActiveView()}
+      <main style={{ flex: 1, position: 'relative' }}>
+        <div key={activeView} className="animate-fade-in" style={{ width: '100%' }}>
+          {renderActiveView()}
+        </div>
       </main>
 
       {/* Floating Bottom Navigation Bar */}

@@ -144,7 +144,7 @@ export const AdminReportsView: React.FC = () => {
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <MapPin size={16} color="var(--secondary)" />
+            <MapPin size={16} color="var(--primary)" />
             <h3 style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
               District Zone Workload Balance
             </h3>

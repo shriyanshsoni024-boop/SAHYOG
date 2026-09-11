@@ -177,6 +177,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
             <React.Fragment key={step.key}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
                 <div
+                  className={isCurrent ? 'animate-pulse-live' : ''}
                   style={{
                     width: '26px',
                     height: '26px',
@@ -190,7 +191,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
                     fontWeight: 800,
                     border: `2px solid ${isCurrent ? theme.primary : isDone ? theme.primary : '#E2E8F0'}`,
                     boxShadow: isCurrent ? `0 0 0 4px ${theme.primaryLight}` : 'none',
-                    transition: 'all 300ms ease',
+                    transition: 'all var(--transition-smooth) var(--ease-out-smooth)',
                   }}
                 >
                   {isDone ? <Check size={14} strokeWidth={3} /> : idx + 1}
@@ -201,6 +202,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
                     fontWeight: isCurrent ? 800 : 600,
                     color: isCurrent ? theme.primaryDark : isDone ? '#0F172A' : '#94A3B8',
                     whiteSpace: 'nowrap',
+                    transition: 'color var(--transition-normal) ease',
                   }}
                 >
                   {language === 'hi' ? step.labelHi : step.label}
@@ -216,7 +218,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
                     margin: '0 4px',
                     marginBottom: '16px',
                     borderRadius: '2px',
-                    transition: 'background-color 300ms ease',
+                    transition: 'background-color var(--transition-smooth) var(--ease-out-smooth)',
                   }}
                 />
               )}
@@ -255,7 +257,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
               style={{
                 fontSize: '0.5625rem',
                 fontWeight: 800,
-                color: '#059669',
+                color: '#1DAA5C',
                 backgroundColor: '#ECFDF5',
                 padding: '2px 6px',
                 borderRadius: '6px',
@@ -300,11 +302,11 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
                 width: '34px',
                 height: '34px',
                 borderRadius: '50%',
-                backgroundColor: '#EFF6FF',
+                backgroundColor: theme.primaryLight,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#2563EB',
+                color: theme.primary,
               }}
             >
               <User size={18} />
@@ -328,9 +330,9 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
                 gap: '4px',
                 padding: '8px 12px',
                 borderRadius: '9999px',
-                backgroundColor: '#EFF6FF',
-                color: '#2563EB',
-                border: '1px solid #BFDBFE',
+                backgroundColor: theme.primaryLight,
+                color: theme.primary,
+                border: `1px solid ${theme.primaryBorder}`,
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 textDecoration: 'none',
@@ -391,6 +393,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
           <button
             type="button"
             onClick={() => startTravel(booking.id)}
+            className="sahyog-btn"
             style={{
               width: '100%',
               padding: '14px',
@@ -405,7 +408,8 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.2)',
+              boxShadow: '0 4px 12px rgba(29, 170, 92, 0.2)',
+              transition: 'all var(--transition-fast) var(--ease-out-smooth)',
             }}
           >
             <Navigation size={18} />
@@ -472,7 +476,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
                   color: '#0F172A',
                   outline: 'none',
                   boxShadow: otpDigits[idx] ? `0 0 0 3px ${theme.primaryLight}` : '0 2px 4px rgba(0,0,0,0.04)',
-                  transition: 'all 150ms ease',
+                  transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                 }}
               />
             ))}
@@ -480,6 +484,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
 
           {otpError && (
             <div
+              className="animate-slide-up"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -501,6 +506,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
             type="button"
             onClick={handleVerifyOtp}
             disabled={isSubmitting || otpDigits.join('').length !== 4}
+            className="sahyog-btn"
             style={{
               width: '100%',
               padding: '14px',
@@ -515,7 +521,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              transition: 'all 200ms ease',
+              transition: 'all var(--transition-fast) var(--ease-out-smooth)',
             }}
           >
             <ShieldCheck size={18} />
@@ -552,11 +558,12 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
           <button
             type="button"
             onClick={() => completeWork(booking.id)}
+            className="sahyog-btn"
             style={{
               width: '100%',
               padding: '16px',
               borderRadius: '16px',
-              backgroundColor: '#059669',
+              backgroundColor: '#1DAA5C',
               color: '#FFFFFF',
               border: 'none',
               fontSize: '1rem',
@@ -567,6 +574,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
               justifyContent: 'center',
               gap: '8px',
               boxShadow: '0 6px 16px rgba(5, 150, 105, 0.25)',
+              transition: 'all var(--transition-fast) var(--ease-out-smooth)',
             }}
           >
             <CheckCircle size={20} />
@@ -588,7 +596,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
             gap: '10px',
           }}
         >
-          <CheckCircle size={24} color="#059669" />
+          <CheckCircle size={24} color="#1DAA5C" />
           <div>
             <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#065F46' }}>
               Job Completed Successfully!

@@ -154,7 +154,7 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
           >
             Enter the OTP sent to
           </h2>
-          <div style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#0C831F' }}>
+          <div style={{ fontSize: '0.9375rem', fontWeight: 700, color: '#1DAA5C' }}>
             {maskedPhone}
           </div>
         </div>
@@ -186,14 +186,14 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
                   width: '46px',
                   height: '52px',
                   borderRadius: '12px',
-                  border: `2px solid ${isFilled ? '#0C831F' : '#CBD5E1'}`,
+                  border: `2px solid ${isFilled ? '#1DAA5C' : '#CBD5E1'}`,
                   backgroundColor: isFilled ? '#F0FDF4' : '#FFFFFF',
                   textAlign: 'center',
                   fontSize: '1.375rem',
                   fontWeight: 800,
-                  color: '#0F172A',
+                  color: '#0B0B0B',
                   outline: 'none',
-                  boxShadow: isFilled ? '0 2px 8px rgba(12, 131, 31, 0.15)' : 'none',
+                  boxShadow: isFilled ? '0 2px 8px rgba(29, 170, 92, 0.15)' : 'none',
                   transition: 'all 150ms ease',
                 }}
               />
@@ -222,7 +222,7 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px' }}>
           {countdown > 0 ? (
             <span style={{ fontSize: '0.8125rem', color: '#64748B', fontWeight: 600 }}>
-              Resend SMS in <strong style={{ color: '#0F172A' }}>{countdown}s</strong>
+              Resend SMS in <strong style={{ color: '#0B0B0B' }}>{countdown}s</strong>
             </span>
           ) : (
             <button
@@ -231,7 +231,7 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0C831F',
+                color: '#1DAA5C',
                 fontSize: '0.8125rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -247,7 +247,7 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
           )}
 
           <span style={{ fontSize: '0.6875rem', color: '#94A3B8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <ShieldCheck size={14} color="#0C831F" />
+            <ShieldCheck size={14} color="#1DAA5C" />
             <span>Encrypted Verification</span>
           </span>
         </div>
@@ -259,7 +259,7 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
           disabled={!isFullOtp || isVerifying}
           style={{
             padding: '15px',
-            backgroundColor: isFullOtp ? '#0C831F' : '#E2E8F0',
+            backgroundColor: isFullOtp ? '#1DAA5C' : '#E2E8F0',
             color: isFullOtp ? '#FFFFFF' : '#94A3B8',
             border: 'none',
             borderRadius: '14px',
@@ -270,9 +270,10 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
-            boxShadow: isFullOtp ? '0 4px 16px rgba(12, 131, 31, 0.3)' : 'none',
+            boxShadow: isFullOtp ? '0 4px 16px rgba(29, 170, 92, 0.3)' : 'none',
             transition: 'all 200ms ease',
           }}
+          className={isFullOtp ? 'sahyog-btn' : ''}
         >
           <span>{isVerifying ? 'Verifying...' : 'Verify & Continue'}</span>
           <ArrowRight size={18} />
@@ -287,11 +288,11 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
               width: '100%',
               padding: '9px 12px',
               backgroundColor: '#F0FDF4',
-              border: '1px dashed #BBF7D0',
+              border: '1px dashed #D9E9C8',
               borderRadius: '10px',
               fontSize: '0.75rem',
               fontWeight: 700,
-              color: '#0C831F',
+              color: '#1DAA5C',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',

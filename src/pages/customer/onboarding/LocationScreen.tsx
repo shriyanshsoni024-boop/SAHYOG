@@ -52,7 +52,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'var(--sahyog-white, #FFFFFF)',
         padding: '16px 20px 28px',
       }}
     >
@@ -78,7 +78,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
           <ArrowLeft size={20} />
         </button>
 
-        <h1 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+        <h1 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', margin: 0 }}>
           Location setup
         </h1>
       </div>
@@ -90,7 +90,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
             style={{
               fontSize: '1.625rem',
               fontWeight: 800,
-              color: '#0F172A',
+              color: 'var(--sahyog-ink, #0B0B0B)',
               letterSpacing: '-0.03em',
               margin: '0 0 6px',
             }}
@@ -109,9 +109,9 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
             alignItems: 'center',
             justifyContent: 'center',
             padding: '24px 16px',
-            backgroundColor: '#F8FAFC',
+            backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
             borderRadius: '24px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             marginBottom: '24px',
             position: 'relative',
             overflow: 'hidden',
@@ -140,8 +140,8 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
             <path d="M130 55 L155 40 L180 55 L155 70 Z" fill="#F1F5F9" />
 
             {/* Active Serviceable Hub Beacon */}
-            <circle cx="110" cy="74" r="14" fill="#0C831F" fillOpacity="0.2" />
-            <circle cx="110" cy="74" r="7" fill="#0C831F" />
+            <circle cx="110" cy="74" r="14" fill="#1DAA5C" fillOpacity="0.2" />
+            <circle cx="110" cy="74" r="7" fill="#1DAA5C" />
             <circle cx="110" cy="74" r="3" fill="#FFFFFF" />
 
             {/* Minimal Trees */}
@@ -156,7 +156,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
               position: 'absolute',
               bottom: '12px',
               backgroundColor: '#FFFFFF',
-              border: '1px solid #BBF7D0',
+              border: '1px solid var(--sahyog-sage, #D9E9C8)',
               padding: '4px 10px',
               borderRadius: '9999px',
               display: 'flex',
@@ -164,7 +164,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
               gap: '6px',
               fontSize: '0.6875rem',
               fontWeight: 700,
-              color: '#0C831F',
+              color: 'var(--sahyog-green, #1DAA5C)',
               boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
             }}
           >
@@ -201,14 +201,14 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                border: '1.5px solid #0C831F',
+                border: '1.5px solid var(--sahyog-green, #1DAA5C)',
                 borderRadius: '14px',
                 padding: '10px 14px',
                 backgroundColor: '#FFFFFF',
                 gap: '8px',
               }}
             >
-              <Search size={18} color="#0C831F" />
+              <Search size={18} color="var(--sahyog-green, #1DAA5C)" />
               <input
                 type="text"
                 placeholder="Search sector, area, or locality"
@@ -220,7 +220,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
                   width: '100%',
                   fontSize: '0.9375rem',
                   fontWeight: 600,
-                  color: '#0F172A',
+                  color: 'var(--sahyog-ink, #0B0B0B)',
                 }}
                 autoFocus
               />
@@ -255,9 +255,9 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
                   className="hover-card"
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <MapPin size={16} color="#0C831F" />
+                    <MapPin size={16} color="var(--sahyog-green, #1DAA5C)" />
                     <div>
-                      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                         {loc.area}
                       </div>
                       <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
@@ -265,7 +265,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
                       </div>
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0C831F' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--sahyog-green, #1DAA5C)' }}>
                     Select
                   </span>
                 </button>
@@ -283,7 +283,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
               style={{
                 width: '100%',
                 padding: '15px',
-                backgroundColor: '#0C831F',
+                backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '14px',
@@ -294,7 +294,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 4px 16px rgba(12, 131, 31, 0.3)',
+                boxShadow: '0 4px 16px rgba(29, 170, 92, 0.3)',
               }}
               className="sahyog-btn"
             >
@@ -309,7 +309,7 @@ export const LocationScreen: React.FC<LocationScreenProps> = ({ onLocationSelect
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0C831F',
+                color: 'var(--sahyog-green, #1DAA5C)',
                 fontSize: '0.9375rem',
                 fontWeight: 700,
                 cursor: 'pointer',

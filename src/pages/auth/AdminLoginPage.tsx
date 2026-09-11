@@ -44,7 +44,7 @@ export const AdminLoginPage: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px 16px',
-        backgroundColor: '#FFF7ED',
+        backgroundColor: '#FCFBF4',
         width: '100%',
       }}
     >
@@ -54,8 +54,8 @@ export const AdminLoginPage: React.FC = () => {
           maxWidth: '430px',
           backgroundColor: '#FFFFFF',
           borderRadius: '12px',
-          border: '1px solid #FFEDD5',
-          boxShadow: '0 4px 20px -2px rgba(234, 88, 12, 0.08)',
+          border: '1px solid #E5E7EB',
+          boxShadow: '0 4px 20px -2px rgba(0, 0, 0, 0.06)',
           padding: '28px 24px',
           display: 'flex',
           flexDirection: 'column',
@@ -69,12 +69,12 @@ export const AdminLoginPage: React.FC = () => {
               width: '46px',
               height: '46px',
               borderRadius: '10px',
-              backgroundColor: '#EA580C',
+              backgroundColor: '#1DAA5C',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 4px 12px rgba(234, 88, 12, 0.25)',
+              boxShadow: '0 4px 12px rgba(29, 170, 92, 0.25)',
               marginBottom: '12px',
             }}
           >
@@ -85,7 +85,7 @@ export const AdminLoginPage: React.FC = () => {
             style={{
               fontSize: '1.375rem',
               fontWeight: 900,
-              color: '#0F172A',
+              color: '#0B0B0B',
               letterSpacing: '-0.03em',
               margin: '0 0 4px',
             }}
@@ -107,9 +107,9 @@ export const AdminLoginPage: React.FC = () => {
               style={{
                 fontSize: '0.625rem',
                 fontWeight: 800,
-                color: '#EA580C',
-                backgroundColor: '#FFF7ED',
-                border: '1px solid #FED7AA',
+                color: '#1DAA5C',
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #D9E9C8',
                 padding: '2px 8px',
                 borderRadius: '9999px',
                 textTransform: 'uppercase',
@@ -146,17 +146,17 @@ export const AdminLoginPage: React.FC = () => {
         <div
           style={{
             padding: '8px 12px',
-            backgroundColor: '#FFFBEB',
-            border: '1px solid #FDE68A',
+            backgroundColor: '#FEF9C3',
+            border: '1px solid #FDE047',
             borderRadius: '6px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
             fontSize: '0.6875rem',
-            color: '#92400E',
+            color: '#854D0E',
           }}
         >
-          <KeyRound size={16} color="#D97706" style={{ flexShrink: 0 }} />
+          <KeyRound size={16} color="#854D0E" style={{ flexShrink: 0 }} />
           <span>
             Authorized Personnel Only. Public customer/worker signups are restricted.
           </span>
@@ -184,11 +184,11 @@ export const AdminLoginPage: React.FC = () => {
           <div
             style={{
               padding: '10px 12px',
-              backgroundColor: '#FFF7ED',
-              border: '1px solid #FED7AA',
+              backgroundColor: '#F0FDF4',
+              border: '1px solid #D9E9C8',
               borderRadius: '6px',
               fontSize: '0.75rem',
-              color: '#9A3412',
+              color: '#0F7A3E',
               lineHeight: 1.4,
             }}
           >
@@ -197,8 +197,8 @@ export const AdminLoginPage: React.FC = () => {
         )}
 
         {/* ========================================================= */}
-        /* ADMIN SIGN IN FORM                                        */
-        /* ========================================================= */
+        {/* ADMIN SIGN IN FORM                                        */
+        /* ========================================================= */}
         <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '5px' }}>
@@ -215,7 +215,7 @@ export const AdminLoginPage: React.FC = () => {
                 gap: '8px',
               }}
             >
-              <Mail size={16} color="#EA580C" />
+              <Mail size={16} color="#1DAA5C" />
               <input
                 type="text"
                 placeholder="e.g. operations@sahyog.coop or officer ID"
@@ -226,7 +226,7 @@ export const AdminLoginPage: React.FC = () => {
                   outline: 'none',
                   width: '100%',
                   fontSize: '0.875rem',
-                  color: '#0F172A',
+                  color: '#0B0B0B',
                 }}
                 required
               />
@@ -246,7 +246,7 @@ export const AdminLoginPage: React.FC = () => {
                   border: 'none',
                   fontSize: '0.6875rem',
                   fontWeight: 600,
-                  color: '#EA580C',
+                  color: '#1DAA5C',
                   cursor: 'pointer',
                   padding: 0,
                 }}
@@ -266,7 +266,7 @@ export const AdminLoginPage: React.FC = () => {
                 gap: '8px',
               }}
             >
-              <Lock size={16} color="#EA580C" />
+              <Lock size={16} color="#1DAA5C" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Enter admin security password"
@@ -277,7 +277,7 @@ export const AdminLoginPage: React.FC = () => {
                   outline: 'none',
                   width: '100%',
                   fontSize: '0.875rem',
-                  color: '#0F172A',
+                  color: '#0B0B0B',
                 }}
                 required
               />
@@ -298,7 +298,7 @@ export const AdminLoginPage: React.FC = () => {
             style={{
               marginTop: '6px',
               padding: '11px',
-              backgroundColor: '#EA580C',
+              backgroundColor: '#1DAA5C',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: '8px',
@@ -309,7 +309,7 @@ export const AdminLoginPage: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: '0 2px 6px rgba(234, 88, 12, 0.25)',
+              boxShadow: '0 2px 6px rgba(29, 170, 92, 0.25)',
             }}
             className="sahyog-btn"
           >
@@ -323,8 +323,8 @@ export const AdminLoginPage: React.FC = () => {
           <div
             style={{
               padding: '10px 12px',
-              backgroundColor: '#FFF7ED',
-              border: '1px dashed #FED7AA',
+              backgroundColor: '#FCFBF4',
+              border: '1px dashed #D9E9C8',
               borderRadius: '8px',
               display: 'flex',
               flexDirection: 'column',
@@ -332,10 +332,10 @@ export const AdminLoginPage: React.FC = () => {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#9A3412', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#0F7A3E', textTransform: 'uppercase' }}>
                 SIH Sandbox Test Credentials
               </span>
-              <span style={{ fontSize: '0.625rem', color: '#EA580C', fontWeight: 700 }}>Dev Mode Only</span>
+              <span style={{ fontSize: '0.625rem', color: '#1DAA5C', fontWeight: 700 }}>Dev Mode Only</span>
             </div>
 
             <button
@@ -344,11 +344,11 @@ export const AdminLoginPage: React.FC = () => {
               style={{
                 padding: '6px 10px',
                 backgroundColor: '#FFFFFF',
-                border: '1px solid #FFEDD5',
+                border: '1px solid #E5E7EB',
                 borderRadius: '6px',
                 fontSize: '0.75rem',
                 fontWeight: 600,
-                color: '#0F172A',
+                color: '#0B0B0B',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -356,7 +356,7 @@ export const AdminLoginPage: React.FC = () => {
                 gap: '6px',
               }}
             >
-              <Sparkles size={14} color="#EA580C" />
+              <Sparkles size={14} color="#F4C430" />
               <span>Fill Demo Officer: Vikramaditya Rao</span>
             </button>
           </div>
@@ -381,7 +381,7 @@ export const AdminLoginPage: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0C831F',
+                color: '#1DAA5C',
                 fontWeight: 700,
                 cursor: 'pointer',
                 padding: 0,
@@ -399,7 +399,7 @@ export const AdminLoginPage: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0D9488',
+                color: '#1DAA5C',
                 fontWeight: 700,
                 cursor: 'pointer',
                 padding: 0,

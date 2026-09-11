@@ -182,8 +182,8 @@ export const MarketplaceServiceCard: React.FC<MarketplaceServiceCardProps> = ({
           style={{
             padding: '3px 10px',
             backgroundColor: '#F0FDF4',
-            color: 'var(--theme-accent, #0C831F)',
-            border: '1px solid var(--theme-accent, #0C831F)',
+            color: 'var(--sahyog-green, #1DAA5C)',
+            border: '1px solid var(--sahyog-green, #1DAA5C)',
             borderRadius: '4px',
             fontWeight: 700,
             fontSize: '0.65625rem',

@@ -132,7 +132,7 @@ export const WorkerLoginPage: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px 16px',
-        backgroundColor: '#F0FDFA',
+        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
         width: '100%',
       }}
     >
@@ -142,8 +142,8 @@ export const WorkerLoginPage: React.FC = () => {
           maxWidth: '430px',
           backgroundColor: '#FFFFFF',
           borderRadius: '16px',
-          border: '1px solid #CCFBF1',
-          boxShadow: '0 4px 24px -2px rgba(13, 148, 136, 0.08)',
+          border: '1px solid var(--primary-border, #D9E9C8)',
+          boxShadow: '0 4px 24px -2px rgba(29, 170, 92, 0.10)',
           padding: '28px 24px',
           display: 'flex',
           flexDirection: 'column',
@@ -157,12 +157,12 @@ export const WorkerLoginPage: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              backgroundColor: '#0D9488',
+              backgroundColor: '#1DAA5C',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 4px 14px rgba(13, 148, 136, 0.25)',
+              boxShadow: '0 4px 14px rgba(29, 170, 92, 0.25)',
               marginBottom: '12px',
             }}
           >
@@ -173,7 +173,7 @@ export const WorkerLoginPage: React.FC = () => {
             style={{
               fontSize: '1.375rem',
               fontWeight: 900,
-              color: '#0F172A',
+              color: '#0B0B0B',
               letterSpacing: '-0.03em',
               margin: '0 0 4px',
             }}
@@ -195,9 +195,9 @@ export const WorkerLoginPage: React.FC = () => {
               style={{
                 fontSize: '0.625rem',
                 fontWeight: 800,
-                color: '#0D9488',
-                backgroundColor: '#F0FDFA',
-                border: '1px solid #99F6E4',
+                color: '#1DAA5C',
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #D9E9C8',
                 padding: '2px 8px',
                 borderRadius: '9999px',
                 textTransform: 'uppercase',
@@ -254,11 +254,11 @@ export const WorkerLoginPage: React.FC = () => {
           <div
             style={{
               padding: '10px 12px',
-              backgroundColor: '#F0FDFA',
-              border: '1px solid #99F6E4',
+              backgroundColor: 'var(--primary-light, #F0FDF4)',
+              border: '1px solid var(--primary-border, #D9E9C8)',
               borderRadius: '8px',
               fontSize: '0.75rem',
-              color: '#0F766E',
+              color: 'var(--primary-dark, #0F7A3E)',
               lineHeight: 1.4,
             }}
           >
@@ -296,11 +296,11 @@ export const WorkerLoginPage: React.FC = () => {
                 <div
                   style={{
                     padding: '10px 12px',
-                    backgroundColor: '#F0FDFA',
-                    borderRight: '1px solid #CCFBF1',
+                    backgroundColor: 'var(--primary-light, #F0FDF4)',
+                    borderRight: '1px solid var(--primary-border, #D9E9C8)',
                     fontSize: '0.875rem',
                     fontWeight: 700,
-                    color: '#0D9488',
+                    color: 'var(--primary-dark, #0F7A3E)',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '4px',
@@ -383,7 +383,7 @@ export const WorkerLoginPage: React.FC = () => {
                     gap: '6px',
                   }}
                 >
-                  <Briefcase size={15} color="#0D9488" />
+                  <Briefcase size={15} color="var(--primary, #1DAA5C)" />
                   <select
                     value={profession}
                     onChange={(e) => setProfession(e.target.value)}
@@ -459,7 +459,7 @@ export const WorkerLoginPage: React.FC = () => {
                   gap: '8px',
                 }}
               >
-                <Award size={16} color="#0D9488" />
+                <Award size={16} color="var(--primary, #1DAA5C)" />
                 <input
                   type="text"
                   placeholder="e.g. Bengaluru East Electrical Union"
@@ -483,7 +483,7 @@ export const WorkerLoginPage: React.FC = () => {
               style={{
                 marginTop: '4px',
                 padding: '12px',
-                backgroundColor: '#0D9488',
+                backgroundColor: '#1DAA5C',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
@@ -494,7 +494,7 @@ export const WorkerLoginPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(13, 148, 136, 0.25)',
+                boxShadow: '0 2px 8px rgba(29, 170, 92, 0.25)',
               }}
               className="sahyog-btn"
             >
@@ -513,14 +513,14 @@ export const WorkerLoginPage: React.FC = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '8px 12px',
-                backgroundColor: '#F0FDFA',
+                backgroundColor: '#F8FAFC',
                 borderRadius: '8px',
-                border: '1px solid #CCFBF1',
+                border: '1px solid #E2E8F0',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Phone size={14} color="#0D9488" />
-                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F766E' }}>
+                <Phone size={14} color="#1DAA5C" />
+                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F7A3E' }}>
                   +91 {phone} ({profession})
                 </span>
               </div>
@@ -534,7 +534,7 @@ export const WorkerLoginPage: React.FC = () => {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#0D9488',
+                  color: '#1DAA5C',
                   fontSize: '0.75rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -573,7 +573,7 @@ export const WorkerLoginPage: React.FC = () => {
                   gap: '8px',
                 }}
               >
-                <KeyRound size={18} color="#0D9488" />
+                <KeyRound size={18} color="#1DAA5C" />
                 <input
                   type="text"
                   maxLength={6}
@@ -589,7 +589,7 @@ export const WorkerLoginPage: React.FC = () => {
                     fontWeight: 800,
                     letterSpacing: '0.3em',
                     textAlign: 'center',
-                    color: '#0F172A',
+                    color: '#0B0B0B',
                   }}
                   required
                 />
@@ -612,7 +612,7 @@ export const WorkerLoginPage: React.FC = () => {
                     border: 'none',
                     fontSize: '0.75rem',
                     fontWeight: 700,
-                    color: '#0D9488',
+                    color: '#1DAA5C',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -630,7 +630,7 @@ export const WorkerLoginPage: React.FC = () => {
               disabled={isSubmitting}
               style={{
                 padding: '12px',
-                backgroundColor: '#0D9488',
+                backgroundColor: '#1DAA5C',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
@@ -641,7 +641,7 @@ export const WorkerLoginPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(13, 148, 136, 0.25)',
+                boxShadow: '0 2px 8px rgba(29, 170, 92, 0.25)',
               }}
               className="sahyog-btn"
             >
@@ -656,8 +656,8 @@ export const WorkerLoginPage: React.FC = () => {
           <div
             style={{
               padding: '10px 12px',
-              backgroundColor: '#F0FDFA',
-              border: '1px dashed #99F6E4',
+              backgroundColor: '#F8FAFC',
+              border: '1px dashed #D9E9C8',
               borderRadius: '8px',
               display: 'flex',
               flexDirection: 'column',
@@ -665,10 +665,10 @@ export const WorkerLoginPage: React.FC = () => {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#0F766E', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#0F7A3E', textTransform: 'uppercase' }}>
                 SIH Sandbox Test Credentials
               </span>
-              <span style={{ fontSize: '0.625rem', color: '#0D9488', fontWeight: 700 }}>Dev Mode Only</span>
+              <span style={{ fontSize: '0.625rem', color: '#1DAA5C', fontWeight: 700 }}>Dev Mode Only</span>
             </div>
 
             <button
@@ -677,11 +677,11 @@ export const WorkerLoginPage: React.FC = () => {
               style={{
                 padding: '6px 10px',
                 backgroundColor: '#FFFFFF',
-                border: '1px solid #CCFBF1',
+                border: '1px solid #E2E8F0',
                 borderRadius: '6px',
                 fontSize: '0.75rem',
                 fontWeight: 600,
-                color: '#0F172A',
+                color: '#0B0B0B',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -689,7 +689,7 @@ export const WorkerLoginPage: React.FC = () => {
                 gap: '6px',
               }}
             >
-              <Sparkles size={14} color="#0D9488" />
+              <Sparkles size={14} color="#F4C430" />
               <span>Pre-fill Demo Artisan: Ramesh Kumar & OTP</span>
             </button>
           </div>
@@ -714,7 +714,7 @@ export const WorkerLoginPage: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0C831F',
+                color: '#1DAA5C',
                 fontWeight: 700,
                 cursor: 'pointer',
                 padding: 0,
@@ -732,7 +732,7 @@ export const WorkerLoginPage: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#EA580C',
+                color: '#1DAA5C',
                 fontWeight: 700,
                 cursor: 'pointer',
                 padding: 0,

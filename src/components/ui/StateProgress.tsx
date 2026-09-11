@@ -55,7 +55,7 @@ export const StateProgress: React.FC<StateProgressProps> = ({ currentStatus }) =
             maxWidth: 'calc(100% - 40px)',
             height: '3px',
             backgroundColor: 'var(--success)',
-            transition: 'width 0.4s ease',
+            transition: 'width 400ms var(--ease-out-smooth)',
             zIndex: 1,
           }}
         />
@@ -92,17 +92,19 @@ export const StateProgress: React.FC<StateProgressProps> = ({ currentStatus }) =
                   color: isDone || isCurrent ? '#ffffff' : 'var(--text-muted)',
                   border: isDone || isCurrent ? 'none' : '2px solid var(--border-strong)',
                   boxShadow: isCurrent ? '0 0 0 4px var(--primary-focus)' : 'none',
-                  transition: 'all 0.3s ease',
+                  transition: 'all 350ms var(--ease-out-smooth)',
                 }}
+                className={isCurrent ? 'animate-pulse-live' : ''}
               >
                 <Icon size={14} />
               </div>
               <span
                 style={{
                   fontSize: '0.6875rem',
-                  fontWeight: isCurrent ? 700 : 500,
+                  fontWeight: isCurrent ? 800 : 500,
                   color: isCurrent ? 'var(--primary)' : isDone ? 'var(--success-dark)' : 'var(--text-muted)',
                   textAlign: 'center',
+                  transition: 'color var(--transition-fast)',
                 }}
               >
                 {step.label}

@@ -57,6 +57,7 @@ export const CategoryTabsBar: React.FC<CategoryTabsBarProps> = ({
             key={cat.id}
             type="button"
             onClick={() => onSelectCategory(cat.id)}
+            className="sahyog-btn"
             style={{
               flex: '0 0 auto',
               display: 'flex',
@@ -71,7 +72,8 @@ export const CategoryTabsBar: React.FC<CategoryTabsBarProps> = ({
               fontSize: '0.8125rem',
               fontWeight: isSelected ? 800 : 600,
               cursor: 'pointer',
-              transition: 'all 250ms cubic-bezier(0.16, 1, 0.3, 1)',
+              transition: 'all var(--transition-fast) var(--ease-out-smooth)',
+              transform: isSelected ? 'scale(1.02)' : 'scale(1)',
               whiteSpace: 'nowrap',
             }}
           >

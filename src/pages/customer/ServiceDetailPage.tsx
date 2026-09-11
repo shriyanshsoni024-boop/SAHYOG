@@ -166,7 +166,7 @@ export const ServiceDetailPage: React.FC = () => {
                 style={{
                   fontSize: '0.6875rem',
                   fontWeight: 700,
-                  color: '#0C831F',
+                  color: '#1DAA5C',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '3px',
@@ -200,7 +200,7 @@ export const ServiceDetailPage: React.FC = () => {
               border: 'none',
               cursor: 'pointer',
               backgroundColor: urgency === 'NORMAL' ? '#FFFFFF' : 'transparent',
-              color: urgency === 'NORMAL' ? '#0C831F' : '#64748B',
+              color: urgency === 'NORMAL' ? '#1DAA5C' : '#64748B',
               boxShadow: urgency === 'NORMAL' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
               display: 'flex',
               alignItems: 'center',
@@ -281,7 +281,7 @@ export const ServiceDetailPage: React.FC = () => {
                     position: 'relative',
                     padding: '12px 14px',
                     borderRadius: '14px',
-                    border: `1.5px solid ${isSelected ? '#0C831F' : '#E2E8F0'}`,
+                    border: `1.5px solid ${isSelected ? '#1DAA5C' : '#E2E8F0'}`,
                     backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
                     cursor: 'pointer',
                     display: 'flex',
@@ -289,7 +289,7 @@ export const ServiceDetailPage: React.FC = () => {
                     justifyContent: 'space-between',
                     gap: '12px',
                     boxShadow: isSelected
-                      ? '0 2px 8px rgba(12, 131, 31, 0.08)'
+                      ? '0 2px 8px rgba(29, 170, 92, 0.08)'
                       : '0 1px 3px rgba(0, 0, 0, 0.02)',
                     transition: 'all 150ms ease',
                   }}
@@ -302,8 +302,8 @@ export const ServiceDetailPage: React.FC = () => {
                         position: 'absolute',
                         top: '-7px',
                         right: '14px',
-                        backgroundColor: '#F8CB46',
-                        color: '#0F172A',
+                        backgroundColor: '#F4C430',
+                        color: '#0B0B0B',
                         fontSize: '0.5625rem',
                         fontWeight: 900,
                         padding: '2px 7px',
@@ -325,8 +325,8 @@ export const ServiceDetailPage: React.FC = () => {
                         width: '18px',
                         height: '18px',
                         borderRadius: '50%',
-                        border: `2px solid ${isSelected ? '#0C831F' : '#CBD5E1'}`,
-                        backgroundColor: isSelected ? '#0C831F' : '#FFFFFF',
+                        border: `2px solid ${isSelected ? '#1DAA5C' : '#CBD5E1'}`,
+                        backgroundColor: isSelected ? '#1DAA5C' : '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -342,7 +342,7 @@ export const ServiceDetailPage: React.FC = () => {
                         style={{
                           fontSize: '0.8125rem',
                           fontWeight: 800,
-                          color: isSelected ? '#0C831F' : '#0F172A',
+                          color: isSelected ? '#1DAA5C' : '#0B0B0B',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -360,20 +360,24 @@ export const ServiceDetailPage: React.FC = () => {
                           gap: '6px',
                         }}
                       >
-                        <span>{desc}</span>
-                        <span style={{ color: '#CBD5E1' }}>•</span>
-                        <span style={{ fontWeight: 600, color: '#475569' }}>{duration}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+                          <Clock size={11} /> {duration}
+                        </span>
+                        <span>•</span>
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {desc}
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Right: Price */}
                   <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <div style={{ fontSize: '1rem', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.02em' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 900, color: '#0B0B0B' }}>
                       ₹{price}
                     </div>
-                    <div style={{ fontSize: '0.5625rem', color: '#94A3B8', fontWeight: 600 }}>
-                      Labor rate
+                    <div style={{ fontSize: '0.5625rem', color: '#1DAA5C', fontWeight: 700 }}>
+                      Fixed Rate
                     </div>
                   </div>
                 </div>
@@ -396,12 +400,12 @@ export const ServiceDetailPage: React.FC = () => {
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Calendar size={14} color="#0C831F" />
-              <h2 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <Calendar size={14} color="#1DAA5C" />
+              <h2 style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0B0B0B', margin: 0, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 Pick Date & Time
               </h2>
             </div>
-            <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#0C831F', backgroundColor: '#F0FDF4', padding: '2px 6px', borderRadius: '6px' }}>
+            <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#1DAA5C', backgroundColor: '#F0FDF4', padding: '2px 6px', borderRadius: '6px' }}>
               Instant Dispatch Available
             </span>
           </div>
@@ -414,9 +418,9 @@ export const ServiceDetailPage: React.FC = () => {
               style={{
                 padding: '8px 10px',
                 borderRadius: '10px',
-                border: `1.5px solid ${selectedSlot === 'today' ? '#0C831F' : '#E2E8F0'}`,
+                border: `1.5px solid ${selectedSlot === 'today' ? '#1DAA5C' : '#E2E8F0'}`,
                 backgroundColor: selectedSlot === 'today' ? '#F0FDF4' : '#FFFFFF',
-                color: selectedSlot === 'today' ? '#0C831F' : '#334155',
+                color: selectedSlot === 'today' ? '#1DAA5C' : '#334155',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -432,7 +436,7 @@ export const ServiceDetailPage: React.FC = () => {
                   width: '6px',
                   height: '6px',
                   borderRadius: '50%',
-                  backgroundColor: selectedSlot === 'today' ? '#0C831F' : '#94A3B8',
+                  backgroundColor: selectedSlot === 'today' ? '#1DAA5C' : '#94A3B8',
                 }}
               />
               <span>Today (Earliest)</span>
@@ -444,9 +448,9 @@ export const ServiceDetailPage: React.FC = () => {
               style={{
                 padding: '8px 10px',
                 borderRadius: '10px',
-                border: `1.5px solid ${selectedSlot === 'tomorrow' ? '#0C831F' : '#E2E8F0'}`,
+                border: `1.5px solid ${selectedSlot === 'tomorrow' ? '#1DAA5C' : '#E2E8F0'}`,
                 backgroundColor: selectedSlot === 'tomorrow' ? '#F0FDF4' : '#FFFFFF',
-                color: selectedSlot === 'tomorrow' ? '#0C831F' : '#334155',
+                color: selectedSlot === 'tomorrow' ? '#1DAA5C' : '#334155',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -477,9 +481,9 @@ export const ServiceDetailPage: React.FC = () => {
                   style={{
                     padding: '6px 4px',
                     borderRadius: '8px',
-                    border: `1px solid ${isSelected ? '#0C831F' : '#E2E8F0'}`,
+                    border: `1px solid ${isSelected ? '#1DAA5C' : '#E2E8F0'}`,
                     backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
-                    color: isSelected ? '#0C831F' : '#334155',
+                    color: isSelected ? '#1DAA5C' : '#334155',
                     fontSize: '0.6875rem',
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -490,7 +494,7 @@ export const ServiceDetailPage: React.FC = () => {
                     transition: 'all 120ms ease',
                   }}
                 >
-                  <span style={{ color: isSelected ? '#0C831F' : '#64748B', fontSize: '0.5625rem', fontWeight: 600 }}>
+                  <span style={{ color: isSelected ? '#1DAA5C' : '#64748B', fontSize: '0.5625rem', fontWeight: 600 }}>
                     {slot.slotName}
                   </span>
                   <span style={{ fontSize: '0.6875rem' }}>{slot.label}</span>
@@ -524,7 +528,7 @@ export const ServiceDetailPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                color: '#0C831F',
+                color: '#1DAA5C',
               }}
             >
               <MapPin size={16} />
@@ -537,7 +541,7 @@ export const ServiceDetailPage: React.FC = () => {
                 style={{
                   fontSize: '0.75rem',
                   fontWeight: 700,
-                  color: '#0F172A',
+                  color: '#0B0B0B',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -554,9 +558,9 @@ export const ServiceDetailPage: React.FC = () => {
             style={{
               padding: '5px 10px',
               borderRadius: '8px',
-              border: '1px solid #BBF7D0',
+              border: '1px solid #D9E9C8',
               backgroundColor: '#F0FDF4',
-              color: '#0C831F',
+              color: '#1DAA5C',
               fontSize: '0.6875rem',
               fontWeight: 800,
               cursor: 'pointer',
@@ -584,7 +588,7 @@ export const ServiceDetailPage: React.FC = () => {
               Problem Note & Photo (Optional)
             </span>
             {photoEstimate ? (
-              <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#0C831F', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#1DAA5C', display: 'flex', alignItems: 'center', gap: '3px' }}>
                 <CheckCircle2 size={11} /> AI Analyzed ({photoEstimate.tier})
               </span>
             ) : (
@@ -595,7 +599,7 @@ export const ServiceDetailPage: React.FC = () => {
                 style={{
                   border: 'none',
                   background: 'none',
-                  color: '#0C831F',
+                  color: '#1DAA5C',
                   fontSize: '0.6875rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -622,7 +626,7 @@ export const ServiceDetailPage: React.FC = () => {
               borderRadius: '8px',
               border: '1px solid #E2E8F0',
               fontSize: '0.75rem',
-              color: '#0F172A',
+              color: '#0B0B0B',
               backgroundColor: '#F8FAFC',
               outline: 'none',
               fontFamily: 'inherit',
@@ -652,7 +656,7 @@ export const ServiceDetailPage: React.FC = () => {
             Estimated Total
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-            <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.02em' }}>
+            <span style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0B0B0B', letterSpacing: '-0.02em' }}>
               ₹{totalPrice}
             </span>
             <span style={{ fontSize: '0.5625rem', color: '#94A3B8', fontWeight: 600 }}>
@@ -666,7 +670,7 @@ export const ServiceDetailPage: React.FC = () => {
           onClick={() => setActiveView('worker-matching')}
           style={{
             flex: 1,
-            backgroundColor: urgency === 'EMERGENCY' ? '#DC2626' : '#0C831F',
+            backgroundColor: urgency === 'EMERGENCY' ? '#E0472C' : '#1DAA5C',
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '14px',

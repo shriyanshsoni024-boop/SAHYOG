@@ -181,7 +181,7 @@ export const WorkerDetailModal: React.FC<WorkerDetailModalProps> = ({ worker, on
         {/* Certificates */}
         <div>
           <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Award size={13} color="var(--secondary)" />
+            <Award size={13} color="var(--primary)" />
             <span>Accredited Trade Certificates ({(worker.certificates || []).length})</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -206,7 +206,7 @@ export const WorkerDetailModal: React.FC<WorkerDetailModalProps> = ({ worker, on
                   </div>
                 </div>
                 {cert.certificateNumber && (
-                  <span style={{ fontSize: '0.625rem', fontWeight: 800, color: 'var(--secondary)' }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 800, color: 'var(--primary)' }}>
                     {cert.certificateNumber}
                   </span>
                 )}

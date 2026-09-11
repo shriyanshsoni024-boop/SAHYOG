@@ -38,11 +38,11 @@ export const Modal: React.FC<ModalProps> = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(11, 11, 11, 0.65)',
+        backdropFilter: 'blur(6px)',
         padding: '16px',
-        animation: 'fadeIn 0.2s ease-out',
       }}
+      className="animate-backdrop"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -53,13 +53,14 @@ export const Modal: React.FC<ModalProps> = ({
           maxWidth,
           backgroundColor: 'var(--bg-surface)',
           borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-xl)',
+          boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.22)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
           maxHeight: '90vh',
-          animation: 'fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+          border: '1px solid var(--border-default)',
         }}
+        className="animate-modal-enter"
       >
         {title && (
           <div
@@ -69,9 +70,10 @@ export const Modal: React.FC<ModalProps> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              backgroundColor: 'var(--bg-app)',
             }}
           >
-            <div style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--text-primary)' }}>
+            <div style={{ fontWeight: 800, fontSize: '1.0625rem', color: 'var(--text-primary)' }}>
               {title}
             </div>
             <button
@@ -85,8 +87,11 @@ export const Modal: React.FC<ModalProps> = ({
                 borderRadius: '50%',
                 backgroundColor: 'var(--bg-muted)',
                 color: 'var(--text-secondary)',
+                border: 'none',
                 cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
               }}
+              className="sahyog-btn"
               aria-label="Close modal"
             >
               <X size={18} />

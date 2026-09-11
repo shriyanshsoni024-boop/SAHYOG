@@ -79,8 +79,8 @@ export const CooperativeTrustSection: React.FC = () => {
                   height: '32px',
                   borderRadius: '6px',
                   backgroundColor: '#F0FDF4',
-                  border: '1px solid #DCFCE7',
-                  color: 'var(--theme-accent, #0C831F)',
+                  border: '1px solid var(--sahyog-sage, #D9E9C8)',
+                  color: 'var(--sahyog-green, #1DAA5C)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -90,7 +90,7 @@ export const CooperativeTrustSection: React.FC = () => {
                 <Icon size={16} strokeWidth={2.2} />
               </div>
               <div>
-                <h4 style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#111827', margin: '0 0 1px' }}>
+                <h4 style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)', margin: '0 0 1px' }}>
                   {pillar.title}
                 </h4>
                 <p style={{ fontSize: '0.6875rem', color: '#4B5563', margin: 0, lineHeight: 1.35 }}>

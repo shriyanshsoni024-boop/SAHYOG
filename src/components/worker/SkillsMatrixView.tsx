@@ -39,7 +39,7 @@ export const SkillsMatrixView: React.FC = () => {
       >
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Award size={18} color="var(--secondary)" />
+            <Award size={18} color="var(--primary)" />
             <h2 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
               {language === 'hi' ? 'कारीगर कौशल मैट्रिक्स' : 'Worker Skills Matrix'}
             </h2>
@@ -56,9 +56,9 @@ export const SkillsMatrixView: React.FC = () => {
           onClick={() => setActiveTab('training')}
           style={{
             padding: '6px 12px',
-            backgroundColor: 'var(--secondary-light)',
-            color: 'var(--secondary)',
-            border: '1px solid #99F6E4',
+            backgroundColor: 'var(--primary-light)',
+            color: 'var(--primary-dark)',
+            border: '1px solid var(--primary-border, #D9E9C8)',
             borderRadius: 'var(--radius-md)',
             fontWeight: 800,
             fontSize: '0.75rem',
@@ -77,7 +77,7 @@ export const SkillsMatrixView: React.FC = () => {
       {/* Summary Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-md)', padding: '12px', textAlign: 'center' }}>
-          <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--secondary)' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--primary)' }}>
             {skillsMatrix.filter(s => s.verified).length}
           </div>
           <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontWeight: 700 }}>
@@ -164,7 +164,7 @@ export const SkillsMatrixView: React.FC = () => {
                     onClick={() => handleViewCert(skill.certificateNumber)}
                     style={{
                       fontSize: '0.6875rem',
-                      color: 'var(--secondary)',
+                      color: 'var(--primary)',
                       fontWeight: 700,
                       cursor: 'pointer',
                       marginTop: '4px',
@@ -205,7 +205,7 @@ export const SkillsMatrixView: React.FC = () => {
                     onClick={() => handleLaunchQuiz(skill)}
                     style={{
                       padding: '6px 12px',
-                      backgroundColor: 'var(--secondary)',
+                      backgroundColor: 'var(--primary)',
                       color: '#FFFFFF',
                       border: 'none',
                       borderRadius: 'var(--radius-md)',

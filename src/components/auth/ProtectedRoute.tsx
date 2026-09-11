@@ -19,19 +19,19 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole, ch
         title: 'Customer Authentication Required',
         subtitle: 'Please sign in with your customer account to access the marketplace, bookings, and profile.',
         loginPath: '/customer/login',
-        accentColor: '#0C831F',
+        accentColor: '#1DAA5C',
       },
       worker: {
         title: 'Artisan Pro Access Restricted',
         subtitle: 'This workspace is restricted to registered & verified SAHYOG cooperative artisans.',
         loginPath: '/worker/login',
-        accentColor: '#0D9488',
+        accentColor: '#1DAA5C',
       },
       admin: {
         title: 'Cooperative Federation Security Gate',
         subtitle: 'Restricted administrative portal for authorized cooperative officers & nodal coordinators.',
         loginPath: '/admin/login',
-        accentColor: '#EA580C',
+        accentColor: '#1DAA5C',
       },
     };
 

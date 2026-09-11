@@ -26,13 +26,13 @@ export const Button: React.FC<ButtonProps> = ({
     switch (variant) {
       case 'secondary':
         return {
-          backgroundColor: 'var(--secondary)',
+          backgroundColor: 'var(--sahyog-navy)',
           color: '#ffffff',
           border: '1px solid transparent',
         };
       case 'emergency':
         return {
-          backgroundColor: 'var(--danger)',
+          backgroundColor: 'var(--sahyog-red)',
           color: '#ffffff',
           border: '1px solid transparent',
         };
@@ -50,16 +50,16 @@ export const Button: React.FC<ButtonProps> = ({
         };
       case 'success':
         return {
-          backgroundColor: 'var(--success)',
+          backgroundColor: 'var(--sahyog-green)',
           color: '#ffffff',
           border: '1px solid transparent',
         };
       case 'primary':
       default:
         return {
-          backgroundColor: 'var(--primary)',
-          color: 'var(--primary-text)',
-          border: '1px solid var(--primary-hover)',
+          backgroundColor: 'var(--sahyog-green)',
+          color: '#ffffff',
+          border: '1px solid var(--sahyog-green-dark)',
           fontWeight: 700,
         };
     }
@@ -86,10 +86,12 @@ export const Button: React.FC<ButtonProps> = ({
         gap: '6px',
         width: fullWidth ? '100%' : 'auto',
         cursor: disabled || isLoading ? 'not-allowed' : 'pointer',
-        opacity: disabled || isLoading ? 0.6 : 1,
-        transition: 'background-color var(--transition-fast), border-color var(--transition-fast)',
+        opacity: disabled ? 0.55 : 1,
         fontFamily: 'var(--font-sans)',
         lineHeight: 1.25,
+        userSelect: 'none',
+        touchAction: 'manipulation',
+        transition: 'transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast)',
         ...getVariantStyles(),
         ...getSizeStyles(),
         ...style,
@@ -107,8 +109,10 @@ export const Button: React.FC<ButtonProps> = ({
             borderRightColor: 'transparent',
             borderRadius: '50%',
             display: 'inline-block',
-            animation: 'spin 0.6s linear infinite',
+            animation: 'spin 0.65s linear infinite',
+            flexShrink: 0,
           }}
+          aria-hidden="true"
         />
       ) : leftIcon}
       <span>{children}</span>

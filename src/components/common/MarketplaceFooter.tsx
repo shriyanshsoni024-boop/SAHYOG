@@ -27,7 +27,7 @@ export const MarketplaceFooter: React.FC = () => {
                 width: '28px',
                 height: '28px',
                 borderRadius: 'var(--radius-xs)',
-                backgroundColor: 'var(--theme-accent, #0C831F)',
+                backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -143,7 +143,7 @@ export const MarketplaceFooter: React.FC = () => {
                 type="button"
                 style={{
                   padding: '5px 10px',
-                  backgroundColor: 'var(--theme-accent, #0C831F)',
+                  backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                   color: '#FFFFFF',
                   borderRadius: 'var(--radius-xs)',
                   fontWeight: 700,

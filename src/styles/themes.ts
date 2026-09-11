@@ -29,6 +29,25 @@ export interface SahyogTheme {
   tokens: ThemeTokens;
 }
 
+const MASTER_TOKENS: ThemeTokens = {
+  banner: '#FCFBF4',            // --sahyog-cream
+  bannerText: '#0B0B0B',        // --sahyog-ink
+  bannerBorder: '#E5E7EB',
+  header: '#FFFFFF',            // --sahyog-white
+  headerBorder: '#E5E7EB',
+  text: '#0B0B0B',              // --sahyog-ink
+  textSecondary: '#374151',
+  textMuted: '#8A8A8A',         // --sahyog-grey
+  accent: '#1DAA5C',            // --sahyog-green
+  accentHover: '#0F7A3E',       // --sahyog-green-dark
+  accentLight: '#F0FDF4',
+  accentBorder: '#D9E9C8',      // --sahyog-sage
+  surface: '#FFFFFF',           // --sahyog-white
+  surfaceElevated: '#FFFFFF',
+  muted: '#FCFBF4',             // --sahyog-cream
+  border: '#E5E7EB',
+};
+
 export const THEMES: Record<'customer' | 'worker' | 'cooperative', SahyogTheme> = {
   customer: {
     id: 'customer',
@@ -37,24 +56,7 @@ export const THEMES: Record<'customer' | 'worker' | 'cooperative', SahyogTheme> 
     label: 'Customer Marketplace',
     tagline: 'Verified Home Services at Standard Cooperative Rates',
     taglineHi: 'मानक सहकारी दरों पर प्रमाणित घरेलू सेवाएं',
-    tokens: {
-      banner: '#FFFBEB',            // Subtle warm saffron cream
-      bannerText: '#92400E',        // Deep amber text
-      bannerBorder: '#FDE68A',      // Warm gold border
-      header: '#FFFFFF',            // Clean crisp white
-      headerBorder: '#E5E7EB',
-      text: '#111827',              // High contrast dark charcoal
-      textSecondary: '#374151',
-      textMuted: '#6B7280',
-      accent: '#0C831F',            // Fresh Indian quick-commerce action green
-      accentHover: '#096818',
-      accentLight: '#F0FDF4',
-      accentBorder: '#BBF7D0',
-      surface: '#FFFFFF',
-      surfaceElevated: '#FFFFFF',
-      muted: '#F8F9FA',             // Soft neutral fill
-      border: '#E5E7EB',
-    },
+    tokens: { ...MASTER_TOKENS },
   },
   worker: {
     id: 'worker',
@@ -63,24 +65,7 @@ export const THEMES: Record<'customer' | 'worker' | 'cooperative', SahyogTheme> 
     label: 'Artisan Partner Portal',
     tagline: 'Skill-Verified Jobs & Fair Cooperative Earnings',
     taglineHi: 'कौशल-सत्यापित कार्य और उचित सहकारी पारिश्रमिक',
-    tokens: {
-      banner: '#F0FDFA',            // Subtle artisan teal tint
-      bannerText: '#115E59',        // Deep teal text
-      bannerBorder: '#99F6E4',      // Soft teal border
-      header: '#FFFFFF',
-      headerBorder: '#E2E8F0',
-      text: '#0F172A',              // Slate charcoal
-      textSecondary: '#334155',
-      textMuted: '#64748B',
-      accent: '#0D9488',            // Dependable Artisan Pro Teal
-      accentHover: '#0F766E',
-      accentLight: '#F0FDFA',
-      accentBorder: '#99F6E4',
-      surface: '#FFFFFF',
-      surfaceElevated: '#FFFFFF',
-      muted: '#F8FAFC',
-      border: '#E2E8F0',
-    },
+    tokens: { ...MASTER_TOKENS },
   },
   cooperative: {
     id: 'cooperative',
@@ -89,24 +74,7 @@ export const THEMES: Record<'customer' | 'worker' | 'cooperative', SahyogTheme> 
     label: 'Cooperative Federation Admin',
     tagline: 'Workforce Allocation, Verification & Service Monitoring',
     taglineHi: 'कार्यबल आवंटन, सत्यापन और सेवा निगरानी',
-    tokens: {
-      banner: '#FFF7ED',            // Warm federation terracotta ochre tint
-      bannerText: '#9A3412',        // Deep terracotta text
-      bannerBorder: '#FED7AA',      // Warm terracotta border
-      header: '#FFFFFF',
-      headerBorder: '#E2E8F0',
-      text: '#0F172A',
-      textSecondary: '#334155',
-      textMuted: '#64748B',
-      accent: '#EA580C',            // Federation Terracotta / Warm Ochre
-      accentHover: '#C2410C',
-      accentLight: '#FFF7ED',
-      accentBorder: '#FED7AA',
-      surface: '#FFFFFF',
-      surfaceElevated: '#FFFFFF',
-      muted: '#F8FAFC',
-      border: '#E2E8F0',
-    },
+    tokens: { ...MASTER_TOKENS },
   },
 };
 

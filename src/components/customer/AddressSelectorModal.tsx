@@ -194,9 +194,9 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
               gap: '12px',
               padding: '12px 14px',
               backgroundColor: '#F0FDF4',
-              border: '1px solid #BBF7D0',
+              border: '1px solid var(--sahyog-sage, #D9E9C8)',
               borderRadius: '12px',
-              color: '#0C831F',
+              color: 'var(--sahyog-green, #1DAA5C)',
               fontSize: '0.875rem',
               fontWeight: 700,
               cursor: 'pointer',
@@ -206,7 +206,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
             <Navigation size={18} />
             <div style={{ flex: 1 }}>
               <div>Use current location</div>
-              <div style={{ fontSize: '0.6875rem', color: '#16A34A', fontWeight: 500 }}>
+              <div style={{ fontSize: '0.6875rem', color: 'var(--sahyog-green-dark, #0F7A3E)', fontWeight: 500 }}>
                 Using GPS auto-detection
               </div>
             </div>
@@ -226,14 +226,14 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
               backgroundColor: '#FFFFFF',
               border: '1px solid #E2E8F0',
               borderRadius: '12px',
-              color: '#0F172A',
+              color: 'var(--sahyog-ink, #0B0B0B)',
               fontSize: '0.875rem',
               fontWeight: 700,
               cursor: 'pointer',
               textAlign: 'left',
             }}
           >
-            <Plus size={18} color="#0C831F" />
+            <Plus size={18} color="var(--sahyog-green, #1DAA5C)" />
             <span>Add new address</span>
           </button>
         </div>
@@ -263,14 +263,14 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
                   style={{
                     padding: '14px 16px',
                     borderRadius: '14px',
-                    border: `1.5px solid ${isSelected ? '#0C831F' : '#E2E8F0'}`,
+                    border: `1.5px solid ${isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#E2E8F0'}`,
                     backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'flex-start',
                     justifyContent: 'space-between',
                     gap: '12px',
-                    boxShadow: isSelected ? '0 2px 10px rgba(12, 131, 31, 0.1)' : 'none',
+                    boxShadow: isSelected ? '0 2px 10px rgba(29, 170, 92, 0.1)' : 'none',
                     transition: 'all 150ms ease',
                   }}
                   className="hover-card"
@@ -285,7 +285,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: isSelected ? '#0C831F' : '#475569',
+                        color: isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#475569',
                         flexShrink: 0,
                         marginTop: '2px',
                       }}
@@ -295,7 +295,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
 
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                        <span style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A' }}>
+                        <span style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                           {addr.title}
                         </span>
                         {isSelected && (
@@ -303,7 +303,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
                             style={{
                               fontSize: '0.5625rem',
                               fontWeight: 800,
-                              backgroundColor: '#0C831F',
+                              backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                               color: '#FFFFFF',
                               padding: '1px 6px',
                               borderRadius: '4px',
@@ -332,7 +332,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
                           width: '24px',
                           height: '24px',
                           borderRadius: '50%',
-                          backgroundColor: '#0C831F',
+                          backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -342,7 +342,7 @@ export const AddressSelectorModal: React.FC<AddressSelectorModalProps> = ({
                         <Check size={14} strokeWidth={3} />
                       </div>
                     ) : (
-                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0C831F' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--sahyog-green, #1DAA5C)' }}>
                         Select
                       </span>
                     )}

@@ -108,7 +108,7 @@ export const WorkerProfileView: React.FC = () => {
                   fontSize: '0.625rem',
                   fontWeight: 800,
                   backgroundColor: '#ECFDF5',
-                  color: '#059669',
+                  color: '#1DAA5C',
                   padding: '2px 7px',
                   borderRadius: '9999px',
                   border: '1px solid #A7F3D0',
@@ -236,7 +236,7 @@ export const WorkerProfileView: React.FC = () => {
               style={{
                 fontSize: '0.75rem',
                 fontWeight: 800,
-                color: '#059669',
+                color: '#1DAA5C',
                 backgroundColor: '#ECFDF5',
                 padding: '2px 8px',
                 borderRadius: '9999px',
@@ -260,7 +260,7 @@ export const WorkerProfileView: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-          <HeartHandshake size={20} color="#059669" />
+          <HeartHandshake size={20} color="#1DAA5C" />
           <div style={{ fontSize: '0.875rem', fontWeight: 900, color: '#065F46' }}>
             Cooperative Safety Net
           </div>
@@ -276,7 +276,7 @@ export const WorkerProfileView: React.FC = () => {
                 Active on every on-duty dispatch job
               </div>
             </div>
-            <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#059669' }}>Active ✓</span>
+            <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#1DAA5C' }}>Active ✓</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #F1F5F9' }}>
@@ -294,9 +294,9 @@ export const WorkerProfileView: React.FC = () => {
               style={{
                 padding: '4px 10px',
                 borderRadius: '8px',
-                backgroundColor: isEmergencyAvailable ? '#EFF6FF' : '#F1F5F9',
-                color: isEmergencyAvailable ? '#2563EB' : '#64748B',
-                border: `1px solid ${isEmergencyAvailable ? '#BFDBFE' : '#CBD5E1'}`,
+                backgroundColor: isEmergencyAvailable ? theme.primaryLight : '#F1F5F9',
+                color: isEmergencyAvailable ? theme.primary : '#64748B',
+                border: `1px solid ${isEmergencyAvailable ? theme.primaryBorder : '#CBD5E1'}`,
                 fontSize: '0.6875rem',
                 fontWeight: 800,
                 cursor: 'pointer',

@@ -180,8 +180,8 @@ export const WorkerOnboardingModal: React.FC = () => {
         >
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <HardHat size={16} color="var(--secondary)" />
-              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <HardHat size={16} color="var(--primary)" />
+              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 {preferredLang === 'hi' ? 'कारीगर साथी ऑनबोर्डिंग' : 'Worker Partner Onboarding'}
               </span>
             </div>
@@ -217,7 +217,7 @@ export const WorkerOnboardingModal: React.FC = () => {
             style={{
               width: `${(step / 5) * 100}%`,
               height: '100%',
-              backgroundColor: 'var(--secondary)',
+              backgroundColor: 'var(--primary)',
               transition: 'width var(--transition-fast)',
             }}
           />
@@ -246,7 +246,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                 gap: '4px',
                 cursor: 'pointer',
                 fontWeight: step === s ? 800 : 500,
-                color: step === s ? 'var(--secondary)' : s < step ? 'var(--success-dark)' : 'var(--text-muted)',
+                color: step === s ? 'var(--primary)' : s < step ? 'var(--success-dark)' : 'var(--text-muted)',
               }}
             >
               <div
@@ -258,7 +258,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '0.625rem',
-                  backgroundColor: step === s ? 'var(--secondary)' : s < step ? 'var(--success-light)' : 'var(--bg-muted)',
+                  backgroundColor: step === s ? 'var(--primary)' : s < step ? 'var(--success-light)' : 'var(--bg-muted)',
                   color: step === s ? '#FFFFFF' : s < step ? 'var(--success-dark)' : 'var(--text-muted)',
                   border: s < step ? '1px solid var(--success-border)' : 'none',
                 }}
@@ -291,7 +291,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                       height: '64px',
                       borderRadius: 'var(--radius-md)',
                       objectFit: 'cover',
-                      border: '2px solid var(--secondary)',
+                      border: '2px solid var(--primary)',
                     }}
                   />
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -311,7 +311,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                             borderRadius: 'var(--radius-xs)',
                             objectFit: 'cover',
                             cursor: 'pointer',
-                            border: formData.avatar === imgUrl ? '2px solid var(--secondary)' : '1px solid var(--border-default)',
+                            border: formData.avatar === imgUrl ? '2px solid var(--primary)' : '1px solid var(--border-default)',
                           }}
                         />
                       ))}
@@ -430,9 +430,9 @@ export const WorkerOnboardingModal: React.FC = () => {
                     style={{
                       padding: '10px',
                       borderRadius: 'var(--radius-md)',
-                      border: `1.5px solid ${preferredLang === 'en' ? 'var(--secondary)' : 'var(--border-default)'}`,
-                      backgroundColor: preferredLang === 'en' ? 'var(--secondary-light)' : '#FFFFFF',
-                      color: preferredLang === 'en' ? 'var(--secondary)' : 'var(--text-primary)',
+                      border: `1.5px solid ${preferredLang === 'en' ? 'var(--primary)' : 'var(--border-default)'}`,
+                      backgroundColor: preferredLang === 'en' ? 'var(--primary-light)' : '#FFFFFF',
+                      color: preferredLang === 'en' ? 'var(--primary-dark)' : 'var(--text-primary)',
                       fontWeight: preferredLang === 'en' ? 800 : 600,
                       fontSize: '0.8125rem',
                       cursor: 'pointer',
@@ -452,9 +452,9 @@ export const WorkerOnboardingModal: React.FC = () => {
                     style={{
                       padding: '10px',
                       borderRadius: 'var(--radius-md)',
-                      border: `1.5px solid ${preferredLang === 'hi' ? 'var(--secondary)' : 'var(--border-default)'}`,
-                      backgroundColor: preferredLang === 'hi' ? 'var(--secondary-light)' : '#FFFFFF',
-                      color: preferredLang === 'hi' ? 'var(--secondary)' : 'var(--text-primary)',
+                      border: `1.5px solid ${preferredLang === 'hi' ? 'var(--primary)' : 'var(--border-default)'}`,
+                      backgroundColor: preferredLang === 'hi' ? 'var(--primary-light)' : '#FFFFFF',
+                      color: preferredLang === 'hi' ? 'var(--primary-dark)' : 'var(--text-primary)',
                       fontWeight: preferredLang === 'hi' ? 800 : 600,
                       fontSize: '0.8125rem',
                       cursor: 'pointer',
@@ -495,8 +495,8 @@ export const WorkerOnboardingModal: React.FC = () => {
                         style={{
                           padding: '12px',
                           borderRadius: 'var(--radius-md)',
-                          border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-default)'}`,
-                          backgroundColor: isSelected ? 'var(--secondary-light)' : '#FFFFFF',
+                          border: `1.5px solid ${isSelected ? 'var(--primary)' : 'var(--border-default)'}`,
+                          backgroundColor: isSelected ? 'var(--primary-light)' : '#FFFFFF',
                           cursor: 'pointer',
                           display: 'flex',
                           flexDirection: 'column',
@@ -512,8 +512,8 @@ export const WorkerOnboardingModal: React.FC = () => {
                               width: '18px',
                               height: '18px',
                               borderRadius: '4px',
-                              border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-strong)'}`,
-                              backgroundColor: isSelected ? 'var(--secondary)' : 'transparent',
+                              border: `1.5px solid ${isSelected ? 'var(--primary)' : 'var(--border-strong)'}`,
+                              backgroundColor: isSelected ? 'var(--primary)' : 'transparent',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
@@ -555,7 +555,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                   {preferredLang === 'hi' ? 'चयनित व्यवसाय:' : 'Selected Professions:'}{' '}
                   <strong>{formData.professions.join(', ')}</strong>
                 </span>
-                <span style={{ fontWeight: 800, color: 'var(--secondary)' }}>
+                <span style={{ fontWeight: 800, color: 'var(--primary)' }}>
                   {formData.professions.length} Selected
                 </span>
               </div>
@@ -570,7 +570,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                   <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                     {preferredLang === 'hi' ? 'कौशल दक्षता स्तर कॉन्फ़िगर करें' : 'Configure Skill Proficiency Levels'}
                   </div>
-                  <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--secondary)' }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--primary)' }}>
                     {totalConfiguredSkills} / {allAvailableSkillsForSelectedProfs.length} Skills ({skillsProgressPercent}%)
                   </span>
                 </div>
@@ -586,7 +586,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                     style={{
                       width: `${skillsProgressPercent}%`,
                       height: '100%',
-                      backgroundColor: 'var(--secondary)',
+                      backgroundColor: 'var(--primary)',
                       transition: 'width var(--transition-fast)',
                     }}
                   />
@@ -606,7 +606,7 @@ export const WorkerOnboardingModal: React.FC = () => {
                           padding: '12px',
                         }}
                       >
-                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--secondary)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary-dark)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                           <Briefcase size={13} />
                           <span>{prof} Trade Skills</span>
                         </div>
@@ -645,8 +645,8 @@ export const WorkerOnboardingModal: React.FC = () => {
                                           borderRadius: 'var(--radius-xs)',
                                           fontSize: '0.625rem',
                                           fontWeight: isLvlActive ? 800 : 500,
-                                          border: isLvlActive ? '1px solid var(--secondary)' : '1px solid var(--border-default)',
-                                          backgroundColor: isLvlActive ? 'var(--secondary)' : '#FFFFFF',
+                                          border: isLvlActive ? '1px solid var(--primary)' : '1px solid var(--border-default)',
+                                          backgroundColor: isLvlActive ? 'var(--primary)' : '#FFFFFF',
                                           color: isLvlActive ? '#FFFFFF' : 'var(--text-secondary)',
                                           cursor: 'pointer',
                                         }}
@@ -744,15 +744,15 @@ export const WorkerOnboardingModal: React.FC = () => {
                 </label>
                 <div
                   style={{
-                    border: '1.5px dashed var(--secondary)',
-                    backgroundColor: 'var(--secondary-light)',
+                    border: '1.5px dashed var(--primary)',
+                    backgroundColor: 'var(--primary-light)',
                     borderRadius: 'var(--radius-md)',
                     padding: '14px',
                     textAlign: 'center',
                   }}
                 >
-                  <Upload size={22} color="var(--secondary)" style={{ margin: '0 auto 4px' }} />
-                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--secondary)' }}>
+                  <Upload size={22} color="var(--primary)" style={{ margin: '0 auto 4px' }} />
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary-dark)' }}>
                     {preferredLang === 'hi' ? 'आधार कार्ड एवं ट्रेड सर्टिफिकेट संलग्न हैं' : 'Government ID & Trade Certificate Attached'}
                   </div>
                   <div style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginTop: '2px' }}>
@@ -794,9 +794,9 @@ export const WorkerOnboardingModal: React.FC = () => {
           {/* STEP 5: Review & Submit */}
           {step === 5 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ backgroundColor: '#F0FDFA', border: '1px solid #99F6E4', borderRadius: 'var(--radius-md)', padding: '12px', textAlign: 'center' }}>
-                <Sparkles size={22} color="var(--secondary)" style={{ margin: '0 auto 4px' }} />
-                <div style={{ fontSize: '0.875rem', fontWeight: 900, color: 'var(--secondary)' }}>
+              <div style={{ backgroundColor: 'var(--primary-light, #F0FDF4)', border: '1.5px solid var(--primary-border, #D9E9C8)', borderRadius: 'var(--radius-md)', padding: '12px', textAlign: 'center' }}>
+                <Sparkles size={22} color="var(--primary)" style={{ margin: '0 auto 4px' }} />
+                <div style={{ fontSize: '0.875rem', fontWeight: 900, color: 'var(--primary-dark, #0F7A3E)' }}>
                   {preferredLang === 'hi' ? 'ऑनबोर्डिंग समीक्षा एवं पुष्टि' : 'Worker Onboarding Summary'}
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
@@ -929,7 +929,7 @@ export const WorkerOnboardingModal: React.FC = () => {
               style={{
                 padding: '8px 18px',
                 borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--secondary)',
+                backgroundColor: 'var(--primary)',
                 color: '#FFFFFF',
                 fontWeight: 800,
                 fontSize: '0.75rem',

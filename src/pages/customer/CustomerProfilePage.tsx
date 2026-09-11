@@ -61,18 +61,18 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
         paddingBottom: '80px',
       }}
     >
       {/* 1. TOP DARK GREEN PROFILE HEADER */}
       <div
         style={{
-          background: 'linear-gradient(150deg, #0C831F 0%, #064E11 100%)',
+          background: 'linear-gradient(150deg, var(--sahyog-green, #1DAA5C) 0%, var(--sahyog-green-dark, #0F7A3E) 100%)',
           borderRadius: '0 0 28px 28px',
           padding: '24px 20px 28px',
           color: '#FFFFFF',
-          boxShadow: '0 6px 20px rgba(12, 131, 31, 0.25)',
+          boxShadow: '0 6px 20px rgba(29, 170, 92, 0.25)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
@@ -128,7 +128,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
                     border: 'none',
                     fontSize: '0.9375rem',
                     fontWeight: 700,
-                    color: '#0F172A',
+                    color: 'var(--sahyog-ink, #0B0B0B)',
                   }}
                   autoFocus
                 />
@@ -138,7 +138,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
                   style={{
                     padding: '4px 10px',
                     backgroundColor: '#FFFFFF',
-                    color: '#0C831F',
+                    color: 'var(--sahyog-green-dark, #0F7A3E)',
                     border: 'none',
                     borderRadius: '6px',
                     fontSize: '0.75rem',
@@ -213,13 +213,13 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#D97706',
+                color: 'var(--sahyog-forest, #173318)',
               }}
             >
               <Award size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#92400E' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--sahyog-forest, #173318)' }}>
                 SAHYOG Cooperative Pass
               </div>
               <div style={{ fontSize: '0.6875rem', color: '#B45309' }}>
@@ -232,8 +232,8 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
             style={{
               fontSize: '0.6875rem',
               fontWeight: 800,
-              backgroundColor: '#D97706',
-              color: '#FFFFFF',
+              backgroundColor: 'var(--sahyog-yellow, #F4C430)',
+              color: 'var(--sahyog-ink, #0B0B0B)',
               padding: '4px 8px',
               borderRadius: '6px',
             }}
@@ -252,7 +252,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '16px 10px',
             display: 'flex',
             flexDirection: 'column',
@@ -273,12 +273,12 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#0C831F',
+              color: 'var(--sahyog-green, #1DAA5C)',
             }}
           >
             <Calendar size={20} />
           </div>
-          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
             My bookings
           </span>
         </button>
@@ -290,7 +290,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '16px 10px',
             display: 'flex',
             flexDirection: 'column',
@@ -307,16 +307,16 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
               width: '40px',
               height: '40px',
               borderRadius: '12px',
-              backgroundColor: '#EFF6FF',
+              backgroundColor: 'var(--sahyog-blue-tint, #D9E6F7)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#2563EB',
+              color: 'var(--sahyog-navy, #152B54)',
             }}
           >
             <Wallet size={20} />
           </div>
-          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
             Money (₹450)
           </span>
         </button>
@@ -328,7 +328,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '16px 10px',
             display: 'flex',
             flexDirection: 'column',
@@ -345,16 +345,16 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
               width: '40px',
               height: '40px',
               borderRadius: '12px',
-              backgroundColor: '#FFF7ED',
+              backgroundColor: '#F8FAFC',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#EA580C',
+              color: 'var(--sahyog-ink, #0B0B0B)',
             }}
           >
             <Headphones size={20} />
           </div>
-          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
             Help & Support
           </span>
         </button>
@@ -366,7 +366,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '18px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '6px 16px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
           }}
@@ -385,7 +385,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <MapPin size={18} color="#64748B" />
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                 Saved addresses
               </span>
             </div>
@@ -406,7 +406,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <ShieldCheck size={18} color="#64748B" />
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                 About SAHYOG Cooperative
               </span>
             </div>
@@ -427,7 +427,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <FileText size={18} color="#64748B" />
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                 Terms of services
               </span>
             </div>
@@ -448,7 +448,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <Lock size={18} color="#64748B" />
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                 Privacy policy
               </span>
             </div>
@@ -467,8 +467,8 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Trash2 size={18} color="#DC2626" />
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#DC2626' }}>
+              <Trash2 size={18} color="var(--sahyog-red, #E0472C)" />
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-red, #E0472C)' }}>
                 Request account deletion
               </span>
             </div>
@@ -484,7 +484,7 @@ export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpen
             width: '100%',
             padding: '14px',
             backgroundColor: '#FEF2F2',
-            color: '#DC2626',
+            color: 'var(--sahyog-red, #E0472C)',
             border: '1px solid #FECACA',
             borderRadius: '16px',
             fontSize: '0.875rem',

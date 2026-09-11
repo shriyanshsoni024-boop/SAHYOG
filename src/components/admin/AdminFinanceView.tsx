@@ -36,7 +36,7 @@ export const AdminFinanceView: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--theme-accent, #EA580C)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: 'var(--sahyog-green, #1DAA5C)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
             Daily Cooperative Settlement Clearing
           </span>
           <span
@@ -177,8 +177,8 @@ export const AdminFinanceView: React.FC = () => {
                     fontWeight: 800,
                     padding: '1px 5px',
                     borderRadius: 'var(--radius-xs)',
-                    backgroundColor: t.status === 'PAID' ? 'var(--success-light)' : '#EFF6FF',
-                    color: t.status === 'PAID' ? 'var(--success-dark)' : '#1D4ED8',
+                    backgroundColor: t.status === 'PAID' ? 'var(--success-light)' : 'var(--accent-warm-light, #FEF9C3)',
+                    color: t.status === 'PAID' ? 'var(--success-dark)' : 'var(--accent-warm-dark, #854D0E)',
                   }}
                 >
                   {t.status === 'PAID' ? 'Settled' : 'In Progress'}

@@ -51,6 +51,7 @@ export const AdminNav: React.FC<AdminNavProps> = ({
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id)}
+            className="sahyog-btn"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -59,12 +60,13 @@ export const AdminNav: React.FC<AdminNavProps> = ({
               padding: '6px 8px',
               borderRadius: 'var(--radius-md)',
               color: isActive ? 'var(--primary)' : 'var(--text-muted)',
-              transition: 'all var(--transition-fast)',
+              transition: 'all var(--transition-fast) var(--ease-out-smooth)',
               position: 'relative',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
               flex: 1,
+              transform: isActive ? 'scale(1.04)' : 'scale(1)',
             }}
           >
             <div style={{ position: 'relative' }}>

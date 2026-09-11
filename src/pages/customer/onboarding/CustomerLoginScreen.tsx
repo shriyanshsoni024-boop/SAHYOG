@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, CheckSquare, Square, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 
 interface CustomerLoginScreenProps {
   onContinue: (phone: string) => void;
@@ -23,7 +23,7 @@ const GALLERY_ROW_2 = [
 
 export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onContinue, onSkip }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [hasReferral, setHasReferral] = useState(false);
+  const [showReferral, setShowReferral] = useState(false);
   const [referralCode, setReferralCode] = useState('');
 
   const cleanNumber = phoneNumber.replace(/\D/g, '');
@@ -59,12 +59,12 @@ export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onCont
       {/* 1. TOP GREEN HERO SECTION */}
       <div
         style={{
-          background: 'linear-gradient(160deg, #0C831F 0%, #086317 100%)',
+          background: 'linear-gradient(160deg, #1DAA5C 0%, #0F7A3E 100%)',
           borderRadius: '0 0 28px 28px',
           padding: '24px 20px 32px',
           color: '#FFFFFF',
           position: 'relative',
-          boxShadow: '0 8px 24px rgba(12, 131, 31, 0.2)',
+          boxShadow: '0 8px 24px rgba(29, 170, 92, 0.2)',
         }}
       >
         {/* Top Bar: Brand & Skip Button */}
@@ -159,7 +159,7 @@ export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onCont
                   style={{
                     fontSize: '0.5625rem',
                     fontWeight: 800,
-                    backgroundColor: '#0C831F',
+                    backgroundColor: '#1DAA5C',
                     color: '#FFFFFF',
                     padding: '1px 5px',
                     borderRadius: '4px',
@@ -268,59 +268,64 @@ export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onCont
             style={{
               display: 'flex',
               alignItems: 'center',
-              border: `2px solid ${isValidPhone ? '#0C831F' : '#E2E8F0'}`,
-              borderRadius: '14px',
-              padding: '12px 16px',
+              border: `2px solid ${isValidPhone ? '#1DAA5C' : '#E2E8F0'}`,
+              borderRadius: '16px',
+              padding: '12px 14px',
               backgroundColor: '#FFFFFF',
-              gap: '10px',
+              boxShadow: isValidPhone ? '0 0 0 3px rgba(29, 170, 92, 0.12)' : 'none',
               transition: 'all 150ms ease',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '1rem',
-                fontWeight: 800,
-                color: '#111827',
-                borderRight: '1px solid #E2E8F0',
-                paddingRight: '10px',
-              }}
-            >
-              <span>🇮🇳</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#1E293B', fontWeight: 800, fontSize: '1rem', paddingRight: '8px', borderRight: '1.5px solid #E2E8F0' }}>
+              <span style={{ fontSize: '1.25rem' }}>🇮🇳</span>
               <span>+91</span>
             </div>
 
             <input
               type="tel"
               inputMode="numeric"
-              placeholder="Enter mobile number"
+              maxLength={10}
+              placeholder="Enter 10-digit mobile number"
               value={phoneNumber}
               onChange={handlePhoneChange}
               style={{
+                flex: 1,
                 border: 'none',
                 outline: 'none',
-                width: '100%',
                 fontSize: '1.0625rem',
-                fontWeight: 600,
-                color: '#0F172A',
+                fontWeight: 700,
+                color: '#0B0B0B',
+                backgroundColor: 'transparent',
                 letterSpacing: '0.04em',
               }}
               autoFocus
             />
+
+            {isValidPhone && (
+              <span style={{ color: '#1DAA5C', display: 'flex', alignItems: 'center' }}>
+                <CheckCircle2 size={20} strokeWidth={2.5} />
+              </span>
+            )}
           </div>
 
-          {/* Continue Button (Disabled Gray -> Enabled Green) */}
+          {/* Error text if entered invalid */}
+          {phoneNumber.length > 0 && phoneNumber.length < 10 && (
+            <span style={{ fontSize: '0.75rem', color: '#64748B', paddingLeft: '4px' }}>
+              Please enter {10 - phoneNumber.length} more digit{10 - phoneNumber.length > 1 ? 's' : ''}
+            </span>
+          )}
+
+          {/* Continue Button */}
           <button
             type="submit"
             disabled={!isValidPhone}
             style={{
+              width: '100%',
               padding: '15px',
-              backgroundColor: isValidPhone ? '#0C831F' : '#E2E8F0',
+              backgroundColor: isValidPhone ? '#1DAA5C' : '#E2E8F0',
               color: isValidPhone ? '#FFFFFF' : '#94A3B8',
               border: 'none',
-              borderRadius: '14px',
+              borderRadius: '16px',
               fontSize: '1rem',
               fontWeight: 800,
               cursor: isValidPhone ? 'pointer' : 'not-allowed',
@@ -328,63 +333,74 @@ export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onCont
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: isValidPhone ? '0 4px 16px rgba(12, 131, 31, 0.3)' : 'none',
-              transition: 'all 200ms ease',
+              transition: 'all 150ms ease',
+              boxShadow: isValidPhone ? '0 4px 14px rgba(29, 170, 92, 0.3)' : 'none',
             }}
+            className={isValidPhone ? 'sahyog-btn' : ''}
           >
             <span>Continue</span>
-            <ArrowRight size={18} />
-          </button>
-        </form>
-
-        {/* Referral Code Checkbox Toggle */}
-        <div style={{ marginTop: '16px' }}>
-          <button
-            type="button"
-            onClick={() => setHasReferral(!hasReferral)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px 0',
-              color: '#4B5563',
-              fontSize: '0.8125rem',
-              fontWeight: 600,
-            }}
-          >
-            {hasReferral ? (
-              <CheckSquare size={18} color="#0C831F" />
-            ) : (
-              <Square size={18} color="#9CA3AF" />
-            )}
-            <span>Have a referral code?</span>
+            <ArrowRight size={18} strokeWidth={2.5} />
           </button>
 
-          {hasReferral && (
-            <div style={{ marginTop: '10px' }}>
-              <input
-                type="text"
-                placeholder="Enter referral code"
-                value={referralCode}
-                onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+          {/* Referral Code Expandable */}
+          <div style={{ marginTop: '4px' }}>
+            {!showReferral ? (
+              <button
+                type="button"
+                onClick={() => setShowReferral(true)}
                 style={{
-                  width: '100%',
-                  padding: '10px 14px',
-                  borderRadius: '10px',
-                  border: '1px solid #CBD5E1',
-                  fontSize: '0.875rem',
-                  fontWeight: 700,
-                  color: '#0F172A',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
+                  background: 'none',
+                  border: 'none',
+                  color: '#64748B',
+                  fontSize: '0.8125rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
                 }}
-              />
-            </div>
-          )}
-        </div>
+              >
+                <span>Have a referral code?</span>
+                <span style={{ color: '#1DAA5C', fontWeight: 700 }}>Apply</span>
+              </button>
+            ) : (
+              <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+                <input
+                  type="text"
+                  placeholder="Enter Referral Code"
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                  style={{
+                    flex: 1,
+                    padding: '10px 14px',
+                    borderRadius: '12px',
+                    border: '1.5px solid #E2E8F0',
+                    fontSize: '0.875rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                  }}
+                />
+                <button
+                  type="button"
+                  style={{
+                    padding: '10px 18px',
+                    backgroundColor: '#1DAA5C',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '12px',
+                    fontSize: '0.8125rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Apply
+                </button>
+              </div>
+            )}
+          </div>
+        </form>
 
         {/* 1-Click Demo Evaluation Shortcut */}
         <div style={{ marginTop: 'auto', paddingTop: '20px' }}>

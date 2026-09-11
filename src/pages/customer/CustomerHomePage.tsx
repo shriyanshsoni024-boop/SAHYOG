@@ -74,7 +74,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
         paddingBottom: '90px',
       }}
     >
@@ -83,7 +83,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
         style={{
           backgroundColor: '#FFFFFF',
           padding: '14px 16px 10px',
-          borderBottom: '1px solid #E2E8F0',
+          borderBottom: '1px solid var(--sahyog-sage, #D9E9C8)',
           position: 'sticky',
           top: 0,
           zIndex: 30,
@@ -96,7 +96,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
               style={{
                 fontSize: '1.1875rem',
                 fontWeight: 900,
-                color: '#0F172A',
+                color: 'var(--sahyog-ink, #0B0B0B)',
                 margin: 0,
                 letterSpacing: '-0.02em',
                 lineHeight: 1.2,
@@ -124,7 +124,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                 textAlign: 'left',
               }}
             >
-              <MapPin size={13} color="#0C831F" style={{ flexShrink: 0 }} />
+              <MapPin size={13} color="var(--sahyog-green, #1DAA5C)" style={{ flexShrink: 0 }} />
               <span
                 style={{
                   whiteSpace: 'nowrap',
@@ -150,11 +150,11 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                 height: '36px',
                 borderRadius: '10px',
                 backgroundColor: '#F0FDF4',
-                border: '1px solid #BBF7D0',
+                border: '1px solid var(--sahyog-sage, #D9E9C8)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#0C831F',
+                color: 'var(--sahyog-green, #1DAA5C)',
                 cursor: 'pointer',
                 transition: 'all 120ms ease',
               }}
@@ -178,7 +178,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#0F172A',
+                color: 'var(--sahyog-ink, #0B0B0B)',
                 cursor: 'pointer',
                 overflow: 'hidden',
                 transition: 'all 120ms ease',
@@ -201,9 +201,9 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
             style={{
               display: 'flex',
               alignItems: 'center',
-              backgroundColor: '#F8FAFC',
+              backgroundColor: '#FFFFFF',
               borderRadius: '12px',
-              border: '1px solid #E2E8F0',
+              border: '1px solid var(--sahyog-sage, #D9E9C8)',
               padding: '8px 12px',
               gap: '8px',
             }}
@@ -221,7 +221,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                 width: '100%',
                 fontSize: '0.8125rem',
                 fontWeight: 600,
-                color: '#0F172A',
+                color: 'var(--sahyog-ink, #0B0B0B)',
                 backgroundColor: 'transparent',
               }}
             />
@@ -243,7 +243,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                 <X size={16} />
               </button>
             ) : (
-              <Mic size={16} color="#0C831F" style={{ flexShrink: 0, opacity: 0.8 }} />
+              <Mic size={16} color="var(--sahyog-green, #1DAA5C)" style={{ flexShrink: 0, opacity: 0.8 }} />
             )}
           </div>
         </div>
@@ -260,12 +260,12 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
             style={{
               backgroundColor: '#FFFFFF',
               borderRadius: '14px',
-              border: '1.5px solid #BBF7D0',
+              border: '1.5px solid var(--sahyog-sage, #D9E9C8)',
               padding: '10px 12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              boxShadow: '0 2px 8px rgba(12, 131, 31, 0.08)',
+              boxShadow: '0 2px 8px rgba(29, 170, 92, 0.08)',
               cursor: 'pointer',
             }}
             className="hover-card"
@@ -280,15 +280,15 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#0C831F',
+                  color: 'var(--sahyog-green, #1DAA5C)',
                   flexShrink: 0,
                 }}
               >
-                <Zap size={18} fill="#0C831F" />
+                <Zap size={18} fill="var(--sahyog-green, #1DAA5C)" />
               </div>
 
               <div>
-                <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span>{activeBooking.serviceName}</span>
                   <span
                     style={{
@@ -310,7 +310,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.6875rem', fontWeight: 800, color: '#0C831F' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '3px', fontSize: '0.6875rem', fontWeight: 800, color: 'var(--sahyog-green, #1DAA5C)' }}>
               <span>Track</span>
               <ArrowRight size={13} />
             </div>
@@ -339,7 +339,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
               style={{
                 fontSize: '1.0625rem',
                 fontWeight: 900,
-                color: '#0F172A',
+                color: 'var(--sahyog-ink, #0B0B0B)',
                 margin: 0,
                 letterSpacing: '-0.02em',
                 lineHeight: 1.2,
@@ -357,8 +357,8 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
               fontSize: '0.625rem',
               fontWeight: 800,
               backgroundColor: '#F0FDF4',
-              color: '#0C831F',
-              border: '1px solid #BBF7D0',
+              color: 'var(--sahyog-green, #1DAA5C)',
+              border: '1px solid var(--sahyog-sage, #D9E9C8)',
               padding: '2px 8px',
               borderRadius: '9999px',
             }}
@@ -390,7 +390,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
             }}
           >
             <div style={{ fontSize: '2rem', marginBottom: '8px' }}>🔍</div>
-            <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A' }}>
+            <div style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
               No services found
             </div>
             <p style={{ fontSize: '0.6875rem', color: '#64748B', marginTop: '4px' }}>
@@ -405,7 +405,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
               style={{
                 marginTop: '10px',
                 padding: '6px 14px',
-                backgroundColor: '#0C831F',
+                backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
@@ -426,7 +426,7 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '18px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '14px',
             display: 'flex',
             alignItems: 'center',
@@ -441,18 +441,18 @@ export const CustomerHomePage: React.FC<CustomerHomePageProps> = ({ onOpenOnboar
                 height: '36px',
                 borderRadius: '10px',
                 backgroundColor: '#F0FDF4',
-                border: '1px solid #BBF7D0',
+                border: '1px solid var(--sahyog-sage, #D9E9C8)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#0C831F',
+                color: 'var(--sahyog-green, #1DAA5C)',
                 flexShrink: 0,
               }}
             >
               <ShieldCheck size={20} />
             </div>
             <div>
-              <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#0F172A' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                 Cooperative Backed & Insured
               </div>
               <div style={{ fontSize: '0.65625rem', color: '#64748B', marginTop: '1px' }}>

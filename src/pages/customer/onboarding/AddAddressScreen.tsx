@@ -68,7 +68,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
         padding: '16px 16px 28px',
       }}
     >
@@ -94,7 +94,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
           <ArrowLeft size={20} />
         </button>
 
-        <h1 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+        <h1 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', margin: 0 }}>
           Add address details
         </h1>
       </div>
@@ -105,7 +105,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '18px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '18px 16px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             display: 'flex',
@@ -113,7 +113,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
             gap: '14px',
           }}
         >
-          <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#0F172A' }}>
+          <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
             Address details
           </div>
 
@@ -130,9 +130,9 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                   flex: 1,
                   padding: '9px 12px',
                   borderRadius: '10px',
-                  border: `1.5px solid ${addressType === 'Home' ? '#0C831F' : '#E2E8F0'}`,
+                  border: `1.5px solid ${addressType === 'Home' ? 'var(--sahyog-green, #1DAA5C)' : '#E2E8F0'}`,
                   backgroundColor: addressType === 'Home' ? '#F0FDF4' : '#FFFFFF',
-                  color: addressType === 'Home' ? '#0C831F' : '#475569',
+                  color: addressType === 'Home' ? 'var(--sahyog-green, #1DAA5C)' : '#475569',
                   fontSize: '0.8125rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -154,9 +154,9 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                   flex: 1,
                   padding: '9px 12px',
                   borderRadius: '10px',
-                  border: `1.5px solid ${addressType === 'Other' ? '#0C831F' : '#E2E8F0'}`,
+                  border: `1.5px solid ${addressType === 'Other' ? 'var(--sahyog-green, #1DAA5C)' : '#E2E8F0'}`,
                   backgroundColor: addressType === 'Other' ? '#F0FDF4' : '#FFFFFF',
-                  color: addressType === 'Other' ? '#0C831F' : '#475569',
+                  color: addressType === 'Other' ? 'var(--sahyog-green, #1DAA5C)' : '#475569',
                   fontSize: '0.8125rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -191,7 +191,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                   border: '1.5px solid #CBD5E1',
                   fontSize: '0.875rem',
                   fontWeight: 600,
-                  color: '#0F172A',
+                  color: 'var(--sahyog-ink, #0B0B0B)',
                   outline: 'none',
                 }}
                 required
@@ -214,7 +214,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                   border: '1.5px solid #CBD5E1',
                   fontSize: '0.875rem',
                   fontWeight: 600,
-                  color: '#0F172A',
+                  color: 'var(--sahyog-ink, #0B0B0B)',
                   outline: 'none',
                 }}
               />
@@ -238,7 +238,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                 border: '1.5px solid #CBD5E1',
                 fontSize: '0.875rem',
                 fontWeight: 600,
-                color: '#0F172A',
+                color: 'var(--sahyog-ink, #0B0B0B)',
                 outline: 'none',
               }}
               required
@@ -262,7 +262,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                 border: '1.5px solid #CBD5E1',
                 fontSize: '0.875rem',
                 fontWeight: 600,
-                color: '#0F172A',
+                color: 'var(--sahyog-ink, #0B0B0B)',
                 outline: 'none',
               }}
             />
@@ -274,7 +274,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '18px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '14px 16px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             display: 'flex',
@@ -283,12 +283,12 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
           }}
         >
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-            <MapPin size={20} color="#0C831F" style={{ marginTop: '2px', flexShrink: 0 }} />
+            <MapPin size={20} color="var(--sahyog-green, #1DAA5C)" style={{ marginTop: '2px', flexShrink: 0 }} />
             <div>
               <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
                 Area / Sector / Locality*
               </span>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                 {initialLocation}
               </div>
             </div>
@@ -300,7 +300,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
             style={{
               background: 'none',
               border: 'none',
-              color: '#0C831F',
+              color: 'var(--sahyog-green, #1DAA5C)',
               fontSize: '0.8125rem',
               fontWeight: 800,
               cursor: 'pointer',
@@ -316,7 +316,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '18px',
-            border: '1px solid #E2E8F0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             padding: '18px 16px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             display: 'flex',
@@ -325,7 +325,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
           }}
         >
           <div>
-            <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#0F172A' }}>
+            <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
               Receiver details
             </div>
             <p style={{ fontSize: '0.6875rem', color: '#64748B', margin: '2px 0 0' }}>
@@ -343,7 +343,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                 type="tel"
                 value={receiverPhone}
                 onChange={(e) => setReceiverPhone(e.target.value)}
-                style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem', fontWeight: 600, color: '#0F172A' }}
+                style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem', fontWeight: 600, color: 'var(--sahyog-ink, #0B0B0B)' }}
                 required
               />
             </div>
@@ -359,7 +359,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
                 type="text"
                 value={receiverName}
                 onChange={(e) => setReceiverName(e.target.value)}
-                style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem', fontWeight: 600, color: '#0F172A' }}
+                style={{ border: 'none', outline: 'none', width: '100%', fontSize: '0.875rem', fontWeight: 600, color: 'var(--sahyog-ink, #0B0B0B)' }}
                 required
               />
             </div>
@@ -374,7 +374,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
             style={{
               width: '100%',
               padding: '15px',
-              backgroundColor: isValid ? '#0C831F' : '#E2E8F0',
+              backgroundColor: isValid ? 'var(--sahyog-green, #1DAA5C)' : '#E2E8F0',
               color: isValid ? '#FFFFFF' : '#94A3B8',
               border: 'none',
               borderRadius: '14px',
@@ -385,7 +385,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
-              boxShadow: isValid ? '0 4px 16px rgba(12, 131, 31, 0.3)' : 'none',
+              boxShadow: isValid ? '0 4px 16px rgba(29, 170, 92, 0.3)' : 'none',
               transition: 'all 200ms ease',
             }}
           >
@@ -401,7 +401,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0C831F',
+                color: 'var(--sahyog-green, #1DAA5C)',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 cursor: 'pointer',

@@ -30,7 +30,7 @@ export const WorkerShell: React.FC = () => {
         maxWidth: '440px',
         margin: '0 auto',
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--pronto-cream, #FCFBF4)',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',

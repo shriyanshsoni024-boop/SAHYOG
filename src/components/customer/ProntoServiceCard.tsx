@@ -35,9 +35,9 @@ export const ProntoServiceCard: React.FC<ProntoServiceCardProps> = ({ service, o
     <div
       onClick={onBook}
       style={{
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'var(--sahyog-white, #FFFFFF)',
         borderRadius: '12px',
-        border: '1px solid #E2E8F0',
+        border: '1px solid var(--sahyog-sage, #D9E9C8)',
         padding: '5px',
         boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)',
         display: 'flex',
@@ -77,7 +77,7 @@ export const ProntoServiceCard: React.FC<ProntoServiceCardProps> = ({ service, o
               position: 'absolute',
               top: '4px',
               left: '4px',
-              backgroundColor: 'rgba(15, 23, 42, 0.78)',
+              backgroundColor: 'rgba(11, 11, 11, 0.82)',
               backdropFilter: 'blur(4px)',
               color: '#FFFFFF',
               fontSize: '0.5rem',
@@ -91,7 +91,7 @@ export const ProntoServiceCard: React.FC<ProntoServiceCardProps> = ({ service, o
               boxShadow: '0 1px 3px rgba(0,0,0,0.25)',
             }}
           >
-            <Star size={8} fill="#F59E0B" color="#F59E0B" />
+            <Star size={8} fill="var(--sahyog-yellow, #F4C430)" color="var(--sahyog-yellow, #F4C430)" />
             <span>{service.rating}</span>
             <span style={{ opacity: 0.8, fontSize: '0.45rem' }}>
               ({compactReviewCount})
@@ -112,7 +112,7 @@ export const ProntoServiceCard: React.FC<ProntoServiceCardProps> = ({ service, o
               width: '22px',
               height: '22px',
               borderRadius: '50%',
-              backgroundColor: '#0C831F',
+              backgroundColor: 'var(--sahyog-green, #1DAA5C)',
               color: '#FFFFFF',
               border: '1.5px solid #FFFFFF',
               display: 'flex',
@@ -135,7 +135,7 @@ export const ProntoServiceCard: React.FC<ProntoServiceCardProps> = ({ service, o
           style={{
             fontSize: '0.6875rem',
             fontWeight: 800,
-            color: '#0F172A',
+            color: 'var(--sahyog-ink, #0B0B0B)',
             margin: '5px 1px 2px',
             lineHeight: 1.2,
             letterSpacing: '-0.01em',
@@ -166,7 +166,7 @@ export const ProntoServiceCard: React.FC<ProntoServiceCardProps> = ({ service, o
           style={{
             fontSize: '0.75rem',
             fontWeight: 900,
-            color: '#0F172A',
+            color: 'var(--sahyog-ink, #0B0B0B)',
             letterSpacing: '-0.01em',
           }}
         >

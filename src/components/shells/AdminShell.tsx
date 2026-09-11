@@ -46,7 +46,7 @@ export const AdminShell: React.FC = () => {
               width: '32px',
               height: '32px',
               borderRadius: 'var(--radius-xs)',
-              backgroundColor: 'var(--theme-accent, #EA580C)',
+              backgroundColor: 'var(--sahyog-green, #1DAA5C)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -59,25 +59,25 @@ export const AdminShell: React.FC = () => {
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '1.0625rem', fontWeight: 900, color: 'var(--theme-text, #111827)', letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: '1.0625rem', fontWeight: 900, color: 'var(--theme-text, #0B0B0B)', letterSpacing: '-0.02em' }}>
                 SAHYOG
               </span>
               <span
                 style={{
                   fontSize: '0.5625rem',
                   fontWeight: 800,
-                  backgroundColor: 'var(--theme-accent-light, #FFF7ED)',
-                  color: 'var(--theme-accent, #EA580C)',
-                  padding: '1px 5px',
+                  backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
+                  color: 'var(--sahyog-green-dark, #0F7A3E)',
+                  padding: '1px 6px',
                   borderRadius: 'var(--radius-xs)',
-                  border: '1px solid var(--theme-accent-border, #FED7AA)',
+                  border: '1px solid var(--theme-accent-border, #D9E9C8)',
                   letterSpacing: '0.03em',
                 }}
               >
                 FEDERATION OPS
               </span>
             </div>
-            <div style={{ fontSize: '0.6875rem', color: 'var(--theme-text-muted, #6B7280)' }}>
+            <div style={{ fontSize: '0.6875rem', color: 'var(--theme-text-muted, #8A8A8A)' }}>
               {language === 'hi' ? 'सहकारी संचालन एवं प्रबंधन' : 'Central Operations & Workforce'}
             </div>
           </div>

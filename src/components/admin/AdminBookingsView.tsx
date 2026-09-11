@@ -185,8 +185,9 @@ export const AdminBookingsView: React.FC = () => {
               key={key}
               type="button"
               onClick={() => setStatusFilter(key)}
+              className="sahyog-btn"
               style={{
-                padding: '4px 8px',
+                padding: '4px 10px',
                 borderRadius: 'var(--radius-xs)',
                 fontSize: '0.6875rem',
                 fontWeight: 700,
@@ -195,6 +196,7 @@ export const AdminBookingsView: React.FC = () => {
                 whiteSpace: 'nowrap',
                 backgroundColor: statusFilter === key ? 'var(--primary)' : 'var(--bg-muted)',
                 color: statusFilter === key ? '#FFFFFF' : 'var(--text-secondary)',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
               }}
             >
               {key === 'all' && `All (${bookings.length})`}
@@ -271,13 +273,13 @@ export const AdminBookingsView: React.FC = () => {
                           ? 'var(--success-light)'
                           : b.status === 'CANCELLED'
                           ? '#FEF2F2'
-                          : '#EFF6FF',
+                          : 'var(--primary-light, #F0FDF4)',
                       color:
                         b.status === 'COMPLETED'
                           ? 'var(--success-dark)'
                           : b.status === 'CANCELLED'
                           ? 'var(--danger)'
-                          : '#1D4ED8',
+                          : 'var(--primary-dark, #0F7A3E)',
                     }}
                   >
                     {b.status.replace(/_/g, ' ')}

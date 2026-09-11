@@ -74,7 +74,7 @@ export const Header: React.FC = () => {
                   width: '30px',
                   height: '30px',
                   borderRadius: '6px',
-                  backgroundColor: 'var(--theme-accent, #0C831F)',
+                  backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -89,7 +89,7 @@ export const Header: React.FC = () => {
                   style={{
                     fontSize: '1.0625rem',
                     fontWeight: 900,
-                    color: 'var(--theme-text, #111827)',
+                    color: 'var(--sahyog-ink, #0B0B0B)',
                     letterSpacing: '-0.03em',
                     lineHeight: 1,
                     display: 'block',
@@ -101,7 +101,7 @@ export const Header: React.FC = () => {
                   style={{
                     fontSize: '0.53125rem',
                     fontWeight: 800,
-                    color: 'var(--theme-accent, #0C831F)',
+                    color: 'var(--sahyog-green, #1DAA5C)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.06em',
                     display: 'block',
@@ -131,12 +131,12 @@ export const Header: React.FC = () => {
               }}
               title="Change locality"
             >
-              <MapPin size={13} color="var(--theme-accent, #0C831F)" style={{ flexShrink: 0 }} />
+              <MapPin size={13} color="var(--sahyog-green, #1DAA5C)" style={{ flexShrink: 0 }} />
               <span
                 style={{
                   fontSize: '0.75rem',
                   fontWeight: 600,
-                  color: 'var(--theme-text, #111827)',
+                  color: 'var(--sahyog-ink, #0B0B0B)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -160,7 +160,7 @@ export const Header: React.FC = () => {
                 gap: '4px',
                 padding: '4px 9px',
                 backgroundColor: '#FEF2F2',
-                color: '#DC2626',
+                color: 'var(--sahyog-red, #E0472C)',
                 border: '1px solid #FECACA',
                 borderRadius: '4px',
                 fontSize: '0.71875rem',
@@ -169,7 +169,7 @@ export const Header: React.FC = () => {
               }}
               className="sahyog-btn"
             >
-              <Zap size={12} fill="#DC2626" />
+              <Zap size={12} fill="var(--sahyog-red, #E0472C)" />
               <span>{language === 'hi' ? '15m आपातकाल' : '15m Emergency'}</span>
             </button>
 
@@ -185,7 +185,7 @@ export const Header: React.FC = () => {
                 backgroundColor: 'transparent',
                 border: 'none',
                 borderRadius: '4px',
-                color: activeBookingsCount > 0 ? 'var(--theme-accent, #0C831F)' : 'var(--theme-text-secondary, #374151)',
+                color: activeBookingsCount > 0 ? 'var(--sahyog-green, #1DAA5C)' : 'var(--theme-text-secondary, #374151)',
                 fontSize: '0.75rem',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -200,8 +200,8 @@ export const Header: React.FC = () => {
                     padding: '1px 5px',
                     borderRadius: '9999px',
                     backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
-                    color: 'var(--theme-accent, #0C831F)',
-                    border: '1px solid var(--theme-accent-border, #BBF7D0)',
+                    color: 'var(--sahyog-green, #1DAA5C)',
+                    border: '1px solid var(--sahyog-sage, #D9E9C8)',
                     fontSize: '0.625rem',
                     fontWeight: 800,
                   }}
@@ -276,7 +276,7 @@ export const Header: React.FC = () => {
                   width: '26px',
                   height: '26px',
                   borderRadius: '5px',
-                  backgroundColor: 'var(--theme-accent, #0C831F)',
+                  backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -290,7 +290,7 @@ export const Header: React.FC = () => {
                   style={{
                     fontSize: '1rem',
                     fontWeight: 900,
-                    color: '#111827',
+                    color: 'var(--sahyog-ink, #0B0B0B)',
                     letterSpacing: '-0.03em',
                     lineHeight: 1,
                     display: 'block',
@@ -302,7 +302,7 @@ export const Header: React.FC = () => {
                   style={{
                     fontSize: '0.5rem',
                     fontWeight: 800,
-                    color: 'var(--theme-accent, #0C831F)',
+                    color: 'var(--sahyog-green, #1DAA5C)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em',
                     display: 'block',
@@ -342,12 +342,12 @@ export const Header: React.FC = () => {
               }}
               title="Change locality"
             >
-              <MapPin size={13} color="var(--theme-accent, #0C831F)" style={{ flexShrink: 0 }} />
+              <MapPin size={13} color="var(--sahyog-green, #1DAA5C)" style={{ flexShrink: 0 }} />
               <span
                 style={{
                   fontSize: '0.75rem',
                   fontWeight: 600,
-                  color: '#111827',
+                  color: 'var(--sahyog-ink, #0B0B0B)',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -371,9 +371,9 @@ export const Header: React.FC = () => {
                   gap: '4px',
                   padding: '2px 7px',
                   backgroundColor: '#F0FDF4',
-                  border: '1px solid #BBF7D0',
+                  border: '1px solid var(--sahyog-sage, #D9E9C8)',
                   borderRadius: '9999px',
-                  color: '#0C831F',
+                  color: 'var(--sahyog-green, #1DAA5C)',
                   fontSize: '0.625rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -387,7 +387,7 @@ export const Header: React.FC = () => {
                     width: '5px',
                     height: '5px',
                     borderRadius: '50%',
-                    backgroundColor: '#0C831F',
+                    backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                     display: 'inline-block',
                   }}
                 />
@@ -414,7 +414,7 @@ export const Header: React.FC = () => {
                   height: '20px',
                 }}
               >
-                <ShieldCheck size={10} color="#0C831F" />
+                <ShieldCheck size={10} color="var(--sahyog-green, #1DAA5C)" />
                 <span>{language === 'hi' ? '48 कारीगर लाइव' : '48 Pros Live'}</span>
               </div>
             )}
@@ -463,8 +463,8 @@ export const Header: React.FC = () => {
             {/* Modal Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <MapPin size={18} color="var(--theme-accent, #0C831F)" />
-                <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: '#111827', margin: 0 }}>
+                <MapPin size={18} color="var(--sahyog-green, #1DAA5C)" />
+                <h3 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', margin: 0 }}>
                   {language === 'hi' ? 'स्थान' : 'Location'}
                 </h3>
               </div>
@@ -551,10 +551,10 @@ export const Header: React.FC = () => {
                 justifyContent: 'center',
                 gap: '8px',
                 padding: '10px 14px',
-                backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
-                border: '1.5px solid var(--theme-accent-border, #BBF7D0)',
+                backgroundColor: '#F0FDF4',
+                border: '1.5px solid var(--sahyog-sage, #D9E9C8)',
                 borderRadius: '7px',
-                color: 'var(--theme-accent, #0C831F)',
+                color: 'var(--sahyog-green, #1DAA5C)',
                 fontSize: '0.8125rem',
                 fontWeight: 700,
                 cursor: isDetecting ? 'wait' : 'pointer',
@@ -570,7 +570,7 @@ export const Header: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <LocateFixed size={16} color="var(--theme-accent, #0C831F)" />
+                  <LocateFixed size={16} color="var(--sahyog-green, #1DAA5C)" />
                   <span>{language === 'hi' ? 'मेरे वर्तमान स्थान का उपयोग करें' : 'Use my current location'}</span>
                 </>
               )}
@@ -621,7 +621,7 @@ export const Header: React.FC = () => {
                   background: 'transparent',
                   fontSize: '0.78125rem',
                   outline: 'none',
-                  color: '#111827',
+                  color: 'var(--sahyog-ink, #0B0B0B)',
                 }}
               />
               {searchQuery && (
@@ -641,22 +641,22 @@ export const Header: React.FC = () => {
                 style={{
                   padding: '8px 10px',
                   borderRadius: '6px',
-                  border: '1px solid var(--theme-accent, #0C831F)',
-                  backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
+                  border: '1px solid var(--sahyog-green, #1DAA5C)',
+                  backgroundColor: '#F0FDF4',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '0.78125rem', fontWeight: 700, color: '#111827' }}>
+                  <div style={{ fontSize: '0.78125rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                     {selectedLocation}
                   </div>
-                  <div style={{ fontSize: '0.65625rem', color: 'var(--theme-accent, #0C831F)', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.65625rem', color: 'var(--sahyog-green, #1DAA5C)', fontWeight: 600 }}>
                     {language === 'hi' ? 'कस्टम दर्ज स्थान • वर्तमान सक्रिय' : 'Custom locality • Currently active'}
                   </div>
                 </div>
-                <Check size={15} color="var(--theme-accent, #0C831F)" strokeWidth={2.5} />
+                <Check size={15} color="var(--sahyog-green, #1DAA5C)" strokeWidth={2.5} />
               </div>
             )}
 
@@ -687,8 +687,8 @@ export const Header: React.FC = () => {
                       style={{
                         padding: '8px 10px',
                         borderRadius: '6px',
-                        border: `1px solid ${isSelected ? 'var(--theme-accent, #0C831F)' : '#E5E7EB'}`,
-                        backgroundColor: isSelected ? 'var(--theme-accent-light, #F0FDF4)' : '#FFFFFF',
+                        border: `1px solid ${isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#E5E7EB'}`,
+                        backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -698,17 +698,17 @@ export const Header: React.FC = () => {
                       className="hover-card"
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <MapPin size={14} color={isSelected ? 'var(--theme-accent, #0C831F)' : '#64748B'} style={{ flexShrink: 0 }} />
+                        <MapPin size={14} color={isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#64748B'} style={{ flexShrink: 0 }} />
                         <div>
-                          <div style={{ fontSize: '0.78125rem', fontWeight: 700, color: '#111827' }}>
+                          <div style={{ fontSize: '0.78125rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                             {loc.area}, {loc.city}
                           </div>
-                          <div style={{ fontSize: '0.65625rem', color: isSelected ? 'var(--theme-accent, #0C831F)' : '#6B7280' }}>
+                          <div style={{ fontSize: '0.65625rem', color: isSelected ? 'var(--sahyog-green, #1DAA5C)' : '#6B7280' }}>
                             {loc.tag}
                           </div>
                         </div>
                       </div>
-                      {isSelected && <Check size={15} color="var(--theme-accent, #0C831F)" strokeWidth={2.5} />}
+                      {isSelected && <Check size={15} color="var(--sahyog-green, #1DAA5C)" strokeWidth={2.5} />}
                     </div>
                   );
                 })}
@@ -728,8 +728,8 @@ export const Header: React.FC = () => {
                   style={{
                     padding: '9px 12px',
                     borderRadius: '6px',
-                    border: '1.5px dashed var(--theme-accent, #0C831F)',
-                    backgroundColor: 'var(--theme-accent-light, #F0FDF4)',
+                    border: '1.5px dashed var(--sahyog-green, #1DAA5C)',
+                    backgroundColor: '#F0FDF4',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -738,12 +738,12 @@ export const Header: React.FC = () => {
                   className="hover-card"
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                    <MapPin size={15} color="var(--theme-accent, #0C831F)" />
+                    <MapPin size={15} color="var(--sahyog-green, #1DAA5C)" />
                     <div>
-                      <div style={{ fontSize: '0.78125rem', fontWeight: 800, color: '#111827' }}>
+                      <div style={{ fontSize: '0.78125rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                         "{searchQuery.trim()}"
                       </div>
-                      <div style={{ fontSize: '0.65625rem', color: 'var(--theme-accent, #0C831F)', fontWeight: 600 }}>
+                      <div style={{ fontSize: '0.65625rem', color: 'var(--sahyog-green, #1DAA5C)', fontWeight: 600 }}>
                         {language === 'hi' ? 'कस्टम स्थान के रूप में चुनें' : 'Use as custom location'}
                       </div>
                     </div>
@@ -751,7 +751,7 @@ export const Header: React.FC = () => {
                   <span
                     style={{
                       padding: '3px 8px',
-                      backgroundColor: 'var(--theme-accent, #0C831F)',
+                      backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                       color: '#FFFFFF',
                       borderRadius: '4px',
                       fontSize: '0.6875rem',
@@ -784,7 +784,7 @@ export const Header: React.FC = () => {
                   cursor: 'pointer',
                   fontSize: '0.75rem',
                   fontWeight: 700,
-                  color: 'var(--theme-accent, #0C831F)',
+                  color: 'var(--sahyog-green, #1DAA5C)',
                   width: '100%',
                 }}
                 className="hover-card"
@@ -806,7 +806,7 @@ export const Header: React.FC = () => {
                 }}
               >
                 <label style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin size={12} color="var(--theme-accent, #0C831F)" />
+                  <MapPin size={12} color="var(--sahyog-green, #1DAA5C)" />
                   <span>{language === 'hi' ? 'अपना इलाका / क्षेत्र दर्ज करें' : 'Enter your locality / area'}</span>
                 </label>
                 <input
@@ -822,7 +822,7 @@ export const Header: React.FC = () => {
                     border: '1px solid #CBD5E1',
                     outline: 'none',
                     backgroundColor: '#FFFFFF',
-                    color: '#111827',
+                    color: 'var(--sahyog-ink, #0B0B0B)',
                     boxSizing: 'border-box',
                   }}
                   autoFocus
@@ -853,7 +853,7 @@ export const Header: React.FC = () => {
                     style={{
                       flex: 1,
                       padding: '7px 12px',
-                      backgroundColor: manualInput.trim() ? 'var(--theme-accent, #0C831F)' : '#94A3B8',
+                      backgroundColor: manualInput.trim() ? 'var(--sahyog-green, #1DAA5C)' : '#94A3B8',
                       color: '#FFFFFF',
                       border: 'none',
                       borderRadius: '5px',

@@ -91,13 +91,13 @@ export const AdminDashboardPage: React.FC = () => {
             >
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Building2 size={18} color="var(--theme-accent, #EA580C)" />
+                  <Building2 size={18} color="var(--sahyog-green, #1DAA5C)" />
                   <h1 style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
                     Cooperative Federation Operations Hub
                   </h1>
                 </div>
                 <p style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', margin: '4px 0 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin size={11} color="var(--theme-accent, #EA580C)" />
+                  <MapPin size={11} color="var(--sahyog-green, #1DAA5C)" />
                   <strong>{currentLocation}</strong> • Node #KA-BLR-04 • {stats.totalWorkers} Artisans
                 </p>
               </div>
@@ -241,7 +241,7 @@ export const AdminDashboardPage: React.FC = () => {
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Sparkles size={16} color="var(--theme-accent, #EA580C)" />
+                  <Sparkles size={16} color="var(--sahyog-green, #1DAA5C)" />
                   <h3 style={{ fontSize: '0.8125rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
                     AI Demand Forecasting & Predictive Allocation
                   </h3>
@@ -337,7 +337,7 @@ export const AdminDashboardPage: React.FC = () => {
                 }}
                 className="hover-card"
               >
-                <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-xs)', backgroundColor: 'var(--secondary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--secondary)' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-xs)', backgroundColor: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
                   <ShieldCheck size={16} />
                 </div>
                 <div>
@@ -494,7 +494,9 @@ export const AdminDashboardPage: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100%', paddingBottom: '16px' }}>
-      {renderContent()}
+      <div key={activeTab} className="animate-fade-in" style={{ width: '100%' }}>
+        {renderContent()}
+      </div>
 
       {/* Booking Detail Modal */}
       <BookingDetailModal booking={selectedBooking} onClose={() => setSelectedBooking(null)} />

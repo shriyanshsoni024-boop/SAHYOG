@@ -78,19 +78,20 @@ export const DemoRoleBar: React.FC<DemoRoleBarProps> = ({ currentRole, onRoleCha
               key={role.id}
               type="button"
               onClick={() => onRoleChange(role.id)}
+              className="sahyog-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px',
                 padding: '2px 8px',
-                borderRadius: '3px',
+                borderRadius: '4px',
                 fontSize: '0.65625rem',
                 fontWeight: isSelected ? 700 : 500,
-                backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.14)' : 'transparent',
+                backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.16)' : 'transparent',
                 color: isSelected ? '#FFFFFF' : '#94A3B8',
-                border: isSelected ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid transparent',
+                border: isSelected ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid transparent',
                 cursor: 'pointer',
-                transition: 'all 120ms ease',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
                 height: '22px',

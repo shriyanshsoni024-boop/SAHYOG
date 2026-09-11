@@ -123,7 +123,7 @@ export const WorkerEarningsView: React.FC = () => {
         >
           <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', padding: '10px 12px', borderRadius: '14px' }}>
             <div style={{ fontSize: '0.6875rem', color: '#94A3B8', fontWeight: 600 }}>This Week's Net:</div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 900, color: '#38BDF8', marginTop: '2px' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--pronto-accent, #F4C430)', marginTop: '2px' }}>
               ₹{weeklyEarnings}
             </div>
           </div>
@@ -155,7 +155,7 @@ export const WorkerEarningsView: React.FC = () => {
               width: '38px',
               height: '38px',
               borderRadius: '12px',
-              backgroundColor: '#059669',
+              backgroundColor: '#1DAA5C',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -217,7 +217,7 @@ export const WorkerEarningsView: React.FC = () => {
           style={{
             fontSize: '0.6875rem',
             fontWeight: 800,
-            color: '#059669',
+            color: '#1DAA5C',
             backgroundColor: '#F0FDF4',
             padding: '3px 8px',
             borderRadius: '9999px',
@@ -297,7 +297,7 @@ export const WorkerEarningsView: React.FC = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#059669',
+                        color: '#1DAA5C',
                       }}
                     >
                       <ArrowUpRight size={20} />
@@ -316,7 +316,7 @@ export const WorkerEarningsView: React.FC = () => {
                   </div>
 
                   <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '1rem', fontWeight: 900, color: '#059669' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 900, color: '#1DAA5C' }}>
                       +₹{net}
                     </div>
                     <div style={{ fontSize: '0.625rem', color: '#64748B', marginTop: '2px' }}>
@@ -326,7 +326,7 @@ export const WorkerEarningsView: React.FC = () => {
                       style={{
                         fontSize: '0.5625rem',
                         fontWeight: 800,
-                        color: '#059669',
+                        color: '#1DAA5C',
                         backgroundColor: '#ECFDF5',
                         padding: '1px 5px',
                         borderRadius: '4px',

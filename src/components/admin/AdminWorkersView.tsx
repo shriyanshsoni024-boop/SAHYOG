@@ -124,6 +124,7 @@ export const AdminWorkersView: React.FC = () => {
                     type="button"
                     disabled={processingKycId === item.id}
                     onClick={() => handleKycAction(item.id, 'APPROVED')}
+                    className="sahyog-btn"
                     style={{
                       padding: '6px 10px',
                       borderRadius: 'var(--radius-xs)',
@@ -137,6 +138,7 @@ export const AdminWorkersView: React.FC = () => {
                       gap: '2px',
                       fontSize: '0.6875rem',
                       fontWeight: 700,
+                      transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                     }}
                   >
                     <Check size={12} />
@@ -146,6 +148,7 @@ export const AdminWorkersView: React.FC = () => {
                     type="button"
                     disabled={processingKycId === item.id}
                     onClick={() => handleKycAction(item.id, 'REJECTED')}
+                    className="sahyog-btn"
                     style={{
                       padding: '6px 8px',
                       borderRadius: 'var(--radius-xs)',
@@ -155,6 +158,7 @@ export const AdminWorkersView: React.FC = () => {
                       cursor: processingKycId === item.id ? 'not-allowed' : 'pointer',
                       opacity: processingKycId === item.id ? 0.6 : 1,
                       fontSize: '0.6875rem',
+                      transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                     }}
                   >
                     <X size={12} />
@@ -224,8 +228,9 @@ export const AdminWorkersView: React.FC = () => {
               key={key}
               type="button"
               onClick={() => setFilterType(key)}
+              className="sahyog-btn"
               style={{
-                padding: '4px 8px',
+                padding: '4px 10px',
                 borderRadius: 'var(--radius-xs)',
                 fontSize: '0.6875rem',
                 fontWeight: 700,
@@ -234,6 +239,7 @@ export const AdminWorkersView: React.FC = () => {
                 whiteSpace: 'nowrap',
                 backgroundColor: filterType === key ? 'var(--primary)' : 'var(--bg-muted)',
                 color: filterType === key ? '#FFFFFF' : 'var(--text-secondary)',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
               }}
             >
               {key === 'all' && `All (${workers.length})`}

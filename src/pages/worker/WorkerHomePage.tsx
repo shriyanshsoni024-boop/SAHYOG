@@ -241,7 +241,7 @@ export const WorkerHomePage: React.FC = () => {
                                 style={{
                                   fontSize: '0.625rem',
                                   fontWeight: 800,
-                                  color: b.status === 'COMPLETED' ? '#059669' : isPending ? theme.primary : '#D97706',
+                                  color: b.status === 'COMPLETED' ? '#1DAA5C' : isPending ? theme.primary : '#D97706',
                                   backgroundColor: b.status === 'COMPLETED' ? '#ECFDF5' : isPending ? theme.primaryLight : '#FEF3C7',
                                   padding: '2px 6px',
                                   borderRadius: '6px',
@@ -278,7 +278,7 @@ export const WorkerHomePage: React.FC = () => {
                             <div style={{ fontSize: '1.0625rem', fontWeight: 900, color: '#0F172A' }}>
                               ₹{net}
                             </div>
-                            <div style={{ fontSize: '0.625rem', color: '#059669', fontWeight: 700 }}>
+                            <div style={{ fontSize: '0.625rem', color: '#1DAA5C', fontWeight: 700 }}>
                               0% Commission
                             </div>
                           </div>
@@ -438,6 +438,7 @@ export const WorkerHomePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsAvailable(!isAvailable)}
+                  className="sahyog-btn"
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -451,10 +452,10 @@ export const WorkerHomePage: React.FC = () => {
                     cursor: 'pointer',
                     minWidth: '64px',
                     backdropFilter: 'blur(8px)',
-                    transition: 'all 200ms ease',
+                    transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                   }}
                 >
-                  <Power size={18} color={isAvailable ? '#34D399' : '#FCA5A5'} />
+                  <Power size={18} color={isAvailable ? '#34D399' : '#FCA5A5'} className={isAvailable ? 'animate-pulse-live' : ''} />
                   <span style={{ fontSize: '0.6875rem', fontWeight: 800 }}>
                     {isAvailable ? 'ONLINE' : 'OFFLINE'}
                   </span>
@@ -527,7 +528,7 @@ export const WorkerHomePage: React.FC = () => {
                       fontSize: '0.5625rem',
                       fontWeight: 800,
                       backgroundColor: '#ECFDF5',
-                      color: '#059669',
+                      color: '#1DAA5C',
                       padding: '1px 5px',
                       borderRadius: '4px',
                     }}
@@ -656,7 +657,7 @@ export const WorkerHomePage: React.FC = () => {
                     style={{
                       fontSize: '0.6875rem',
                       fontWeight: 800,
-                      color: '#059669',
+                      color: '#1DAA5C',
                       backgroundColor: '#FFFFFF',
                       padding: '3px 8px',
                       borderRadius: '8px',
@@ -813,7 +814,7 @@ export const WorkerHomePage: React.FC = () => {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#059669',
+                      color: '#1DAA5C',
                     }}
                   >
                     <BookOpen size={20} />
@@ -849,11 +850,11 @@ export const WorkerHomePage: React.FC = () => {
                       width: '36px',
                       height: '36px',
                       borderRadius: '12px',
-                      backgroundColor: '#EFF6FF',
+                      backgroundColor: theme.primaryLight,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#2563EB',
+                      color: theme.primary,
                     }}
                   >
                     <ShieldCheck size={20} />
@@ -986,7 +987,7 @@ export const WorkerHomePage: React.FC = () => {
                         </div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#059669' }}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#1DAA5C' }}>
                           +₹{(job.totalPrice || 474) - (job.connectionFee || 0)}
                         </div>
                         <div style={{ fontSize: '0.5625rem', color: '#64748B' }}>Settled</div>
@@ -1003,7 +1004,9 @@ export const WorkerHomePage: React.FC = () => {
 
   return (
     <div style={{ width: '100%' }}>
-      {renderTabContent()}
+      <div key={activeTab} className="animate-fade-in" style={{ width: '100%' }}>
+        {renderTabContent()}
+      </div>
 
       {/* Reusable Modals */}
       <SkillQuizModal />

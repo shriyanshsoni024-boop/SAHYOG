@@ -38,7 +38,7 @@
 .text-muted { color: var(--text-muted); }
 .text-secondary { color: var(--text-secondary); }
 .text-primary { color: var(--text-primary); }
-.text-brand { color: var(--secondary); }
+.text-brand { color: var(--primary); }
 .text-danger { color: var(--danger); }
 .text-success { color: var(--success-dark); }
 .text-warm { color: var(--accent-warm-dark); }
@@ -87,27 +87,57 @@
   padding: var(--space-6);
 }
 
-/* Subtle Interactive States (Restrained, Consumer Grade) */
+/* Subtle Interactive States (Consumer & Artisan Grade) */
 .hover-card {
-  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+  will-change: transform, box-shadow;
 }
 .hover-card:hover {
+  transform: translateY(-2px);
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-hover);
 }
-
 .hover-card:active {
-  transform: scale(0.99);
+  transform: scale(0.985) translateY(0);
 }
 
-/* Primary Button Press Effect */
+/* Primary Button Press & Hover Effect */
 .sahyog-btn {
   user-select: none;
   touch-action: manipulation;
-  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+  will-change: transform;
 }
-.sahyog-btn:active {
-  transform: scale(0.98);
+.sahyog-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.sahyog-btn:active:not(:disabled) {
+  transform: scale(0.975) translateY(0);
+  box-shadow: none;
+}
+.sahyog-btn:disabled {
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Input Interactive States */
+.sahyog-input-container {
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+.sahyog-input-container:focus-within {
+  border-color: var(--primary) !important;
+  box-shadow: var(--focus-ring);
+}
+
+/* Table Row & List Item Interactive State */
+.interactive-row {
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+.interactive-row:hover {
+  background-color: var(--bg-muted) !important;
 }
 
 /* Chip Styles */
@@ -125,19 +155,25 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all var(--transition-fast);
+  user-select: none;
+  touch-action: manipulation;
 }
 .chip:hover {
   border-color: var(--border-strong);
   color: var(--text-primary);
   background-color: var(--bg-muted);
+  transform: translateY(-1px);
+}
+.chip:active {
+  transform: scale(0.97);
 }
 .chip.active {
-  background-color: var(--primary);
-  color: var(--text-primary);
-  border-color: var(--primary-hover);
+  background-color: var(--sahyog-green);
+  color: #FFFFFF;
+  border-color: var(--sahyog-green-dark);
   font-weight: 700;
+  box-shadow: 0 2px 6px rgba(29, 170, 92, 0.25);
 }
-
 
 /* Trust Pill */
 .trust-pill {
@@ -151,6 +187,7 @@
   border: 1px solid var(--success-border);
   padding: 2px 6px;
   border-radius: var(--radius-xs);
+  transition: transform var(--transition-fast);
 }
 
 /* Responsive Visibility Helpers */

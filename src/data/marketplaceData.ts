@@ -82,8 +82,8 @@ export const SPOTLIGHT_PROMOTIONS: SpotlightItem[] = [
     ctaTextHi: 'पैकेज देखें',
     categoryId: 'cleaner',
     image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&auto=format&fit=crop&q=80',
-    badgeColor: '#059669',
-    bgGradient: 'linear-gradient(135deg, #064E3B 0%, #0D9488 100%)',
+    badgeColor: '#1DAA5C',
+    bgGradient: 'linear-gradient(135deg, #173318 0%, #0F7A3E 100%)',
     priceTag: 'Starts ₹499',
   },
 ];

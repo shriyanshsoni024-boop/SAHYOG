@@ -36,6 +36,7 @@ export const Input: React.FC<InputProps> = ({
         </label>
       )}
       <div
+        className="sahyog-input-container"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -43,10 +44,10 @@ export const Input: React.FC<InputProps> = ({
           border: `1.5px solid ${error ? 'var(--danger)' : 'var(--border-default)'}`,
           borderRadius: 'var(--radius-md)',
           padding: '0 12px',
-          transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
+          transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast)',
         }}
       >
-        {leftIcon && <span style={{ marginRight: '8px', color: 'var(--text-muted)' }}>{leftIcon}</span>}
+        {leftIcon && <span style={{ marginRight: '8px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>{leftIcon}</span>}
         <input
           id={inputId}
           style={{
@@ -57,14 +58,22 @@ export const Input: React.FC<InputProps> = ({
             backgroundColor: 'transparent',
             fontSize: '0.9375rem',
             color: 'var(--text-primary)',
+            fontFamily: 'var(--font-sans)',
             ...style,
           }}
           className={`sahyog-input ${className}`}
           {...props}
         />
-        {rightIcon && <span style={{ marginLeft: '8px', color: 'var(--text-muted)' }}>{rightIcon}</span>}
+        {rightIcon && <span style={{ marginLeft: '8px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>{rightIcon}</span>}
       </div>
-      {error && <span style={{ fontSize: '0.75rem', color: 'var(--danger)', fontWeight: 500 }}>{error}</span>}
+      {error && (
+        <span
+          style={{ fontSize: '0.75rem', color: 'var(--danger)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
+          className="animate-fade-in"
+        >
+          {error}
+        </span>
+      )}
       {hint && !error && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{hint}</span>}
     </div>
   );

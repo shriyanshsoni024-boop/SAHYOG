@@ -61,42 +61,46 @@ export const BottomNav: React.FC = () => {
               key={item.view}
               type="button"
               onClick={() => setActiveView(item.view)}
+              className="sahyog-btn"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
                 padding: isActive ? '8px 18px' : '8px 12px',
                 borderRadius: '9999px',
-                color: isActive ? 'var(--theme-accent, #0C831F)' : '#64748B',
-                transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+                color: isActive ? 'var(--sahyog-green, #1DAA5C)' : '#64748B',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                 position: 'relative',
                 background: isActive ? 'var(--theme-accent-light, #F0FDF4)' : 'transparent',
-                border: isActive ? '1px solid var(--theme-accent-border, #BBF7D0)' : '1px solid transparent',
+                border: isActive ? '1px solid var(--theme-accent-border, #D9E9C8)' : '1px solid transparent',
                 cursor: 'pointer',
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
               }}
             >
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Icon
                   size={19}
-                  color={isActive ? 'var(--theme-accent, #0C831F)' : '#64748B'}
+                  color={isActive ? 'var(--sahyog-green, #1DAA5C)' : '#64748B'}
                   strokeWidth={isActive ? 2.5 : 2}
                 />
                 {item.view === 'history' && activeBookingsCount > 0 && (
                   <span
+                    className="animate-pulse-live"
                     style={{
                       position: 'absolute',
                       top: '-4px',
                       right: '-8px',
-                      backgroundColor: 'var(--theme-accent, #0C831F)',
+                      backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                       color: '#ffffff',
                       fontSize: '0.5625rem',
                       fontWeight: 800,
-                      width: '15px',
-                      height: '15px',
+                      width: '16px',
+                      height: '16px',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: '0 0 0 2px #FFFFFF',
                     }}
                   >
                     {activeBookingsCount}

@@ -68,7 +68,7 @@ export const CertificateModal: React.FC = () => {
           {/* Certificate Container with Clean Border */}
           <div
             style={{
-              border: '3px solid #0D9488',
+              border: '3px solid var(--primary, #1DAA5C)',
               borderRadius: 'var(--radius-md)',
               padding: '24px 20px',
               backgroundColor: '#FAFAF9',
@@ -97,7 +97,7 @@ export const CertificateModal: React.FC = () => {
                   width: '36px',
                   height: '36px',
                   borderRadius: 'var(--radius-xs)',
-                  backgroundColor: 'var(--secondary)',
+                  backgroundColor: 'var(--primary-dark, #0F7A3E)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -145,14 +145,14 @@ export const CertificateModal: React.FC = () => {
             {/* Profession & Training Name */}
             <div
               style={{
-                backgroundColor: '#F0FDFA',
-                border: '1.5px solid #99F6E4',
+                backgroundColor: 'var(--primary-light, #F0FDF4)',
+                border: '1.5px solid var(--primary-border, #D9E9C8)',
                 borderRadius: 'var(--radius-xs)',
                 padding: '10px 12px',
                 marginBottom: '14px',
               }}
             >
-              <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--secondary)' }}>
+              <div style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--primary-dark, #0F7A3E)' }}>
                 {activeCertificate.profession} — Certified Specialist
               </div>
               <div style={{ fontSize: '0.6875rem', color: '#334155', marginTop: '3px' }}>
@@ -238,7 +238,7 @@ export const CertificateModal: React.FC = () => {
                 flex: 1,
                 padding: '9px',
                 borderRadius: 'var(--radius-xs)',
-                backgroundColor: 'var(--secondary)',
+                backgroundColor: 'var(--primary)',
                 color: '#FFFFFF',
                 fontWeight: 800,
                 fontSize: '0.8125rem',

@@ -57,14 +57,14 @@ export const CustomerMoneyPage: React.FC = () => {
         flexDirection: 'column',
         gap: '16px',
         padding: '16px 16px 80px',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: 'var(--sahyog-cream, #FCFBF4)',
         minHeight: '100vh',
       }}
     >
       {/* 1. Header & Title */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#0F172A', margin: '0 0 2px', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--sahyog-ink, #0B0B0B)', margin: '0 0 2px', letterSpacing: '-0.02em' }}>
             SAHYOG Money & Credits
           </h1>
           <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0 }}>
@@ -76,11 +76,11 @@ export const CustomerMoneyPage: React.FC = () => {
           style={{
             padding: '4px 8px',
             backgroundColor: '#F0FDF4',
-            border: '1px solid #BBF7D0',
+            border: '1px solid var(--sahyog-sage, #D9E9C8)',
             borderRadius: '9999px',
             fontSize: '0.6875rem',
             fontWeight: 800,
-            color: '#0C831F',
+            color: 'var(--sahyog-green, #1DAA5C)',
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
@@ -94,11 +94,11 @@ export const CustomerMoneyPage: React.FC = () => {
       {/* 2. Main Balance Card */}
       <div
         style={{
-          background: 'linear-gradient(145deg, #0C831F 0%, #086317 100%)',
+          background: 'linear-gradient(145deg, var(--sahyog-green, #1DAA5C) 0%, var(--sahyog-green-dark, #0F7A3E) 100%)',
           borderRadius: '20px',
           padding: '22px 20px',
           color: '#FFFFFF',
-          boxShadow: '0 8px 24px rgba(12, 131, 31, 0.25)',
+          boxShadow: '0 8px 24px rgba(29, 170, 92, 0.25)',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -128,7 +128,7 @@ export const CustomerMoneyPage: React.FC = () => {
               fontSize: '0.625rem',
               fontWeight: 800,
               backgroundColor: '#FFFFFF',
-              color: '#0C831F',
+              color: 'var(--sahyog-green-dark, #0F7A3E)',
               padding: '2px 8px',
               borderRadius: '9999px',
             }}
@@ -150,7 +150,7 @@ export const CustomerMoneyPage: React.FC = () => {
               flex: 1,
               padding: '10px 14px',
               backgroundColor: '#FFFFFF',
-              color: '#0C831F',
+              color: 'var(--sahyog-green-dark, #0F7A3E)',
               border: 'none',
               borderRadius: '12px',
               fontSize: '0.8125rem',
@@ -256,16 +256,16 @@ export const CustomerMoneyPage: React.FC = () => {
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: '18px',
-          border: '1px solid #E2E8F0',
+          border: '1px solid var(--sahyog-sage, #D9E9C8)',
           padding: '16px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-          <span style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A' }}>
+          <span style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)' }}>
             Recent Activity & Pass
           </span>
-          <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#0C831F' }}>
+          <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--sahyog-green, #1DAA5C)' }}>
             View All
           </span>
         </div>
@@ -292,14 +292,14 @@ export const CustomerMoneyPage: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: tx.isCredit ? '#0C831F' : '#DC2626',
+                    color: tx.isCredit ? 'var(--sahyog-green, #1DAA5C)' : 'var(--sahyog-red, #E0472C)',
                   }}
                 >
                   {tx.isCredit ? <ArrowDownLeft size={16} /> : <ArrowUpRight size={16} />}
                 </div>
 
                 <div>
-                  <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F172A' }}>
+                  <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                     {tx.title}
                   </div>
                   <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
@@ -312,7 +312,7 @@ export const CustomerMoneyPage: React.FC = () => {
                 style={{
                   fontSize: '0.875rem',
                   fontWeight: 800,
-                  color: tx.isCredit ? '#0C831F' : '#0F172A',
+                  color: tx.isCredit ? 'var(--sahyog-green, #1DAA5C)' : 'var(--sahyog-ink, #0B0B0B)',
                 }}
               >
                 {tx.amount}
@@ -327,12 +327,12 @@ export const CustomerMoneyPage: React.FC = () => {
         style={{
           backgroundColor: '#FFFFFF',
           borderRadius: '18px',
-          border: '1px solid #E2E8F0',
+          border: '1px solid var(--sahyog-sage, #D9E9C8)',
           padding: '16px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
         }}
       >
-        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>
+        <div style={{ fontSize: '0.875rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', marginBottom: '12px' }}>
           Linked Payment Options
         </div>
 
@@ -351,7 +351,7 @@ export const CustomerMoneyPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div style={{ fontSize: '1.25rem' }}>📱</div>
               <div>
-                <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F172A' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                   UPI / GPay / PhonePe
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
@@ -359,7 +359,7 @@ export const CustomerMoneyPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            <CheckCircle2 size={16} color="#0C831F" />
+            <CheckCircle2 size={16} color="var(--sahyog-green, #1DAA5C)" />
           </div>
 
           <div
@@ -376,7 +376,7 @@ export const CustomerMoneyPage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <CreditCard size={18} color="#64748B" />
               <div>
-                <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#0F172A' }}>
+                <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--sahyog-ink, #0B0B0B)' }}>
                   Debit / Credit Card
                 </div>
                 <div style={{ fontSize: '0.6875rem', color: '#64748B' }}>
@@ -416,7 +416,7 @@ export const CustomerMoneyPage: React.FC = () => {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--sahyog-ink, #0B0B0B)', margin: 0 }}>
               Add SAHYOG Wallet Balance
             </h3>
 
@@ -430,9 +430,9 @@ export const CustomerMoneyPage: React.FC = () => {
                     flex: 1,
                     padding: '8px',
                     borderRadius: '8px',
-                    border: `1.5px solid ${addAmount === amt ? '#0C831F' : '#E2E8F0'}`,
+                    border: `1.5px solid ${addAmount === amt ? 'var(--sahyog-green, #1DAA5C)' : '#E2E8F0'}`,
                     backgroundColor: addAmount === amt ? '#F0FDF4' : '#FFFFFF',
-                    color: addAmount === amt ? '#0C831F' : '#0F172A',
+                    color: addAmount === amt ? 'var(--sahyog-green, #1DAA5C)' : '#0F172A',
                     fontSize: '0.8125rem',
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -449,7 +449,7 @@ export const CustomerMoneyPage: React.FC = () => {
               style={{
                 width: '100%',
                 padding: '14px',
-                backgroundColor: '#0C831F',
+                backgroundColor: 'var(--sahyog-green, #1DAA5C)',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '12px',

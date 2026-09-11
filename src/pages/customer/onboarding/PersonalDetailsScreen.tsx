@@ -10,6 +10,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [gender, setGender] = useState<'Female' | 'Male' | 'Other'>('Female');
 
   const isValid = firstName.trim().length >= 2;
 
@@ -81,7 +82,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
             }}
           >
             Help us{' '}
-            <span style={{ color: '#0C831F' }}>
+            <span style={{ color: '#1DAA5C' }}>
               know you better
             </span>
           </h2>
@@ -178,7 +179,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
             </div>
           </div>
 
-          {/* Email (Optional) */}
+          {/* Email Address */}
           <div>
             <label
               style={{
@@ -189,7 +190,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
                 marginBottom: '6px',
               }}
             >
-              Email (Optional)
+              Email ID (for invoices & receipts)
             </label>
             <div
               style={{
@@ -205,7 +206,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
               <Mail size={18} color="#64748B" />
               <input
                 type="email"
-                placeholder="e.g. ananya.deshmukh@example.com"
+                placeholder="e.g. ananya@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
@@ -220,6 +221,46 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
             </div>
           </div>
 
+          {/* Gender Selector */}
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '0.8125rem',
+                fontWeight: 700,
+                color: '#334155',
+                marginBottom: '8px',
+              }}
+            >
+              Gender (Optional)
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+              {(['Female', 'Male', 'Other'] as const).map((g) => {
+                const isSelected = gender === g;
+                return (
+                  <button
+                    key={g}
+                    type="button"
+                    onClick={() => setGender(g)}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '12px',
+                      border: `1.5px solid ${isSelected ? '#1DAA5C' : '#E2E8F0'}`,
+                      backgroundColor: isSelected ? '#F0FDF4' : '#FFFFFF',
+                      color: isSelected ? '#1DAA5C' : '#475569',
+                      fontSize: '0.8125rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      transition: 'all 150ms ease',
+                    }}
+                  >
+                    {g}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Sticky Bottom Confirm Button */}
           <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
             <button
@@ -228,7 +269,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
               style={{
                 width: '100%',
                 padding: '15px',
-                backgroundColor: isValid ? '#0C831F' : '#E2E8F0',
+                backgroundColor: isValid ? '#1DAA5C' : '#E2E8F0',
                 color: isValid ? '#FFFFFF' : '#94A3B8',
                 border: 'none',
                 borderRadius: '14px',
@@ -239,9 +280,10 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: isValid ? '0 4px 16px rgba(12, 131, 31, 0.3)' : 'none',
+                boxShadow: isValid ? '0 4px 16px rgba(29, 170, 92, 0.3)' : 'none',
                 transition: 'all 200ms ease',
               }}
+              className={isValid ? 'sahyog-btn' : ''}
             >
               <span>Confirm details</span>
               <ArrowRight size={18} />

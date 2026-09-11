@@ -104,6 +104,7 @@ export const BookingTrackingPage: React.FC = () => {
         {/* Token Badge with Copy */}
         <div
           onClick={handleCopyToken}
+          className="sahyog-btn"
           style={{
             backgroundColor: 'var(--bg-surface)',
             border: '1px solid var(--border-default)',
@@ -112,6 +113,7 @@ export const BookingTrackingPage: React.FC = () => {
             textAlign: 'right',
             cursor: 'pointer',
             boxShadow: 'var(--shadow-xs)',
+            transition: 'all var(--transition-fast) var(--ease-out-smooth)',
           }}
           title="Click to copy Service Token"
         >
@@ -161,8 +163,8 @@ export const BookingTrackingPage: React.FC = () => {
       {!isCompleted && (
         <div
           style={{
-            backgroundColor: '#EFF6FF',
-            border: '1.5px solid #BFDBFE',
+            backgroundColor: 'var(--primary-light, #F0FDF4)',
+            border: '1.5px solid var(--primary-border, #D9E9C8)',
             borderRadius: 'var(--radius-lg)',
             padding: '10px 14px',
             display: 'flex',
@@ -234,6 +236,7 @@ export const BookingTrackingPage: React.FC = () => {
 
             <a
               href={`tel:${worker.phone}`}
+              className="sahyog-btn"
               style={{
                 width: '40px',
                 height: '40px',
@@ -245,6 +248,7 @@ export const BookingTrackingPage: React.FC = () => {
                 color: 'var(--primary)',
                 border: '1px solid var(--primary-border)',
                 textDecoration: 'none',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
               }}
               title="Call Specialist"
             >
@@ -403,15 +407,17 @@ export const BookingTrackingPage: React.FC = () => {
                     key={tag}
                     type="button"
                     onClick={() => toggleReviewChip(tag)}
+                    className="sahyog-btn"
                     style={{
                       fontSize: '0.6875rem',
-                      padding: '3px 8px',
+                      padding: '4px 10px',
                       borderRadius: 'var(--radius-full)',
                       border: `1px solid ${selectedReviewChips.includes(tag) ? 'var(--primary)' : 'var(--border-default)'}`,
                       backgroundColor: selectedReviewChips.includes(tag) ? 'var(--primary-light)' : 'var(--bg-surface)',
                       color: selectedReviewChips.includes(tag) ? 'var(--primary)' : 'var(--text-secondary)',
                       cursor: 'pointer',
                       fontWeight: selectedReviewChips.includes(tag) ? 700 : 500,
+                      transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                     }}
                   >
                     {tag}

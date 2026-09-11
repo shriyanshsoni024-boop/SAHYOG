@@ -336,11 +336,11 @@ export const ProntoHeroHeader: React.FC<ProntoHeroHeaderProps> = ({
                 width: '36px',
                 height: '36px',
                 borderRadius: '10px',
-                backgroundColor: '#EFF6FF',
+                backgroundColor: 'var(--primary-light, #F0FDF4)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#2563EB',
+                color: 'var(--primary, #1DAA5C)',
               }}
             >
               <Calendar size={20} strokeWidth={2.3} />
@@ -350,9 +350,9 @@ export const ProntoHeroHeader: React.FC<ProntoHeroHeaderProps> = ({
               style={{
                 fontSize: '0.5625rem',
                 fontWeight: 800,
-                backgroundColor: '#EFF6FF',
-                color: '#2563EB',
-                border: '1px solid #BFDBFE',
+                backgroundColor: 'var(--primary-light, #F0FDF4)',
+                color: 'var(--primary-dark, #0F7A3E)',
+                border: '1px solid var(--primary-border, #D9E9C8)',
                 padding: '1px 6px',
                 borderRadius: '9999px',
               }}

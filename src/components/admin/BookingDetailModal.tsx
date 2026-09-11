@@ -146,7 +146,7 @@ export const BookingDetailModal: React.FC<BookingDetailModalProps> = ({ booking,
 
           <div style={{ backgroundColor: 'var(--bg-app)', padding: '8px 10px', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
             <div style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <ShieldCheck size={11} color="var(--secondary)" /> Assigned Artisan
+              <ShieldCheck size={11} color="var(--primary)" /> Assigned Artisan
             </div>
             <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
               {booking.worker?.name || 'Pending Assignment'}
@@ -180,9 +180,9 @@ export const BookingDetailModal: React.FC<BookingDetailModalProps> = ({ booking,
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '10px 12px',
-            backgroundColor: '#F0FDFA',
+            backgroundColor: 'var(--primary-light, #F0FDF4)',
             borderRadius: 'var(--radius-xs)',
-            border: '1px solid #99F6E4',
+            border: '1px solid var(--primary-border, #D9E9C8)',
             fontSize: '0.75rem',
           }}
         >

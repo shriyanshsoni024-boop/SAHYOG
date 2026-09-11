@@ -133,15 +133,18 @@ export const WorkerMatchingPage: React.FC = () => {
               key={f.key}
               type="button"
               onClick={() => setActiveFilter(f.key as 'all' | 'high_match' | 'nearby')}
+              className="sahyog-btn"
               style={{
-                padding: '5px 12px',
+                padding: '6px 14px',
                 borderRadius: 'var(--radius-full)',
                 fontSize: '0.75rem',
-                fontWeight: 600,
+                fontWeight: isActive ? 800 : 600,
                 border: `1px solid ${isActive ? 'var(--primary)' : 'var(--border-default)'}`,
                 backgroundColor: isActive ? 'var(--primary)' : 'var(--bg-surface)',
                 color: isActive ? '#ffffff' : 'var(--text-secondary)',
                 cursor: 'pointer',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
               }}
             >
               {f.label}

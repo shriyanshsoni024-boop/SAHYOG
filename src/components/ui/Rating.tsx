@@ -34,13 +34,13 @@ export const Rating: React.FC<RatingProps> = ({
                   border: 'none',
                   padding: '2px',
                   cursor: 'pointer',
-                  color: isFilled ? '#D97706' : '#CBD5E1',
+                  color: isFilled ? '#F4C430' : '#CBD5E1',
                   display: 'flex',
                   alignItems: 'center',
                 }}
                 aria-label={`Rate ${star} stars`}
               >
-                <Star size={size} fill={isFilled ? '#D97706' : 'transparent'} strokeWidth={1.75} />
+                <Star size={size} fill={isFilled ? '#F4C430' : 'transparent'} strokeWidth={1.75} />
               </button>
             );
           })}
@@ -51,9 +51,9 @@ export const Rating: React.FC<RatingProps> = ({
             display: 'inline-flex',
             alignItems: 'center',
             gap: '3px',
-            backgroundColor: '#FEF3C7',
-            color: '#92400E',
-            border: '1px solid #FDE68A',
+            backgroundColor: '#FEF9C3',
+            color: '#854D0E',
+            border: '1px solid #FDE047',
             padding: '1px 5px',
             borderRadius: 'var(--radius-xs)',
             fontSize: '0.6875rem',
@@ -61,7 +61,7 @@ export const Rating: React.FC<RatingProps> = ({
             lineHeight: 1,
           }}
         >
-          <Star size={10} fill="#D97706" color="#D97706" />
+          <Star size={10} fill="#F4C430" color="#F4C430" />
           {showValue && <span>{value.toFixed(1)}</span>}
         </span>
       )}

@@ -26,7 +26,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDismiss }) => {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        background: 'linear-gradient(145deg, #0C831F 0%, #086317 100%)',
+        background: 'linear-gradient(145deg, #1DAA5C 0%, #0F7A3E 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -89,7 +89,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDismiss }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#0C831F',
+            color: '#1DAA5C',
             boxShadow: '0 12px 32px rgba(0, 0, 0, 0.25)',
             marginBottom: '20px',
           }}

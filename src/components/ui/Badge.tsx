@@ -20,46 +20,46 @@ export const Badge: React.FC<BadgeProps> = ({
       case 'verified':
         return {
           backgroundColor: 'var(--success-light)',
-          color: 'var(--success-dark)',
-          border: '1px solid var(--success-border)',
+          color: 'var(--sahyog-green-dark)',
+          border: '1px solid var(--sahyog-sage)',
         };
       case 'emergency':
         return {
           backgroundColor: 'var(--danger-light)',
-          color: 'var(--danger-dark)',
+          color: 'var(--sahyog-red)',
           border: '1px solid var(--danger-border)',
           fontWeight: 700,
         };
       case 'match':
         return {
-          backgroundColor: 'var(--primary-light)',
-          color: 'var(--primary-dark)',
-          border: '1px solid var(--primary-border)',
+          backgroundColor: 'var(--accent-warm-light)',
+          color: 'var(--accent-warm-dark)',
+          border: '1px solid var(--accent-warm-border)',
           fontWeight: 700,
         };
       case 'tier':
         return {
-          backgroundColor: 'var(--warning-light)',
-          color: 'var(--warning-dark)',
-          border: '1px solid var(--warning-border)',
+          backgroundColor: 'var(--accent-warm-light)',
+          color: 'var(--accent-warm-dark)',
+          border: '1px solid var(--accent-warm-border)',
         };
       case 'success':
         return {
           backgroundColor: 'var(--success-light)',
-          color: 'var(--success-dark)',
-          border: '1px solid var(--success-border)',
+          color: 'var(--sahyog-green-dark)',
+          border: '1px solid var(--sahyog-sage)',
         };
       case 'warning':
         return {
-          backgroundColor: 'var(--warning-light)',
-          color: 'var(--warning-dark)',
-          border: '1px solid var(--warning-border)',
+          backgroundColor: 'var(--accent-warm-light)',
+          color: 'var(--accent-warm-dark)',
+          border: '1px solid var(--accent-warm-border)',
         };
       case 'accent':
         return {
-          backgroundColor: 'var(--secondary-light)',
-          color: 'var(--secondary)',
-          border: '1px solid var(--secondary-border)',
+          backgroundColor: 'var(--sahyog-blue-tint)',
+          color: 'var(--sahyog-navy)',
+          border: '1px solid #BFDBFE',
         };
       case 'neutral':
       default:

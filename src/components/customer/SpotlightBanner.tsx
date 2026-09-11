@@ -36,7 +36,7 @@ export const SpotlightBanner: React.FC<SpotlightBannerProps> = ({ onSelectPromot
                 width: i === activeIdx ? '16px' : '5px',
                 height: '5px',
                 borderRadius: '9999px',
-                backgroundColor: i === activeIdx ? 'var(--theme-accent, #0C831F)' : '#CBD5E1',
+                backgroundColor: i === activeIdx ? 'var(--sahyog-green, #1DAA5C)' : '#CBD5E1',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 120ms ease',

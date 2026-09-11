@@ -49,13 +49,13 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
           height: '58px',
           borderRadius: '10px',
           backgroundColor: '#F3F4F6',
-          border: `1px solid ${selected ? 'var(--theme-accent, #0C831F)' : '#E5E7EB'}`,
+          border: `1px solid ${selected ? 'var(--sahyog-green, #1DAA5C)' : '#E5E7EB'}`,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           marginBottom: '5px',
-          boxShadow: selected ? '0 0 0 2px var(--theme-accent-light, #F0FDF4)' : 'none',
+          boxShadow: selected ? '0 0 0 2px var(--sahyog-sage, #D9E9C8)' : 'none',
           position: 'relative',
         }}
       >
@@ -73,7 +73,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
             loading="lazy"
           />
         ) : (
-          <div style={{ color: 'var(--theme-accent, #0C831F)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ color: 'var(--sahyog-green, #1DAA5C)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <IconComponent size={22} strokeWidth={1.8} />
           </div>
         )}
@@ -84,7 +84,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ category, onClick, sel
         style={{
           fontSize: '0.71875rem',
           fontWeight: selected ? 800 : 600,
-          color: selected ? 'var(--theme-accent, #0C831F)' : '#1E293B',
+          color: selected ? 'var(--sahyog-green, #1DAA5C)' : 'var(--sahyog-ink, #0B0B0B)',
           lineHeight: 1.2,
           minHeight: '26px',
           display: 'flex',

@@ -72,6 +72,7 @@ export const WorkerNav: React.FC = () => {
               key={item.id}
               type="button"
               onClick={() => setActiveTab(item.id)}
+              className="sahyog-btn"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -79,11 +80,12 @@ export const WorkerNav: React.FC = () => {
                 padding: isActive ? '8px 16px' : '8px 10px',
                 borderRadius: '9999px',
                 color: isActive ? theme.primary : '#64748B',
-                transition: 'all 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+                transition: 'all var(--transition-fast) var(--ease-out-smooth)',
                 position: 'relative',
                 background: isActive ? theme.primaryLight : 'transparent',
                 border: isActive ? `1px solid ${theme.primaryBorder}` : '1px solid transparent',
                 cursor: 'pointer',
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
               }}
             >
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -94,6 +96,7 @@ export const WorkerNav: React.FC = () => {
                 />
                 {item.id === 'jobs' && pendingOrActiveCount > 0 && (
                   <span
+                    className="animate-pulse-live"
                     style={{
                       position: 'absolute',
                       top: '-4px',
@@ -102,12 +105,13 @@ export const WorkerNav: React.FC = () => {
                       color: '#ffffff',
                       fontSize: '0.5625rem',
                       fontWeight: 800,
-                      width: '15px',
-                      height: '15px',
+                      width: '16px',
+                      height: '16px',
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: '0 0 0 2px #FFFFFF',
                     }}
                   >
                     {pendingOrActiveCount}

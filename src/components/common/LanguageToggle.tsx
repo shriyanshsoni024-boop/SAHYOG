@@ -19,6 +19,7 @@ export const LanguageToggle: React.FC = () => {
       <button
         type="button"
         onClick={() => setLanguage('en')}
+        className="sahyog-btn"
         style={{
           padding: '1px 6px',
           borderRadius: '3px',
@@ -33,6 +34,7 @@ export const LanguageToggle: React.FC = () => {
           height: '18px',
           display: 'flex',
           alignItems: 'center',
+          transition: 'all var(--transition-fast) var(--ease-out-smooth)',
         }}
       >
         EN
@@ -40,6 +42,7 @@ export const LanguageToggle: React.FC = () => {
       <button
         type="button"
         onClick={() => setLanguage('hi')}
+        className="sahyog-btn"
         style={{
           padding: '1px 6px',
           borderRadius: '3px',
@@ -54,6 +57,7 @@ export const LanguageToggle: React.FC = () => {
           height: '18px',
           display: 'flex',
           alignItems: 'center',
+          transition: 'all var(--transition-fast) var(--ease-out-smooth)',
         }}
       >
         हिंदी

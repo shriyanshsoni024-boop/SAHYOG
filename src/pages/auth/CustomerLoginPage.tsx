@@ -151,12 +151,12 @@ export const CustomerLoginPage: React.FC = () => {
               width: '48px',
               height: '48px',
               borderRadius: '12px',
-              backgroundColor: '#0C831F',
+              backgroundColor: '#1DAA5C',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 4px 14px rgba(12, 131, 31, 0.25)',
+              boxShadow: '0 4px 14px rgba(29, 170, 92, 0.25)',
               marginBottom: '12px',
             }}
           >
@@ -167,7 +167,7 @@ export const CustomerLoginPage: React.FC = () => {
             style={{
               fontSize: '1.375rem',
               fontWeight: 900,
-              color: '#0F172A',
+              color: '#0B0B0B',
               letterSpacing: '-0.03em',
               margin: '0 0 4px',
             }}
@@ -189,9 +189,9 @@ export const CustomerLoginPage: React.FC = () => {
               style={{
                 fontSize: '0.625rem',
                 fontWeight: 800,
-                color: '#0C831F',
+                color: '#1DAA5C',
                 backgroundColor: '#F0FDF4',
-                border: '1px solid #BBF7D0',
+                border: '1px solid #D9E9C8',
                 padding: '2px 8px',
                 borderRadius: '9999px',
                 textTransform: 'uppercase',
@@ -398,7 +398,7 @@ export const CustomerLoginPage: React.FC = () => {
               style={{
                 marginTop: '4px',
                 padding: '12px',
-                backgroundColor: '#0C831F',
+                backgroundColor: '#1DAA5C',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
@@ -409,7 +409,7 @@ export const CustomerLoginPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(12, 131, 31, 0.25)',
+                boxShadow: '0 2px 8px rgba(29, 170, 92, 0.25)',
               }}
               className="sahyog-btn"
             >
@@ -434,7 +434,7 @@ export const CustomerLoginPage: React.FC = () => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Phone size={14} color="#0C831F" />
+                <Phone size={14} color="#1DAA5C" />
                 <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#1E293B' }}>
                   +91 {phone}
                 </span>
@@ -449,7 +449,7 @@ export const CustomerLoginPage: React.FC = () => {
                 style={{
                   background: 'none',
                   border: 'none',
-                  color: '#0C831F',
+                  color: '#1DAA5C',
                   fontSize: '0.75rem',
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -488,7 +488,7 @@ export const CustomerLoginPage: React.FC = () => {
                   gap: '8px',
                 }}
               >
-                <KeyRound size={18} color="#0C831F" />
+                <KeyRound size={18} color="#1DAA5C" />
                 <input
                   type="text"
                   maxLength={6}
@@ -504,7 +504,7 @@ export const CustomerLoginPage: React.FC = () => {
                     fontWeight: 800,
                     letterSpacing: '0.3em',
                     textAlign: 'center',
-                    color: '#0F172A',
+                    color: '#0B0B0B',
                   }}
                   required
                 />
@@ -527,7 +527,7 @@ export const CustomerLoginPage: React.FC = () => {
                     border: 'none',
                     fontSize: '0.75rem',
                     fontWeight: 700,
-                    color: '#0C831F',
+                    color: '#1DAA5C',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
@@ -545,7 +545,7 @@ export const CustomerLoginPage: React.FC = () => {
               disabled={isSubmitting}
               style={{
                 padding: '12px',
-                backgroundColor: '#0C831F',
+                backgroundColor: '#1DAA5C',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
@@ -556,7 +556,7 @@ export const CustomerLoginPage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(12, 131, 31, 0.25)',
+                boxShadow: '0 2px 8px rgba(29, 170, 92, 0.25)',
               }}
               className="sahyog-btn"
             >
@@ -583,7 +583,7 @@ export const CustomerLoginPage: React.FC = () => {
               <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>
                 SIH Sandbox Test Credentials
               </span>
-              <span style={{ fontSize: '0.625rem', color: '#0C831F', fontWeight: 700 }}>Dev Mode Only</span>
+              <span style={{ fontSize: '0.625rem', color: '#1DAA5C', fontWeight: 700 }}>Dev Mode Only</span>
             </div>
 
             <button
@@ -596,7 +596,7 @@ export const CustomerLoginPage: React.FC = () => {
                 borderRadius: '6px',
                 fontSize: '0.75rem',
                 fontWeight: 600,
-                color: '#0F172A',
+                color: '#0B0B0B',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -604,7 +604,7 @@ export const CustomerLoginPage: React.FC = () => {
                 gap: '6px',
               }}
             >
-              <Sparkles size={14} color="#F59E0B" />
+              <Sparkles size={14} color="#F4C430" />
               <span>Pre-fill Demo Customer Number & OTP</span>
             </button>
           </div>
@@ -629,7 +629,7 @@ export const CustomerLoginPage: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#0D9488',
+                color: '#1DAA5C',
                 fontWeight: 700,
                 cursor: 'pointer',
                 padding: 0,
@@ -647,7 +647,7 @@ export const CustomerLoginPage: React.FC = () => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#EA580C',
+                color: '#1DAA5C',
                 fontWeight: 700,
                 cursor: 'pointer',
                 padding: 0,

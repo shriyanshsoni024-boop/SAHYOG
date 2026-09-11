@@ -116,11 +116,11 @@ export const SkillQuizModal: React.FC = () => {
                 style={{
                   fontSize: '0.625rem',
                   fontWeight: 800,
-                  backgroundColor: 'var(--secondary-light)',
-                  color: 'var(--secondary)',
+                  backgroundColor: 'var(--primary-light)',
+                  color: 'var(--primary-dark)',
                   padding: '2px 6px',
                   borderRadius: 'var(--radius-xs)',
-                  border: '1px solid #99F6E4',
+                  border: '1px solid var(--primary-border, #D9E9C8)',
                   textTransform: 'uppercase',
                 }}
               >
@@ -161,7 +161,7 @@ export const SkillQuizModal: React.FC = () => {
                     style={{
                       width: `${((currentQIndex + 1) / questions.length) * 100}%`,
                       height: '100%',
-                      backgroundColor: 'var(--secondary)',
+                      backgroundColor: 'var(--primary)',
                       transition: 'width var(--transition-fast)',
                     }}
                   />
@@ -170,7 +170,7 @@ export const SkillQuizModal: React.FC = () => {
 
               {/* Question Box */}
               <div style={{ marginBottom: '16px' }}>
-                <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--secondary)', marginBottom: '3px', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '3px', textTransform: 'uppercase' }}>
                   Question #{currentQIndex + 1}
                 </div>
                 <h4 style={{ fontSize: '0.9375rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.35, margin: '0 0 6px' }}>
@@ -196,8 +196,8 @@ export const SkillQuizModal: React.FC = () => {
                       style={{
                         padding: '10px 12px',
                         borderRadius: 'var(--radius-md)',
-                        border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-default)'}`,
-                        backgroundColor: isSelected ? 'var(--secondary-light)' : '#FFFFFF',
+                        border: `1.5px solid ${isSelected ? 'var(--primary)' : 'var(--border-default)'}`,
+                        backgroundColor: isSelected ? 'var(--primary-light)' : '#FFFFFF',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
@@ -211,8 +211,8 @@ export const SkillQuizModal: React.FC = () => {
                           width: '24px',
                           height: '24px',
                           borderRadius: '50%',
-                          border: `1.5px solid ${isSelected ? 'var(--secondary)' : 'var(--border-strong)'}`,
-                          backgroundColor: isSelected ? 'var(--secondary)' : 'transparent',
+                          border: `1.5px solid ${isSelected ? 'var(--primary)' : 'var(--border-strong)'}`,
+                          backgroundColor: isSelected ? 'var(--primary)' : 'transparent',
                           color: isSelected ? '#FFFFFF' : 'var(--text-secondary)',
                           fontSize: '0.6875rem',
                           fontWeight: 800,
@@ -410,7 +410,7 @@ export const SkillQuizModal: React.FC = () => {
                       flex: 1.2,
                       padding: '10px',
                       borderRadius: 'var(--radius-md)',
-                      backgroundColor: 'var(--secondary)',
+                      backgroundColor: 'var(--primary)',
                       color: '#FFFFFF',
                       fontWeight: 800,
                       fontSize: '0.8125rem',
@@ -474,7 +474,7 @@ export const SkillQuizModal: React.FC = () => {
                 style={{
                   padding: '7px 14px',
                   borderRadius: 'var(--radius-xs)',
-                  backgroundColor: 'var(--secondary)',
+                  backgroundColor: 'var(--primary)',
                   color: '#FFFFFF',
                   fontWeight: 800,
                   fontSize: '0.75rem',
