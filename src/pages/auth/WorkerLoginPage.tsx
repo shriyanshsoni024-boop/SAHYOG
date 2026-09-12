@@ -40,15 +40,15 @@ export const WorkerLoginPage: React.FC<WorkerLoginPageProps> = ({ initialView })
   const [authStep, setAuthStep] = useState<'FORM' | 'OTP'>('FORM');
 
   // Form Fields - Page 1 (Basic Details)
-  const [phone, setPhone] = useState('9876543210');
+  const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [locality, setLocality] = useState(DEFAULT_LOCATION);
 
   // Form Fields - Page 2 (Worker Details)
   const [profession, setProfession] = useState('Electrician');
-  const [skillsText, setSkillsText] = useState('Wiring, Fan Installation, Switchboard Repair');
-  const [experienceYears, setExperienceYears] = useState('5');
-  const [cooperativeBranch, setCooperativeBranch] = useState('Noida District Artisan Federation');
+  const [skillsText, setSkillsText] = useState('');
+  const [experienceYears, setExperienceYears] = useState('1');
+  const [cooperativeBranch, setCooperativeBranch] = useState('');
   const [availability, setAvailability] = useState<'AVAILABLE' | 'BUSY' | 'NOT_AVAILABLE'>('AVAILABLE');
   const [email, setEmail] = useState('');
 
@@ -217,13 +217,13 @@ export const WorkerLoginPage: React.FC<WorkerLoginPageProps> = ({ initialView })
         phone: phone.trim().replace(/\D/g, ''),
         token,
         role: 'worker',
-        name: name.trim() || (authView === 'SIGNUP' ? 'Artisan Partner' : 'Ramesh Kumar'),
+        name: name.trim() || 'Artisan Partner',
         locality: locality.trim() || DEFAULT_LOCATION,
         email: email.trim() || undefined,
         profession: profession.trim() || 'Electrician',
         skills: parsedSkills.length > 0 ? parsedSkills : [profession],
-        experienceYears: parseInt(experienceYears, 10) || 5,
-        cooperativeBranch: cooperativeBranch.trim() || 'SAHYOG Central Federation',
+        experienceYears: parseInt(experienceYears, 10) || 1,
+        cooperativeBranch: cooperativeBranch.trim() || 'SAHYOG Cooperative Federation',
         availability,
       });
 
@@ -1186,6 +1186,9 @@ export const WorkerLoginPage: React.FC<WorkerLoginPageProps> = ({ initialView })
             borderTop: '1px solid #F1F5F9',
             paddingTop: '16px',
             textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
           }}
         >
           {authView === 'LOGIN' ? (
@@ -1227,6 +1230,51 @@ export const WorkerLoginPage: React.FC<WorkerLoginPageProps> = ({ initialView })
               </button>
             </p>
           )}
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              paddingTop: '8px',
+              borderTop: '1px dashed #E2E8F0',
+              fontSize: '0.75rem',
+              color: '#64748B',
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => navigate('/customer/login')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#1DAA5C',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: 0,
+                fontSize: '0.75rem',
+              }}
+            >
+              Customer Login →
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={() => navigate('/admin/login')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#475569',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: 0,
+                fontSize: '0.75rem',
+              }}
+            >
+              Cooperative Admin Login →
+            </button>
+          </div>
         </div>
       </div>
     </div>

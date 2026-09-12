@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 interface CustomerLoginScreenProps {
   onContinue: (phone: string) => void;
@@ -39,10 +39,6 @@ export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onCont
     if (isValidPhone) {
       onContinue(cleanNumber);
     }
-  };
-
-  const handleQuickDemo = () => {
-    setPhoneNumber('9980122334');
   };
 
   return (
@@ -401,32 +397,6 @@ export const CustomerLoginScreen: React.FC<CustomerLoginScreenProps> = ({ onCont
             )}
           </div>
         </form>
-
-        {/* 1-Click Demo Evaluation Shortcut */}
-        <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
-          <button
-            type="button"
-            onClick={handleQuickDemo}
-            style={{
-              width: '100%',
-              padding: '9px 12px',
-              backgroundColor: '#F8FAFC',
-              border: '1px dashed #CBD5E1',
-              borderRadius: '10px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              color: '#334155',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-            }}
-          >
-            <Sparkles size={14} color="#F59E0B" />
-            <span>Fill Demo Customer: +91 99801 22334</span>
-          </button>
-        </div>
       </div>
     </div>
   );

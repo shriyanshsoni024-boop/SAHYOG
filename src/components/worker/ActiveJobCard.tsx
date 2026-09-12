@@ -323,7 +323,7 @@ export const ActiveJobCard: React.FC<ActiveJobCardProps> = ({ booking }) => {
 
           <div style={{ display: 'flex', gap: '6px' }}>
             <a
-              href={`tel:${booking.customerPhone || '9980122334'}`}
+              href={`tel:${booking.customerPhone || ''}`}
               style={{
                 display: 'flex',
                 alignItems: 'center',

@@ -6,15 +6,15 @@ import { WorkerCertificate, User, KycItem } from '../../types';
 
 
 const DEFAULT_USER: User = {
-  id: 'cust-1',
-  name: 'Ananya Deshmukh',
-  phone: '+91 99801 22334',
-  email: 'ananya.deshmukh@example.com',
+  id: '',
+  name: 'User',
+  phone: '',
+  email: '',
   role: 'customer',
-  address: 'Flat 402, Green Vista Apartments, 12th Main Indiranagar, Bangalore',
+  address: '',
   city: 'Bangalore',
-  profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  createdAt: '2026-01-10T10:00:00Z',
+  profileImage: '',
+  createdAt: new Date().toISOString(),
 };
 
 const DEFAULT_CERTIFICATES: WorkerCertificate[] = [

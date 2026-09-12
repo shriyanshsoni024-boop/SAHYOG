@@ -21,7 +21,7 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({ initialVie
   const [step, setStep] = useState<'FORM' | 'OTP'>('FORM');
 
   // Form Fields
-  const [phone, setPhone] = useState('9980122334');
+  const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [locality, setLocality] = useState(DEFAULT_LOCATION);
   const [email, setEmail] = useState('');
@@ -131,7 +131,7 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({ initialVie
         phone: phone.trim().replace(/\D/g, ''),
         token,
         role: 'customer',
-        name: name.trim() || (authView === 'SIGNUP' ? 'SAHYOG Customer' : 'Ananya Deshmukh'),
+        name: name.trim() || 'SAHYOG Customer',
         locality: locality.trim() || DEFAULT_LOCATION,
         email: email.trim() || undefined,
       });
@@ -695,6 +695,9 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({ initialVie
             borderTop: '1px solid #F1F5F9',
             paddingTop: '16px',
             textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
           }}
         >
           {authView === 'LOGIN' ? (
@@ -736,6 +739,51 @@ export const CustomerLoginPage: React.FC<CustomerLoginPageProps> = ({ initialVie
               </button>
             </p>
           )}
+
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              paddingTop: '8px',
+              borderTop: '1px dashed #E2E8F0',
+              fontSize: '0.75rem',
+              color: '#64748B',
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => navigate('/worker/login')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#1DAA5C',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: 0,
+                fontSize: '0.75rem',
+              }}
+            >
+              Artisan Pro Login →
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={() => navigate('/admin/login')}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#475569',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: 0,
+                fontSize: '0.75rem',
+              }}
+            >
+              Cooperative Admin Login →
+            </button>
+          </div>
         </div>
       </div>
     </div>

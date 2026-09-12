@@ -25,30 +25,43 @@ interface CustomerProfilePageProps {
 }
 
 export const CustomerProfilePage: React.FC<CustomerProfilePageProps> = ({ onOpenAddresses }) => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const { setActiveView } = useBooking();
 
-  const [profile, setProfile] = useState<User>({
-    id: 'cust-1',
-    name: 'Ananya Deshmukh',
-    phone: '+91 99801 22334',
-    email: 'ananya.deshmukh@example.com',
+  const [profile, setProfile] = useState<User>(() => ({
+    id: user?.id || '',
+    name: user?.name || 'Customer',
+    phone: user?.phone || '',
+    email: user?.email || '',
     role: 'customer',
-    address: 'Flat 402, Green Vista Apartments, 12th Main Indiranagar, Bangalore',
-    city: 'Bangalore',
-  });
+    address: user?.address || 'Indiranagar, Bangalore',
+    city: user?.city || 'Bangalore',
+  }));
 
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(profile.name);
 
   useEffect(() => {
+    if (user) {
+      setProfile((prev) => ({
+        ...prev,
+        id: user.id,
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        role: user.role,
+        address: user.address || prev.address,
+        city: user.city || prev.city,
+      }));
+      setEditName(user.name);
+    }
     userService.getCurrentUser().then((res) => {
       if (res.success && res.data) {
         setProfile(res.data);
         setEditName(res.data.name);
       }
     });
-  }, []);
+  }, [user]);
 
   const handleSaveEdit = async () => {
     const updatedName = editName.trim();

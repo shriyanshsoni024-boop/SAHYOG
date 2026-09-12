@@ -29,8 +29,8 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
   const [floor, setFloor] = useState('');
   const [buildingName, setBuildingName] = useState('');
   const [landmark, setLandmark] = useState('');
-  const [receiverName, setReceiverName] = useState('Ananya Deshmukh');
-  const [receiverPhone, setReceiverPhone] = useState('9980122334');
+  const [receiverName, setReceiverName] = useState('');
+  const [receiverPhone, setReceiverPhone] = useState('');
 
   const isValid = flatNo.trim().length > 0 &&
                   buildingName.trim().length > 0 &&
@@ -53,13 +53,6 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
         fullAddress: full,
       });
     }
-  };
-
-  const handleQuickFill = () => {
-    setFlatNo('Flat 402');
-    setFloor('4th');
-    setBuildingName('Green Vista Apartments');
-    setLandmark('Opposite BDA Complex');
   };
 
   return (
@@ -393,23 +386,7 @@ export const AddAddressScreen: React.FC<AddAddressScreenProps> = ({
             <CheckCircle2 size={18} />
           </button>
 
-          {/* Quick Demo Fill */}
-          <div style={{ textAlign: 'center', marginTop: '10px' }}>
-            <button
-              type="button"
-              onClick={handleQuickFill}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--sahyog-green, #1DAA5C)',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              ⚡ Fill Sample: Flat 402, Green Vista Apartments
-            </button>
-          </div>
+
         </div>
       </form>
     </div>

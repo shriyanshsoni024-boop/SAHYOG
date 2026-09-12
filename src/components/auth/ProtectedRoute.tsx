@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole, children }) => {
-  const { session, navigate, switchRole } = useAuth();
+  const { session, navigate } = useAuth();
 
   const isRoleMatch = session.isAuthenticated && session.role === requiredRole;
 
@@ -172,29 +172,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRole, ch
               <span>Return to my {session.role.toUpperCase()} Home</span>
             </button>
           )}
-
-          {/* Quick Demo Switcher Bypass */}
-          <div style={{ marginTop: '14px', paddingTop: '14px', borderTop: '1px dashed #E5E7EB' }}>
-            <span style={{ fontSize: '0.6875rem', color: '#6B7280', display: 'block', marginBottom: '8px' }}>
-              ⚡ SIH Evaluation Quick Bypass:
-            </span>
-            <button
-              type="button"
-              onClick={() => switchRole(requiredRole)}
-              style={{
-                padding: '6px 12px',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                backgroundColor: '#F3F4F6',
-                color: '#111827',
-                border: '1px solid #D1D5DB',
-                borderRadius: '6px',
-                cursor: 'pointer',
-              }}
-            >
-              Switch Session to {requiredRole.toUpperCase()} Role
-            </button>
-          </div>
         </div>
       </div>
     );

@@ -25,11 +25,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
     }
   };
 
-  const handleQuickDemo = () => {
-    setFirstName('Ananya');
-    setLastName('Deshmukh');
-    setEmail('ananya.deshmukh@example.com');
-  };
+
 
   return (
     <div
@@ -291,30 +287,7 @@ export const PersonalDetailsScreen: React.FC<PersonalDetailsScreenProps> = ({ on
           </div>
         </form>
 
-        {/* 1-Click Demo Shortcut */}
-        <div style={{ paddingTop: '16px' }}>
-          <button
-            type="button"
-            onClick={handleQuickDemo}
-            style={{
-              width: '100%',
-              padding: '9px 12px',
-              backgroundColor: '#F8FAFC',
-              border: '1px dashed #CBD5E1',
-              borderRadius: '10px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              color: '#334155',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-            }}
-          >
-            <span>⚡ Fill Demo: Ananya Deshmukh</span>
-          </button>
-        </div>
+
       </div>
     </div>
   );

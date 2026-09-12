@@ -184,14 +184,14 @@ export const WorkerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const startWorkWithOtp = (bookingId: string, inputOtp: string) => {
     const targetBooking = bookings.find(b => b.id === bookingId);
-    const expectedOtp = targetBooking?.otp || (targetBooking as any)?.startOtp || '4829';
+    const expectedOtp = targetBooking?.otp || (targetBooking as any)?.startOtp;
     const cleanedInput = inputOtp.trim();
 
-    if (cleanedInput === expectedOtp || cleanedInput === '4829' || cleanedInput === '4892') {
+    if (expectedOtp && cleanedInput === expectedOtp) {
       updateBookingStatus(bookingId, 'IN_PROGRESS', `Customer OTP verified. Service started by ${worker.name}`);
       return { success: true };
     }
-    return { success: false, message: `Invalid OTP. Please enter the 4-digit code shown on the customer app (${expectedOtp}).` };
+    return { success: false, message: `Invalid OTP. Please enter the 4-digit code shown on the customer app.` };
   };
 
   const completeWork = (bookingId: string) => {

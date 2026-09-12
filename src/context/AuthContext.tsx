@@ -14,9 +14,13 @@ import {
 import { Role } from '../types';
 import { authService } from '../services/auth/authService';
 import { supabase, isSupabaseConfigured, getAuthConfigStatus, AuthConfigStatus, AuthMode } from '../lib/supabase';
+import { storageService } from '../services/storage/storageService';
+import { STORAGE_KEYS } from '../services/storage/storageKeys';
 
 export interface AuthContextType {
   session: AuthSession;
+  user: AuthUser | null;
+  isAuthenticated: boolean;
   currentRole: Role;
   currentPath: string;
   isLoading: boolean;
@@ -57,47 +61,33 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Normalize initial path from window.location
 const getInitialPath = (): string => {
-  if (typeof window === 'undefined') return '/customer/home';
+  if (typeof window === 'undefined') return '/';
   const path = window.location.pathname;
   const hash = window.location.hash.replace(/^#/, '');
 
   if (hash && hash.startsWith('/')) {
     return hash;
   }
-  if (path && path !== '/') {
+  if (path) {
     return path;
   }
-  return '/customer/home';
-};
-
-const DEFAULT_FALLBACK_USER: AuthUser = {
-  id: 'cust-demo-1',
-  name: 'Ananya Deshmukh',
-  phone: '+919980122334',
-  email: 'ananya.deshmukh@example.com',
-  role: 'customer',
-  verificationStatus: 'VERIFIED',
-  createdAt: '2026-01-15T10:00:00.000Z',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
-  zone: 'Indiranagar & East Zone',
+  return '/';
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentPath, setCurrentPath] = useState<string>(getInitialPath);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Initial session starts unauthenticated until verified with Supabase
   const [session, setSession] = useState<AuthSession>(() => {
-    const existing = authService.getCurrentSession();
-    if (existing && existing.isAuthenticated && existing.user) {
-      return existing;
+    const cached = storageService.getItem<AuthSession | null>(STORAGE_KEYS.AUTH_SESSION, null);
+    if (cached && cached.isAuthenticated && cached.user && cached.token && !cached.token.startsWith('sahyog_demo')) {
+      return cached;
     }
-    // Default initial session is authenticated customer for instant live evaluation
     return {
-      isAuthenticated: true,
+      isAuthenticated: false,
       role: 'customer',
-      user: DEFAULT_FALLBACK_USER,
-      token: 'sahyog_demo_cust_jwt',
-      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      user: null,
     };
   });
 
@@ -126,16 +116,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const authConfig = getAuthConfigStatus();
   const authMode = authConfig.mode;
 
-  // Hydrate Supabase session on mount if configured
+  // Hydrate Supabase session on mount and synchronize with real Auth state
   useEffect(() => {
-    if (!isSupabaseConfigured()) return;
+    if (!isSupabaseConfigured()) {
+      setIsLoading(false);
+      return;
+    }
 
-    supabase.auth.getSession().then(async ({ data: { session: sbSession } }) => {
-      if (sbSession?.user) {
+    const loadProfileFromSupabase = async (userId: string, sbToken?: string, refreshTok?: string, expiresAtSec?: number) => {
+      try {
         const { data: profile } = await supabase
           .from('profiles')
           .select('*')
-          .eq('id', sbSession.user.id)
+          .eq('id', userId)
           .maybeSingle();
 
         if (profile) {
@@ -164,75 +157,65 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             experienceYears: workerData?.experience_years,
             avatar: workerData?.avatar || profile.avatar_url || undefined,
           };
-          setSession({
+
+          const newSession: AuthSession = {
             isAuthenticated: true,
             role: userRole,
             user: authUser,
-            token: sbSession.access_token,
-            refreshToken: sbSession.refresh_token,
-            expiresAt: sbSession.expires_at ? sbSession.expires_at * 1000 : Date.now() + 7 * 24 * 60 * 60 * 1000,
-          });
+            token: sbToken,
+            refreshToken: refreshTok,
+            expiresAt: expiresAtSec ? expiresAtSec * 1000 : Date.now() + 7 * 24 * 60 * 60 * 1000,
+          };
+
+          setSession(newSession);
+          storageService.setItem(STORAGE_KEYS.AUTH_SESSION, newSession);
+          return newSession;
         }
+      } catch (err) {
+        console.warn('Failed to load profile from Supabase:', err);
       }
+      return null;
+    };
+
+    // 1. Initial Session Check
+    supabase.auth.getSession().then(async ({ data: { session: sbSession } }) => {
+      if (sbSession?.user) {
+        await loadProfileFromSupabase(
+          sbSession.user.id,
+          sbSession.access_token,
+          sbSession.refresh_token,
+          sbSession.expires_at
+        );
+      } else {
+        setSession({
+          isAuthenticated: false,
+          role: 'customer',
+          user: null,
+        });
+        storageService.removeItem(STORAGE_KEYS.AUTH_SESSION);
+      }
+      setIsLoading(false);
+    }).catch(() => {
+      setIsLoading(false);
     });
 
+    // 2. Realtime Auth State Listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, sbSession) => {
       if (event === 'SIGNED_OUT' || !sbSession) {
-        const currentStored = authService.getCurrentSession();
-        if (currentStored?.token && !currentStored.token.startsWith('sahyog_demo')) {
-          setSession({
-            isAuthenticated: false,
-            role: currentStored.role,
-            user: null,
-          });
-        }
-      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        setSession({
+          isAuthenticated: false,
+          role: 'customer',
+          user: null,
+        });
+        storageService.removeItem(STORAGE_KEYS.AUTH_SESSION);
+      } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
         if (sbSession.user) {
-          // Fetch updated profile
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', sbSession.user.id)
-            .maybeSingle();
-
-          if (profile) {
-            const userRole: Role = (profile.role === 'cooperative' ? 'admin' : profile.role) as Role;
-            let workerData: any = null;
-            if (userRole === 'worker') {
-              const { data: w } = await supabase
-                .from('workers')
-                .select('*')
-                .eq('profile_id', profile.id)
-                .maybeSingle();
-              workerData = w;
-            }
-
-            const authUser: AuthUser = {
-              id: profile.id,
-              name: profile.name,
-              phone: profile.phone,
-              email: profile.email || undefined,
-              role: userRole,
-              verificationStatus: (workerData?.verification_status || 'VERIFIED') as any,
-              createdAt: profile.created_at,
-              zone: workerData?.zone || profile.city,
-              profession: workerData?.trade || workerData?.professions?.[0],
-              cooperativeBranch: workerData?.cooperative_branch,
-              experienceYears: workerData?.experience_years,
-              avatar: workerData?.avatar || profile.avatar_url || undefined,
-            };
-
-            const updatedSession: AuthSession = {
-              isAuthenticated: true,
-              role: userRole,
-              user: authUser,
-              token: sbSession.access_token,
-              refreshToken: sbSession.refresh_token,
-              expiresAt: sbSession.expires_at ? sbSession.expires_at * 1000 : Date.now() + 7 * 24 * 60 * 60 * 1000,
-            };
-
-            setSession(updatedSession);
-          }
+          await loadProfileFromSupabase(
+            sbSession.user.id,
+            sbSession.access_token,
+            sbSession.refresh_token,
+            sbSession.expires_at
+          );
         }
       }
     });
@@ -243,7 +226,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   // =========================================================================
-  // SUPABASE PHONE OTP & AUTH WRAPPERS
+  // REAL SUPABASE PHONE OTP & AUTH METHODS
   // =========================================================================
 
   const sendPhoneOtp = async (dto: PhoneOtpSendDto): Promise<{ success: boolean; message?: string; error?: string }> => {
@@ -377,7 +360,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       experienceYears?: number;
     }
   ): Promise<{ success: boolean; error?: string }> => {
-    const pwd = userData.password || 'sahyog@2026';
+    const pwd = userData.password || '';
     if (role === 'worker') {
       const res = await registerWorker({
         name: userData.name,
@@ -436,62 +419,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   /**
-   * SIH Development & Evaluation Quick Role Switcher
-   * Clearly separated from production authentication logic.
+   * Safe role switcher: Only allows navigation to a role if user is legitimately authenticated for it
    */
   const switchRole = (newRole: Role) => {
-    let mockUser: AuthUser;
-
-    if (newRole === 'worker') {
-      mockUser = {
-        id: 'w-demo-1',
-        name: 'Ramesh Kumar',
-        phone: '+91 98765 43210',
-        email: 'ramesh.kumar@artisan.sahyog.in',
-        role: 'worker',
-        profession: 'Master Electrician',
-        verificationStatus: 'VERIFIED',
-        avatar: 'https://images.unsplash.com/photo-1540569014015-19a7be504e3a?w=150',
-        zone: 'Bengaluru East Zone',
-        createdAt: '2026-01-10T09:30:00.000Z',
-      };
-    } else if (newRole === 'admin') {
-      mockUser = {
-        id: 'admin-demo-1',
-        name: 'Vikramaditya Rao',
-        phone: '+91 98112 33445',
-        email: 'operations@sahyog.coop',
-        role: 'admin',
-        verificationStatus: 'VERIFIED',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
-        zone: 'Central Federation Operations Hub',
-        createdAt: '2026-01-01T08:00:00.000Z',
-      };
+    if (session.isAuthenticated && session.role === newRole) {
+      switch (newRole) {
+        case 'worker':
+          navigate('/worker/home');
+          break;
+        case 'admin':
+          navigate('/admin/dashboard');
+          break;
+        case 'customer':
+        default:
+          navigate('/customer/home');
+          break;
+      }
     } else {
-      mockUser = DEFAULT_FALLBACK_USER;
-    }
-
-    const demoSession: AuthSession = {
-      isAuthenticated: true,
-      role: newRole,
-      user: mockUser,
-      token: `sahyog_demo_${newRole}_token`,
-      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    };
-
-    setSession(demoSession);
-
-    switch (newRole) {
-      case 'worker':
-        navigate('/worker/home');
+      switch (newRole) {
+        case 'worker':
+          navigate('/worker/login');
+          break;
+        case 'admin':
+          navigate('/admin/login');
         break;
-      case 'admin':
-        navigate('/admin/dashboard');
-        break;
-      case 'customer':
-      default:
-        navigate('/customer/home');
-        break;
+        case 'customer':
+        default:
+          navigate('/customer/login');
+          break;
+      }
     }
   };
 
@@ -503,6 +459,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     <AuthContext.Provider
       value={{
         session,
+        user: session.user,
+        isAuthenticated: session.isAuthenticated,
         currentRole: session.role,
         currentPath,
         isLoading,

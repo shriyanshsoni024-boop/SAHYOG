@@ -13,6 +13,9 @@ export interface AuthUser {
   createdAt: string;
   updatedAt?: string;
   avatar?: string;
+  profileImage?: string;
+  address?: string;
+  city?: string;
   zone?: string;
   profession?: string;
   cooperativeBranch?: string;

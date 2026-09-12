@@ -24,7 +24,7 @@ export const CustomerShell: React.FC = () => {
     'splash' | 'login' | 'otp' | 'personal' | 'location' | 'address' | null
   >(null);
 
-  const [tempPhone, setTempPhone] = useState<string>('9980122334');
+  const [tempPhone, setTempPhone] = useState<string>('');
   const [tempLocation, setTempLocation] = useState<string>(selectedLocation || 'Indiranagar, Bangalore');
   const [showAddressModal, setShowAddressModal] = useState<boolean>(false);
 

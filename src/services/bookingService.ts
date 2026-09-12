@@ -257,6 +257,7 @@ class BookingService {
 
     const randomNum = Math.floor(10000 + Math.random() * 90000);
     const token = `SYH-${randomNum}`;
+    const bookingOtp = Math.floor(1000 + Math.random() * 9000).toString();
     const base = dto.serviceCategory.basePrice || 299;
     const tierMultiplier = dto.tier === 'SMALL' ? 1 : dto.tier === 'MEDIUM' ? 1.8 : 2.8;
     const estimatedPrice = Math.round(base * tierMultiplier);
@@ -280,7 +281,7 @@ class BookingService {
         // Resolve worker UUID
         let targetWorkerId: string | null = dto.worker.id;
         if (targetWorkerId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(targetWorkerId)) {
-          // If worker ID is demo string like w-101, check if matching worker exists in DB
+          // If worker ID is string like w-101, check if matching worker exists in DB
           const { data: dbWorker } = await supabase
             .from('workers')
             .select('id')
@@ -294,14 +295,14 @@ class BookingService {
           token,
           customer_id: authCustomerId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(authCustomerId) ? authCustomerId : null,
           customer_name: dto.customerName || 'Customer',
-          customer_phone: dto.customerPhone || '+91 99801 22334',
+          customer_phone: dto.customerPhone || '',
           worker_id: targetWorkerId,
           service_id: dto.serviceCategory.id || 'electrician',
           service_name: dto.serviceCategory.name || 'Electrician',
           service_category: dto.serviceCategory.category || 'General',
           description: dto.problemDescription || `Requested ${dto.serviceCategory.name} (${dto.tier} Tier)`,
           image_url: dto.imageUrl || null,
-          address: dto.address || 'Flat 402, Green Vista Apartments, 12th Main Indiranagar, Bangalore',
+          address: dto.address || 'Service Location',
           city: dto.city || 'Bangalore',
           scheduled_date: now.toISOString().split('T')[0],
           scheduled_time: dto.urgency === 'EMERGENCY' ? 'Immediate Priority (15-20 min)' : 'Today (Next Available)',
@@ -312,7 +313,7 @@ class BookingService {
           total_price: totalPrice,
           worker_payout: workerPayout,
           status: 'REQUESTED',
-          otp: '4829',
+          otp: bookingOtp,
           payment_status: 'PAID',
         };
 
@@ -344,14 +345,14 @@ class BookingService {
         id: `b-${Date.now()}`,
         token,
         customerId: dto.customerId || 'cust-1',
-        customerName: dto.customerName || 'Ananya Deshmukh',
-        customerPhone: dto.customerPhone || '+91 99801 22334',
+        customerName: dto.customerName || 'Customer',
+        customerPhone: dto.customerPhone || '',
         serviceId: dto.serviceCategory.id || 'electrician',
         serviceName: dto.serviceCategory.name || 'Electrician',
         serviceCategory: dto.serviceCategory.category || 'General',
         description: dto.problemDescription || `Requested ${dto.serviceCategory.name} (${dto.tier} Tier)`,
         imageUrl: dto.imageUrl,
-        address: dto.address || 'Flat 402, Green Vista Apartments, 12th Main Indiranagar, Bangalore',
+        address: dto.address || 'Service Location',
         city: dto.city || 'Bangalore',
         scheduledDate: now.toISOString().split('T')[0],
         scheduledTime: dto.urgency === 'EMERGENCY' ? 'Immediate Priority (15-20 min)' : 'Today (Next Available)',
@@ -362,7 +363,7 @@ class BookingService {
         totalPrice,
         worker: dto.worker,
         status: 'REQUESTED',
-        otp: '4829',
+        otp: bookingOtp,
         statusHistory: [
           {
             status: 'REQUESTED',

@@ -152,13 +152,14 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     const locObj = LOCATIONS.find(l => l.area === selectedLocation);
     const bookingAddress = locObj 
-      ? `Flat 402, Green Vista, ${locObj.area}`
-      : `Flat 402, Green Vista, ${selectedLocation}`;
-    const bookingCity = locObj ? locObj.city : (selectedLocation.includes(',') ? selectedLocation.split(',').pop()?.trim() || 'Custom Area' : 'Custom Area');
+      ? `${locObj.area}, ${locObj.city}`
+      : (selectedLocation || 'Service Address');
+    const bookingCity = locObj ? locObj.city : (selectedLocation.includes(',') ? selectedLocation.split(',').pop()?.trim() || 'Bangalore' : 'Bangalore');
 
-    const customerId = activeUser?.id || 'cust-1';
-    const customerName = activeUser?.name || 'Ananya Deshmukh';
-    const customerPhone = activeUser?.phone || '+91 99801 22334';
+    const customerId = activeUser?.id || '';
+    const customerName = activeUser?.name || 'Customer';
+    const customerPhone = activeUser?.phone || '';
+    const bookingOtp = Math.floor(1000 + Math.random() * 9000).toString();
 
     const newBooking: Booking = {
       id: `b-${Date.now()}`,
@@ -181,7 +182,7 @@ export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ child
       totalPrice: estimatedPrice + connectionFee,
       worker,
       status: 'REQUESTED',
-      otp: '4829',
+      otp: bookingOtp,
       statusHistory: [
         {
           status: 'REQUESTED',

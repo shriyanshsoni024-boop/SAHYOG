@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Building2, Lock, Mail, Eye, EyeOff, ArrowRight, Sparkles, KeyRound } from 'lucide-react';
+import { Building2, Lock, Mail, Eye, EyeOff, ArrowRight, KeyRound } from 'lucide-react';
 
 export const AdminLoginPage: React.FC = () => {
-  const { login, authMode, navigate } = useAuth();
+  const { login, navigate } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [identifier, setIdentifier] = useState('operations@sahyog.coop');
-  const [password, setPassword] = useState('admin@sahyog2026');
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForgotNotice, setShowForgotNotice] = useState(false);
@@ -15,10 +15,16 @@ export const AdminLoginPage: React.FC = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
-    setIsSubmitting(true);
 
+    const cleanEmail = identifier.trim().toLowerCase();
+    if (!cleanEmail || !password) {
+      setErrorMsg('Please enter your federation official email and password.');
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      const res = await login('admin', { identifier, password });
+      const res = await login('admin', { identifier: cleanEmail, password });
       if (!res.success) {
         setErrorMsg(res.error || 'Authentication failed. Please verify federation administrative credentials.');
       }
@@ -27,12 +33,6 @@ export const AdminLoginPage: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleQuickDemoFill = () => {
-    setIdentifier('operations@sahyog.coop');
-    setPassword('admin@sahyog2026');
-    setErrorMsg(null);
   };
 
   return (
@@ -118,27 +118,10 @@ export const AdminLoginPage: React.FC = () => {
             >
               FEDERATION OPERATIONS COMMAND
             </div>
-
-            {/* Live Environment Status Badge */}
-            <div
-              style={{
-                fontSize: '0.5625rem',
-                fontWeight: 800,
-                color: authMode === 'SUPABASE_LIVE' ? '#047857' : authMode === 'UNCONFIGURED_PROD' ? '#B91C1C' : '#B45309',
-                backgroundColor: authMode === 'SUPABASE_LIVE' ? '#ECFDF5' : authMode === 'UNCONFIGURED_PROD' ? '#FEF2F2' : '#FFFBEB',
-                border: `1px solid ${authMode === 'SUPABASE_LIVE' ? '#A7F3D0' : authMode === 'UNCONFIGURED_PROD' ? '#FECACA' : '#FDE68A'}`,
-                padding: '2px 7px',
-                borderRadius: '9999px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}
-            >
-              {authMode === 'SUPABASE_LIVE' ? '🟢 Live Auth' : authMode === 'UNCONFIGURED_PROD' ? '🔴 Unconfigured' : '🟡 Dev Sandbox'}
-            </div>
           </div>
 
           <p style={{ fontSize: '0.8125rem', color: '#64748B', margin: 0 }}>
-            Central operations, artisan KYC verification & zero-commission clearing
+            Central operations, artisan KYC verification & cooperative management
           </p>
         </div>
 
@@ -192,13 +175,13 @@ export const AdminLoginPage: React.FC = () => {
               lineHeight: 1.4,
             }}
           >
-            <strong>Security Notice:</strong> Administrative key rotation is managed via central cooperative federation master keycards. Use the evaluation credentials below for demo access.
+            <strong>Security Notice:</strong> Administrative credentials are provisioned by the Central Federation IT desk. Please contact your nodal officer for access recovery.
           </div>
         )}
 
         {/* ========================================================= */}
-        {/* ADMIN SIGN IN FORM                                        */
-        /* ========================================================= */}
+        {/* ADMIN SIGN IN FORM                                        */}
+        {/* ========================================================= */}
         <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#334155', marginBottom: '5px' }}>
@@ -217,8 +200,8 @@ export const AdminLoginPage: React.FC = () => {
             >
               <Mail size={16} color="#1DAA5C" />
               <input
-                type="text"
-                placeholder="e.g. operations@sahyog.coop or officer ID"
+                type="email"
+                placeholder="e.g. operations@sahyog.coop"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 style={{
@@ -236,7 +219,7 @@ export const AdminLoginPage: React.FC = () => {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
               <label style={{ fontSize: '0.75rem', fontWeight: 700, color: '#334155' }}>
-                Administrative Security Key
+                Administrative Security Password
               </label>
               <button
                 type="button"
@@ -251,7 +234,7 @@ export const AdminLoginPage: React.FC = () => {
                   padding: 0,
                 }}
               >
-                Forgot key?
+                Forgot password?
               </button>
             </div>
 
@@ -304,12 +287,13 @@ export const AdminLoginPage: React.FC = () => {
               borderRadius: '8px',
               fontSize: '0.875rem',
               fontWeight: 700,
-              cursor: 'pointer',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
               boxShadow: '0 2px 6px rgba(29, 170, 92, 0.25)',
+              opacity: isSubmitting ? 0.7 : 1,
             }}
             className="sahyog-btn"
           >
@@ -317,50 +301,6 @@ export const AdminLoginPage: React.FC = () => {
             <ArrowRight size={16} />
           </button>
         </form>
-
-        {/* Quick Demo Pre-fill Shortcut (Only shown in DEV_SANDBOX mode, hidden in Production) */}
-        {authMode === 'DEV_SANDBOX' && (
-          <div
-            style={{
-              padding: '10px 12px',
-              backgroundColor: '#FCFBF4',
-              border: '1px dashed #D9E9C8',
-              borderRadius: '8px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '6px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.6875rem', fontWeight: 800, color: '#0F7A3E', textTransform: 'uppercase' }}>
-                SIH Sandbox Test Credentials
-              </span>
-              <span style={{ fontSize: '0.625rem', color: '#1DAA5C', fontWeight: 700 }}>Dev Mode Only</span>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleQuickDemoFill}
-              style={{
-                padding: '6px 10px',
-                backgroundColor: '#FFFFFF',
-                border: '1px solid #E5E7EB',
-                borderRadius: '6px',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                color: '#0B0B0B',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-              }}
-            >
-              <Sparkles size={14} color="#F4C430" />
-              <span>Fill Demo Officer: Vikramaditya Rao</span>
-            </button>
-          </div>
-        )}
 
         {/* Cross-Role Navigation Links */}
         <div
@@ -374,7 +314,7 @@ export const AdminLoginPage: React.FC = () => {
           }}
         >
           <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
-            Looking for consumer marketplace?{' '}
+            Looking for customer marketplace?{' '}
             <button
               type="button"
               onClick={() => navigate('/customer/login')}

@@ -3,7 +3,6 @@ import { LanguageProvider } from './i18n/LanguageContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { BookingProvider } from './context/BookingContext';
 import { WorkerProvider } from './context/WorkerContext';
-import { DemoRoleBar } from './components/common/DemoRoleBar';
 import { TopAnnouncementBanner } from './components/common/TopAnnouncementBanner';
 import { CustomerShell } from './components/shells/CustomerShell';
 import { WorkerShell } from './components/shells/WorkerShell';
@@ -13,9 +12,10 @@ import { WorkerLoginPage } from './pages/auth/WorkerLoginPage';
 import { AdminLoginPage } from './pages/auth/AdminLoginPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { getThemeCssVariables } from './styles/themes';
+import { ShieldCheck } from 'lucide-react';
 
 const AppRouter: React.FC = () => {
-  const { currentRole, currentPath, switchRole } = useAuth();
+  const { session, currentRole, currentPath, isLoading } = useAuth();
 
   const themeKey = currentRole === 'admin' ? 'cooperative' : currentRole;
   const themeVariables = getThemeCssVariables(themeKey);
@@ -26,10 +26,52 @@ const AppRouter: React.FC = () => {
     currentPath === '/customer/signup' ||
     currentPath === '/worker/login' ||
     currentPath === '/worker/signup' ||
-    currentPath === '/admin/login';
+    currentPath === '/admin/login' ||
+    (!session.isAuthenticated && currentPath === '/');
+
+  // Loading state during initial Supabase session verification
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#0F172A',
+          color: '#FFFFFF',
+          fontFamily: 'var(--font-sans)',
+        }}
+      >
+        <div
+          style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '16px',
+            backgroundColor: '#1DAA5C',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '16px',
+            boxShadow: '0 8px 24px rgba(29, 170, 92, 0.35)',
+            animation: 'pulse 1.5s infinite ease-in-out',
+          }}
+        >
+          <ShieldCheck size={32} color="#FFFFFF" />
+        </div>
+        <div style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', marginBottom: '6px' }}>
+          SAHYOG
+        </div>
+        <div style={{ fontSize: '0.8125rem', color: '#94A3B8' }}>
+          Verifying secure session...
+        </div>
+      </div>
+    );
+  }
 
   const renderCurrentView = () => {
-    // 1. Standalone Login Routes
+    // 1. Standalone Login Routes & Unauthenticated Root
     if (currentPath === '/customer/login' || currentPath === '/customer/signup') {
       return <CustomerLoginPage />;
     }
@@ -38,6 +80,11 @@ const AppRouter: React.FC = () => {
     }
     if (currentPath === '/admin/login') {
       return <AdminLoginPage />;
+    }
+
+    // If unauthenticated on root "/", ALWAYS show the real customer login page
+    if (!session.isAuthenticated && currentPath === '/') {
+      return <CustomerLoginPage />;
     }
 
     // 2. Protected Worker Routes
@@ -58,24 +105,32 @@ const AppRouter: React.FC = () => {
       );
     }
 
-    // 4. Default / Customer Protected Routes
-    // If role is worker or admin and path is root, show their protected shell
-    if (currentRole === 'worker' && currentPath === '/') {
+    // 4. Authenticated Root ("/") Routing by User Role
+    if (currentPath === '/') {
+      if (session.role === 'worker') {
+        return (
+          <ProtectedRoute requiredRole="worker">
+            <WorkerShell />
+          </ProtectedRoute>
+        );
+      }
+      if (session.role === 'admin') {
+        return (
+          <ProtectedRoute requiredRole="admin">
+            <AdminShell />
+          </ProtectedRoute>
+        );
+      }
       return (
-        <ProtectedRoute requiredRole="worker">
-          <WorkerShell />
+        <ProtectedRoute requiredRole="customer">
+          <div style={{ width: '100%', backgroundColor: 'var(--bg-app)' }}>
+            <CustomerShell />
+          </div>
         </ProtectedRoute>
       );
     }
 
-    if (currentRole === 'admin' && currentPath === '/') {
-      return (
-        <ProtectedRoute requiredRole="admin">
-          <AdminShell />
-        </ProtectedRoute>
-      );
-    }
-
+    // 5. Default Customer Protected Routes (/customer/*)
     return (
       <ProtectedRoute requiredRole="customer">
         <div style={{ width: '100%', backgroundColor: 'var(--bg-app)' }}>
@@ -96,11 +151,8 @@ const AppRouter: React.FC = () => {
       }}
       className="theme-transition"
     >
-      {/* Top Demo Bar for Evaluation / Role Switching (Preserved for Evaluation) */}
-      <DemoRoleBar currentRole={currentRole} onRoleChange={(r) => switchRole(r)} />
-
       {/* Contextual Top Announcement Banner (Hidden on clean login screens) */}
-      {!isLoginPage && <TopAnnouncementBanner currentRole={themeKey} />}
+      {!isLoginPage && session.isAuthenticated && <TopAnnouncementBanner currentRole={themeKey} />}
 
       {/* Main Container */}
       <div

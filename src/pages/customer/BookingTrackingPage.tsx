@@ -6,11 +6,11 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Rating } from '../../components/ui/Rating';
 import { StateProgress } from '../../components/ui/StateProgress';
-import { Phone, CheckCircle, Award, PlayCircle, Coins, MessageSquare, ArrowLeft, KeyRound, MapPin, Copy, Check, Download } from 'lucide-react';
+import { Phone, CheckCircle, Award, Coins, MessageSquare, ArrowLeft, KeyRound, MapPin, Copy, Check, Download } from 'lucide-react';
 
 export const BookingTrackingPage: React.FC = () => {
   const { t, language } = useLanguage();
-  const { currentBooking, advanceBookingStatus, submitCustomerReview, setActiveView } = useBooking();
+  const { currentBooking, submitCustomerReview, setActiveView } = useBooking();
 
   const [ratingVal, setRatingVal] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
@@ -305,36 +305,7 @@ export const BookingTrackingPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* Demo Golden Flow Stepper Button (Prototype Evaluation Trigger) */}
-      {!isCompleted && (
-        <div
-          style={{
-            backgroundColor: 'var(--bg-muted)',
-            border: '1px solid var(--border-default)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '12px 14px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            <PlayCircle size={16} color="var(--primary)" />
-            <span>Prototype Evaluation Trigger</span>
-          </div>
-          <p style={{ fontSize: '0.6875rem', color: 'var(--text-secondary)', margin: 0 }}>
-            Advance state (<strong>{currentBooking.status}</strong> → Next) to evaluate the end-to-end lifecycle.
-          </p>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => advanceBookingStatus(currentBooking.id)}
-          >
-            {t('simulate_next_step')} →
-          </Button>
-        </div>
-      )}
+
 
       {/* Completion & Feedback Section */}
       {isCompleted && (

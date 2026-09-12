@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight, ShieldCheck, RefreshCw } from 'lucide-react';
+import { useAuth } from '../../../context/AuthContext';
 
 interface CustomerOtpScreenProps {
   phone: string;
@@ -8,6 +9,7 @@ interface CustomerOtpScreenProps {
 }
 
 export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onVerified, onBack }) => {
+  const { verifyPhoneOtp, sendPhoneOtp } = useAuth();
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [countdown, setCountdown] = useState<number>(44);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -71,30 +73,44 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
   };
 
   const handleCompleteOtp = async (code: string) => {
-    setIsVerifying(true);
-    await new Promise((r) => setTimeout(r, 400)); // Smooth verification delay
-    setIsVerifying(false);
-
-    // In demo mode, accept any 6 digits or default demo code 123456 / 482910
-    if (code.length === 6) {
-      onVerified();
-    } else {
+    if (code.length < 6) {
       setErrorMsg('Please enter a valid 6-digit OTP code.');
+      return;
+    }
+
+    setIsVerifying(true);
+    setErrorMsg(null);
+
+    try {
+      const res = await verifyPhoneOtp({
+        phone,
+        token: code,
+        role: 'customer',
+      });
+
+      if (res.success) {
+        onVerified();
+      } else {
+        setErrorMsg(res.error || 'Invalid or expired verification code.');
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Verification failed. Please try again.');
+    } finally {
+      setIsVerifying(false);
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     if (countdown > 0) return;
     setCountdown(44);
     setOtp(['', '', '', '', '', '']);
     setErrorMsg(null);
     inputRefs.current[0]?.focus();
-  };
-
-  const handleQuickDemoFill = () => {
-    const demoCode = ['1', '2', '3', '4', '5', '6'];
-    setOtp(demoCode);
-    handleCompleteOtp('123456');
+    try {
+      await sendPhoneOtp({ phone });
+    } catch {
+      setErrorMsg('Failed to resend SMS code.');
+    }
   };
 
   const maskedPhone = phone.length >= 10
@@ -278,31 +294,6 @@ export const CustomerOtpScreen: React.FC<CustomerOtpScreenProps> = ({ phone, onV
           <span>{isVerifying ? 'Verifying...' : 'Verify & Continue'}</span>
           <ArrowRight size={18} />
         </button>
-
-        {/* 1-Click Demo Fill */}
-        <div style={{ marginTop: 'auto', paddingTop: '20px' }}>
-          <button
-            type="button"
-            onClick={handleQuickDemoFill}
-            style={{
-              width: '100%',
-              padding: '9px 12px',
-              backgroundColor: '#F0FDF4',
-              border: '1px dashed #D9E9C8',
-              borderRadius: '10px',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              color: '#1DAA5C',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-            }}
-          >
-            <span>⚡ Fill Demo OTP (123456)</span>
-          </button>
-        </div>
       </div>
     </div>
   );
