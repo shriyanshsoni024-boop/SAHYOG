@@ -41,11 +41,17 @@ export const getAuthConfigStatus = (): AuthConfigStatus => {
   const isProd = import.meta.env.PROD;
 
   if (configured) {
+    const isLocal = Boolean(
+      supabaseUrl &&
+      (supabaseUrl.includes('localhost') || supabaseUrl.includes('127.0.0.1'))
+    );
     return {
       isConfigured: true,
       isProduction: isProd,
       mode: 'SUPABASE_LIVE',
-      providerDetails: 'Connected to Supabase Auth (Live SMS OTP & Cloud DB)',
+      providerDetails: isLocal
+        ? 'Connected to Local Supabase Auth (Local Dev Test Phone OTP & Local DB)'
+        : 'Connected to Supabase Auth (Live SMS OTP & Cloud DB)',
     };
   }
 

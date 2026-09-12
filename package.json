@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "node node_modules/typescript/bin/tsc && node node_modules/vite/bin/vite.js build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:status": "npx supabase status",
+    "supabase:reset": "npx supabase db reset"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
